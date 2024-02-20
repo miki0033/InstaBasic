@@ -10,9 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.NoArgsConstructor;
 import lombok.Getter;
@@ -40,7 +38,7 @@ public class Profile {
 
     private String avatarUrl;
 
-    @OneToMany
+    @ManyToOne
     private User userId;
 
     // Comment
@@ -48,11 +46,10 @@ public class Profile {
     private Set<Comment> comments = new HashSet<>();
 
     // FOLLOW
-    @ManyToMany
-    @JoinTable(name = "follower", joinColumns = @JoinColumn(name = "profile_id"), inverseJoinColumns = @JoinColumn(name = "follower_id"))
-    private Set<Profile> followers = new HashSet<>();
+    @OneToMany(mappedBy = "profile")
+    private Set<Follow> followers = new HashSet<>();
 
-    @ManyToMany(mappedBy = "followers")
-    private Set<Profile> following = new HashSet<>();
+    @OneToMany(mappedBy = "follower")
+    private Set<Follow> following = new HashSet<>();
 
 }
