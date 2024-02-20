@@ -15,3 +15,5 @@
 >> >>   tailwind.config.js.darkMode:"class"
 >> >>   tailwind.config.js.plugins:[nextui()]
 
+>> npm i react-router-dom
+>> npm i @heroicons/react
