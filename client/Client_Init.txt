@@ -1,0 +1,17 @@
+>> cd ./client
+>> npm i
+
+>> npm i -D tailwindcss postcss autoprefixer
+>> npx tailwindcss init -p
+>> >>   tailwind.config.js.content["index.html", "./src/**/*.{js, ts, jsx, tsx}"]
+>> >>   index.css: {
+            @tailwind base;
+            @tailwind components;
+            @tailwind utilities;
+        }
+
+>> npm i @nextui-org/react framer-motion
+>> >>   tailwind.config.js.content:["./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}"]
+>> >>   tailwind.config.js.darkMode:"class"
+>> >>   tailwind.config.js.plugins:[nextui()]
+
