@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import Layout from "../layout/Layout";
 
@@ -7,27 +7,32 @@ import PageNotFound from "../../utils/PageNotFound";
 function App() {
 	return (
 		<>
-			{/* prettier-ignore */}
 			<Routes>
-				<Route path="/" element={<Layout />}>
-					<Route index element={<>Home</>} />
-
-					<Route path="feed">
-						<Route index element={<>Feed</>} />
-					</Route>
-
-					<Route path="profile">
-						<Route index element={<>Profile</>}/>
-
-						<Route path="settings">
-							<Route index element={<>Settings</>}/>
-						</Route>
-					</Route>
-
-					
+				<Route path="/">
+					<Route index element={<Navigate to={"/home"} />} />
 				</Route>
 
-				<Route path="*" element={<PageNotFound/>} />
+				<Route path="/home" element={<Layout />}>
+					<Route index element={<>Homepage</>} />
+
+					<Route path="profile">
+						<Route index element={<>Profile</>} />
+
+						<Route path="settings">
+							<Route index element={<>Profile Settings</>} />
+						</Route>
+					</Route>
+				</Route>
+
+				<Route path="login">
+					<Route index element={<>Login</>} />
+
+					<Route path="register">
+						<Route index element={<>Register</>} />
+					</Route>
+				</Route>
+
+				<Route path="*" element={<PageNotFound />} />
 			</Routes>
 		</>
 	);
