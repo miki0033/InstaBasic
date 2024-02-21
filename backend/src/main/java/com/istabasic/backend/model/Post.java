@@ -34,7 +34,7 @@ public class Post {
     private LocalDateTime createdAt;
     @ManyToOne
     @JoinColumn(name = "profile_id")
-    private Profile profileId;
+    private Profile profile;
 
     // Comment
     @OneToMany(mappedBy = "post")
