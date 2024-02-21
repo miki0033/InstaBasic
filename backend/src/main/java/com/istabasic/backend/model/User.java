@@ -1,6 +1,6 @@
 package com.istabasic.backend.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import org.springframework.data.annotation.CreatedDate;
 
 import jakarta.annotation.Nonnull;
@@ -33,10 +33,10 @@ public class User {
     private String password;
 
     @CreatedDate
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
-    private Date updatedAt;
-    private Date lastLoginAt;
-    private Date lastOnlineAt;
+    private LocalDateTime updatedAt;
+    private LocalDateTime lastLoginAt;
+    private LocalDateTime lastOnlineAt;
 
 }

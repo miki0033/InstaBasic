@@ -1,6 +1,7 @@
 package com.istabasic.backend.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,7 +34,7 @@ public class Post {
 
     private String imageUrl;
     @CreatedDate
-    private Date createdAt;
+    private LocalDateTime createdAt;
     @ManyToOne
     @JoinColumn(name = "profile_id")
     private Profile profileId;
