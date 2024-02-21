@@ -17,6 +17,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Optional<Post> findByTitleAndProfile(String title, Profile profile);
 
-    Page<Post> findAllByProfileName(String profileName, Pageable pageable);
+    Page<Post> findAllByProfile_Profilename(String profilename, Pageable pageable);
 
 }
