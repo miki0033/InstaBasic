@@ -1,15 +1,14 @@
 package com.istabasic.backend.service;
 
+import com.istabasic.backend.model.User;
+import com.istabasic.backend.repository.UserRepository;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import com.istabasic.backend.model.User;
-import com.istabasic.backend.repository.UserRepository;
 
 @Service
 public class UserService {
