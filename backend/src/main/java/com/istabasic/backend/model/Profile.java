@@ -1,5 +1,6 @@
 package com.istabasic.backend.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -33,7 +34,7 @@ public class Profile {
     private String firstName;
     private String lastName;
 
-    private Date birthday;
+    private LocalDate birthday;
     private String bio;
 
     private String avatarUrl;
@@ -42,14 +43,16 @@ public class Profile {
     private User userId;
 
     // Comment
+
     @OneToMany(mappedBy = "profile")
-    private Set<Comment> comments = new HashSet<>();
+    private Set<Comment> comments;
 
     // FOLLOW
+
     @OneToMany(mappedBy = "profile")
-    private Set<Follow> followers = new HashSet<>();
+    private Set<Follow> followers;
 
     @OneToMany(mappedBy = "follower")
-    private Set<Follow> following = new HashSet<>();
+    private Set<Follow> following;
 
 }

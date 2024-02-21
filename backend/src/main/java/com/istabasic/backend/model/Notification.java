@@ -22,8 +22,8 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Profile profile;
+    // @ManyToOne
+    // private Profile profile;
 
     private String text;
 

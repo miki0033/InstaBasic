@@ -27,11 +27,8 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String title;
-
     private String description;
-
     private String imageUrl;
     @CreatedDate
     private LocalDateTime createdAt;
@@ -41,6 +38,6 @@ public class Post {
 
     // Comment
     @OneToMany(mappedBy = "post")
-    private Set<Comment> comments = new HashSet<>();
+    private Set<Comment> comments;
 
 }
