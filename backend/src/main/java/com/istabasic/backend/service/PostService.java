@@ -53,7 +53,7 @@ public class PostService {
     }
 
     public Page<Post> getPostsByProfileName(String profileName, Pageable pageable) {
-        return PostRepository.findAllByProfilename(profileName, pageable);
+        return PostRepository.findAllByProfileName(profileName, pageable);
     }
 
     // U
