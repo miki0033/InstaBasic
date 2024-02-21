@@ -18,19 +18,31 @@ public class PostService {
     PostRepository PostRepository;
 
     // C
-    public Post save(Post Post) {
-        return PostRepository.save(Post);
+    public Post save(Post post) {
+        if (post != null) {
+            return PostRepository.save(post);
+        }
+        return null;
     }
 
     // R
-    public Optional<Post> findById(Long id) {
-        return PostRepository.findById(id);
+    public Post findById(Long id) {
+        if (id != null) {
+            Optional<Post> optional = PostRepository.findById(id);
+
+            if (optional.isPresent()) {
+                return optional.get();
+            } else {
+                throw new Error("Post not found");
+            }
+        } else {
+            throw new Error("Id null");
+        }
     }
 
-    public Post findByUsername(String title, Profile profile) {
-        Long profileId = profile.getId();
+    public Post findByTitle(String title, Profile profile) {
         Post Post = null;
-        Optional<Post> optional = PostRepository.findByTitle(title, profileId);
+        Optional<Post> optional = PostRepository.findByTitleAndProfile(title, profile);
         if (optional.isPresent()) {
             Post = optional.get();
         } else {
@@ -40,27 +52,37 @@ public class PostService {
 
     }
 
-    public Page<Post> findAll(Pageable pageable) {
-        return PostRepository.findAll(pageable);
+    public Page<Post> getPostsByProfileName(String profileName, Pageable pageable) {
+        return PostRepository.findAllByProfilename(profileName, pageable);
     }
 
     // U
     public Post update(Long id, Post Post) {
-        Optional<Post> PostResult = PostRepository.findById(id);
-
-        if (PostResult.isPresent()) {
-            Post PostUpdate = PostResult.get();
-
-            PostRepository.save(PostUpdate);
-            return PostUpdate;
-        } else {
-            throw new Error("Post not found"); // TODO:GESTIONE ERRORI
+        try {
+            if (id != null) {
+                Optional<Post> PostResult = PostRepository.findById(id);
+                if (PostResult.isPresent()) {
+                    Post PostUpdate = PostResult.get();
+                    PostRepository.save(PostUpdate);
+                    return PostUpdate;
+                } else {
+                    throw new Error("Post not found"); // TODO:GESTIONE ERRORI
+                }
+            } else {
+                throw new Error("id null");
+            }
+        } catch (Exception e) {
+            throw new Error(e.getMessage());
         }
 
     }
 
     // D
     public void delete(Long id) {
-        PostRepository.deleteById(id);
+        if (id != null) {
+            PostRepository.deleteById(id);
+        } else {
+            throw new Error("Post not found");
+        }
     }
 }

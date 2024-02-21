@@ -19,7 +19,6 @@ import com.istabasic.backend.service.PostService;
 
 @RestController
 @RequestMapping("/post")
-
 public class PostController {
     static final Logger logger = LogManager.getLogger(PostController.class.getName());
     @Autowired
@@ -34,16 +33,13 @@ public class PostController {
 
     // R
     @GetMapping("/getPost/{postid}")
-    public Post getPost(@PathVariable String postid) {
+    public Post getPost(@PathVariable Long postid) {
         return PostService.findById(postid);
     }
 
     @GetMapping("/getPosts/{profilename}")
-    // TODO
-    public Page<Post> getPosts() {
-        Post Post1 = new Post();
-
-        return PostService.findByProfilename(Pageable.unpaged());
+    public Page<Post> getPosts(@PathVariable String profilename, Pageable pageable) {
+        return PostService.getPostsByProfileName(profilename, pageable);
     }
 
     @PutMapping("/updatePost/{id}")

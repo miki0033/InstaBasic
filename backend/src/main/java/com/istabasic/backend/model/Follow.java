@@ -10,32 +10,27 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Table;
 
-import lombok.NoArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
-@NoArgsConstructor
 @Entity
-public class Comment {
 
+@Table(name = "follower")
+public class Follow {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String text;
-
-    @CreatedDate
-    private LocalDateTime createdAt;
-
+    @PrimaryKeyJoinColumn
     @ManyToOne
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
+    @PrimaryKeyJoinColumn
     @ManyToOne
-    @JoinColumn(name = "post_id")
-    private Post post;
+    @JoinColumn(name = "follower_id")
+    private Profile follower;
 
+    @CreatedDate
+    private LocalDateTime createdAt;
 }
