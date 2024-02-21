@@ -1,8 +1,6 @@
 package com.istabasic.backend.model;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.annotation.Nonnull;

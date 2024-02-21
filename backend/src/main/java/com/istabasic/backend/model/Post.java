@@ -2,7 +2,6 @@ package com.istabasic.backend.model;
 
 import java.time.LocalDateTime;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -32,6 +31,10 @@ public class Post {
     private String imageUrl;
     @CreatedDate
     private LocalDateTime createdAt;
+
+    @OneToMany
+    private Set<Profile> likes;
+
     @ManyToOne
     @JoinColumn(name = "profile_id")
     private Profile profile;
