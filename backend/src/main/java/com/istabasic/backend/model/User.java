@@ -1,6 +1,7 @@
 package com.istabasic.backend.model;
 
 import java.time.LocalDateTime;
+
 import org.springframework.data.annotation.CreatedDate;
 
 import jakarta.annotation.Nonnull;

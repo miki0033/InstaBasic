@@ -1,7 +1,9 @@
 package com.istabasic.backend.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.istabasic.backend.model.Profile;
+import com.istabasic.backend.service.ProfileService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,15 +12,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.istabasic.backend.model.Profile;
-import com.istabasic.backend.service.ProfileService;
 
 @RestController
 @RequestMapping("/profile")

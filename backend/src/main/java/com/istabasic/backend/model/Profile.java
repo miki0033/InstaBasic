@@ -1,8 +1,6 @@
 package com.istabasic.backend.model;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.annotation.Nonnull;
@@ -13,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+
 import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
