@@ -2,7 +2,13 @@ import { Dispatch, ReactNode, createContext, useContext, useReducer } from "reac
 
 // context type
 interface IDataContext {
-	state: {};
+	state: {
+		user: IUser | undefined;
+		profile: IProfile | undefined;
+		follow: IFollow[];
+		posts: IPost[];
+		comments: IComment[];
+	};
 	dispatch: Dispatch<ACTIONTYPE>;
 }
 
@@ -40,7 +46,13 @@ const useData = () => {
 // context provider wrapper component - inizializzo il valore del context fornendo accesso al reducer
 const DataProvider = ({ children }: { children: ReactNode }) => {
 	// gestiamo lo state del context con l'hook useReducer
-	const [state, dispatch] = useReducer(reducer, {});
+	const [state, dispatch] = useReducer(reducer, {
+		user: undefined,
+		profile: undefined,
+		follow: [],
+		posts: [],
+		comments: [],
+	});
 
 	return <DataContext.Provider value={{ state, dispatch }}>{children}</DataContext.Provider>;
 };
