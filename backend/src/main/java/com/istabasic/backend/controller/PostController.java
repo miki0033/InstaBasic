@@ -18,37 +18,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/v1/post")
+@RequestMapping("/post")
 public class PostController {
     static final Logger logger = LogManager.getLogger(PostController.class.getName());
     @Autowired
     private PostService PostService;
 
     // C
-    @PostMapping("/newPost")
+    @PostMapping("/v1/newPost")
     public String postPost(@RequestBody Post Post) {
         PostService.save(Post);
         return Post.toString();
     }
 
     // R
-    @GetMapping("/getPost/{postid}")
+    @GetMapping("/v1/getPost/{postid}")
     public Post getPost(@PathVariable Long postid) {
         return PostService.findById(postid);
     }
 
-    @GetMapping("/getPosts/{profilename}")
+    @GetMapping("/v1/getPosts/{profilename}")
     public Page<Post> getPosts(@PathVariable String profilename, Pageable pageable) {
         return PostService.getPostsByProfileName(profilename, pageable);
     }
 
-    @PutMapping("/updatePost/{id}")
+    @PutMapping("/v1/updatePost/{id}")
     public String updatePost(@PathVariable Long id, @RequestBody Post PostToUpdate) {
         Post updatedPost = PostService.update(id, PostToUpdate);
         return "Post updated with id: " + id + " " + updatedPost.toString();
     }
 
-    @DeleteMapping("/deletePost/{id}")
+    @DeleteMapping("/v1/deletePost/{id}")
     public String deletePost(@PathVariable Long id) {
         PostService.delete(id);
         return "Post deleted with id: " + id;

@@ -19,41 +19,40 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @RestController
-@RequestMapping("/v1/user")
-
+@RequestMapping("/user")
 public class UserController {
     static final Logger logger = LogManager.getLogger(UserController.class.getName());
     @Autowired
     private UserService UserService;
 
     // C
-    @PostMapping("/newUser")
+    @PostMapping("/v1/newUser")
     public String postUser(@RequestBody User User) {
         UserService.save(User);
         return User.toString();
     }
 
     // R
-    @GetMapping("/getUser/{id}")
+    @GetMapping("/v1/getUser/{id}")
     public Optional<User> getUser(@PathVariable Long id) {
         return UserService.findById(id);
     }
 
-    @GetMapping("/getUser/{userName}")
-    public User getUser(@PathVariable String userName) {
+    @GetMapping("/v1/getUser/{userName}")
+    public User getUserByUsername(@PathVariable String userName) {
         return UserService.findByUsername(userName);
     }
 
     // U
 
-    @PutMapping("/v1/path/{id}")
+    @PutMapping("/v1/updateUser/{id}")
     public String updateUser(@PathVariable Long id, @RequestBody User UserToUpdate) {
         User updatedUser = UserService.update(id, UserToUpdate);
         return "User updated with id: " + id + " " + updatedUser.toString();
     }
 
     // D
-    @DeleteMapping("/v1/path/{id}")
+    @DeleteMapping("/v1/deleteUser/{id}")
     public String deleteUser(@PathVariable Long id) {
         UserService.delete(id);
         return "User deleted with id: " + id;
