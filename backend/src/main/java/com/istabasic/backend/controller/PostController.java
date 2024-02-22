@@ -1,10 +1,13 @@
 package com.istabasic.backend.controller;
 
 import com.istabasic.backend.model.Post;
+
+import com.istabasic.backend.service.ProfileService;
 import com.istabasic.backend.service.PostService;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +26,7 @@ public class PostController {
     static final Logger logger = LogManager.getLogger(PostController.class.getName());
     @Autowired
     private PostService PostService;
+    private ProfileService ProfileService;
 
     // C
     @PostMapping("/v1/newPost")
@@ -39,15 +43,24 @@ public class PostController {
 
     @GetMapping("/v1/getPosts/{profilename}")
     public Page<Post> getPosts(@PathVariable String profilename, Pageable pageable) {
+        /* Ritorna tutti i post di un determinato profilo */
         return PostService.getPostsByProfileName(profilename, pageable);
     }
 
+    @GetMapping("/v1/getPostsByFollow/{profileId}")
+    public Page<Post> getPostsByFollow(@PathVariable String profileId, Pageable pageable) {
+        /* Ritorna i post dei profili seguiti */
+        return ProfileService.getPostsByFollow(profileId, pageable);
+    }
+
+    // U
     @PutMapping("/v1/updatePost/{id}")
     public String updatePost(@PathVariable Long id, @RequestBody Post PostToUpdate) {
         Post updatedPost = PostService.update(id, PostToUpdate);
         return "Post updated with id: " + id + " " + updatedPost.toString();
     }
 
+    // D
     @DeleteMapping("/v1/deletePost/{id}")
     public String deletePost(@PathVariable Long id) {
         PostService.delete(id);
