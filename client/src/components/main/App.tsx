@@ -2,15 +2,19 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 import Layout from "../layout/Layout";
 
-import PageNotFound from "../../utils/PageNotFound";
+import PageNotFound from "../pages/PageNotFound";
+import { useData } from "./DataProvider";
+import { Login } from "../pages/login/Login";
 
 function App() {
+	const {
+		state: { profile },
+	} = useData();
+
 	return (
 		<>
 			<Routes>
-				<Route path="/">
-					<Route index element={<Navigate to={"/home"} />} />
-				</Route>
+				<Route path="/">{profile ? <Route index element={<Navigate to={"/home"} />} /> : <Login />}</Route>
 
 				<Route path="/home" element={<Layout />}>
 					<Route index element={<>Homepage</>} />
