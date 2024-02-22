@@ -19,7 +19,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/v1/user")
 
 public class UserController {
     static final Logger logger = LogManager.getLogger(UserController.class.getName());

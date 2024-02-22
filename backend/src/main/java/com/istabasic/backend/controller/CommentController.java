@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/comment")
+@RequestMapping("/v1/comment")
 public class CommentController {
     static final Logger logger = LogManager.getLogger(CommentController.class.getName());
     @Autowired

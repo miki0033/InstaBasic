@@ -19,7 +19,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @RestController
-@RequestMapping("/profile")
+@RequestMapping("/v1/profile")
 
 public class ProfileController {
     static final Logger logger = LogManager.getLogger(ProfileController.class.getName());
