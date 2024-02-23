@@ -27,32 +27,32 @@ public class ProfileController {
     private ProfileService ProfileService;
 
     // C
-    @PostMapping("/newProfile")
+    @PostMapping("/v1/newProfile")
     public String postProfile(@RequestBody Profile Profile) {
         ProfileService.save(Profile);
         return Profile.toString();
     }
 
     // R
-    @GetMapping("/getProfiles/{userId}")
+    @GetMapping("/v1/getProfiles/{userId}")
     public Page<Profile> getProfiles(@PathVariable String userId) {
         return ProfileService.findByUserId(userId, Pageable.unpaged());
     }
 
-    @GetMapping("/getProfile/{ProfileName}")
+    @GetMapping("/v1/getProfile/{ProfileName}")
     public Profile getProfile(@PathVariable String ProfileName) {
         return ProfileService.findByProfilename(ProfileName);
     }
 
     // U
-    @PutMapping("/updateProfile/{id}")
+    @PutMapping("/v1/updateProfile/{id}")
     public String updateProfile(@PathVariable Long id, @RequestBody Profile ProfileToUpdate) {
         Profile updatedProfile = ProfileService.update(id, ProfileToUpdate);
         return "Profile updated with id: " + id + " " + updatedProfile.toString();
     }
 
     // D
-    @DeleteMapping("/deleteProfile/{id}")
+    @DeleteMapping("/v1/deleteProfile/{id}")
     public String deleteProfile(@PathVariable Long id) {
         ProfileService.delete(id);
         return "Profile deleted with id: " + id;

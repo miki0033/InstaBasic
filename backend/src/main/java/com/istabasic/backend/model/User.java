@@ -40,4 +40,13 @@ public class User {
     private LocalDateTime lastLoginAt;
     private LocalDateTime lastOnlineAt;
 
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+        this.lastLoginAt = LocalDateTime.now();
+        this.lastOnlineAt = LocalDateTime.now();
+    }
 }

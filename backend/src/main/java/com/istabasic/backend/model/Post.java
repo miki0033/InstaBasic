@@ -31,6 +31,10 @@ public class Post {
     private String imageUrl;
     @CreatedDate
     private LocalDateTime createdAt;
+
+    @OneToMany
+    private Set<Profile> likes;
+
     @ManyToOne
     @JoinColumn(name = "profile_id")
     private Profile profile;

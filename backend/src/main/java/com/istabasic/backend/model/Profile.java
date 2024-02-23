@@ -54,4 +54,8 @@ public class Profile {
     @OneToMany(mappedBy = "follower")
     private Set<Follow> following;
 
+    // Constructor
+    public Profile(Long id) {
+        this.id = id;
+    }
 }

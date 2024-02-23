@@ -25,38 +25,38 @@ public class CommentController {
     private CommentService CommentService;
 
     // C
-    @PostMapping("/newComment")
+    @PostMapping("/v1/newComment")
     public String PostComment(@RequestBody Comment Comment) {
         CommentService.save(Comment);
         return Comment.toString();
     }
 
     // R
-    @GetMapping("/getComment/{Commentid}")
+    @GetMapping("/v1/getComment/{Commentid}")
     public Comment getComment(@PathVariable Long Commentid) {
         return CommentService.findById(Commentid);
     }
 
     /*
-     * @GetMapping("/getComments/{profilename}")
+     * @GetMapping("/v1/getComments/{profilename}")
      * public Page<Comment> getComments(@PathVariable String profilename, Pageable
      * pageable) {
      * return CommentService.getCommentsByProfileName(profilename, pageable);
      * }
      */
 
-    @GetMapping("/getComments/{postid}")
+    @GetMapping("/v1/getComments/{postid}")
     public Page<Comment> getCommentsByPost(@PathVariable String postid, Pageable pageable) {
         return CommentService.getCommentsByPost(postid, pageable);
     }
 
-    @PutMapping("/updateComment/{id}")
+    @PutMapping("/v1/updateComment/{id}")
     public String updateComment(@PathVariable Long id, @RequestBody Comment CommentToUpdate) {
         Comment updatedComment = CommentService.update(id, CommentToUpdate);
         return "Comment updated with id: " + id + " " + updatedComment.toString();
     }
 
-    @DeleteMapping("/deleteComment/{id}")
+    @DeleteMapping("/v1/deleteComment/{id}")
     public String deleteComment(@PathVariable Long id) {
         CommentService.delete(id);
         return "Comment deleted with id: " + id;
