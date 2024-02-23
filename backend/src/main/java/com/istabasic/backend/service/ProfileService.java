@@ -1,14 +1,11 @@
 package com.istabasic.backend.service;
 
-import com.istabasic.backend.controller.CommentController;
-import com.istabasic.backend.model.Follow;
 import com.istabasic.backend.model.Post;
 import com.istabasic.backend.model.Profile;
 import com.istabasic.backend.repository.FollowRepository;
 import com.istabasic.backend.repository.PostRepository;
 import com.istabasic.backend.repository.ProfileRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
