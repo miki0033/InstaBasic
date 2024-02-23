@@ -7,7 +7,6 @@ interface IDataContext {
 		profile: IProfile | undefined;
 		follow: IFollow[];
 		posts: IPost[];
-		comments: IComment[];
 	};
 	dispatch: Dispatch<ACTIONTYPE>;
 }
@@ -61,7 +60,6 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
 		},
 		follow: [],
 		posts: [],
-		comments: [],
 	};
 
 	// gestiamo lo state del context con l'hook useReducer
