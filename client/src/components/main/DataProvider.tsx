@@ -44,7 +44,7 @@ const useData = () => {
 
 // context provider wrapper component - inizializzo il valore del context fornendo accesso al reducer
 const DataProvider = ({ children }: { children: ReactNode }) => {
-	//Login Data example
+	/*/Login Data example
 	const login = {
 		user: {
 			userName: "Seris_Dantalian",
@@ -60,10 +60,18 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
 		},
 		follow: [],
 		posts: [],
+	};//*/
+
+	//state init
+	const un_logged = {
+		user: undefined,
+		profile: undefined,
+		follow: [],
+		posts: [],
 	};
 
 	// gestiamo lo state del context con l'hook useReducer
-	const [state, dispatch] = useReducer(reducer, login);
+	const [state, dispatch] = useReducer(reducer, un_logged);
 
 	return <DataContext.Provider value={{ state, dispatch }}>{children}</DataContext.Provider>;
 };
