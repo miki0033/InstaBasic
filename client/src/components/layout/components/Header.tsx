@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import ProfileDropdown from "../../../utils/ProfileDropdown";
 import { ThemeSwitcher } from "../../../utils/ThemeSwitcher";
 
@@ -10,10 +11,10 @@ const Header = () => {
 				</div>
 			</div>
 			<div className="w-1/3 flex flex-row">
-				<div className="w-auto mx-auto flex flex-row ">
+				<Link to={"/"} className="w-auto mx-auto flex flex-row">
 					<img src="/logo.png" className="w-9 h-9 my-auto" alt="Instabasic Logo" />
 					<h1 className="w-[15rem] mx-auto my-auto text-4xl font-mono">Instabasic</h1>
-				</div>
+				</Link>
 			</div>
 			<div className="w-1/3 flex justify-end ">
 				<ProfileDropdown />
