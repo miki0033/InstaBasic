@@ -1,5 +1,6 @@
 package com.istabasic.backend.service;
 
+import com.istabasic.backend.common.util.ErrorHandler;
 import com.istabasic.backend.model.Comment;
 import com.istabasic.backend.model.Post;
 import com.istabasic.backend.repository.CommentRepository;
@@ -25,8 +26,9 @@ public class CommentService {
     public Comment save(Comment Comment) {
         if (Comment != null) {
             return CommentRepository.save(Comment);
+        } else {
+            throw new ErrorHandler(400, "null");
         }
-        return null;
     }
 
     // R
@@ -37,10 +39,10 @@ public class CommentService {
             if (optional.isPresent()) {
                 return optional.get();
             } else {
-                throw new Error("Comment not found");
+                throw new ErrorHandler(404, "Comment not found");
             }
         } else {
-            throw new Error("Id null");
+            throw new ErrorHandler(400, "Id null");
         }
     }
 
@@ -66,13 +68,18 @@ public class CommentService {
                 Optional<Comment> CommentResult = CommentRepository.findById(id);
                 if (CommentResult.isPresent()) {
                     Comment CommentUpdate = CommentResult.get();
-                    CommentRepository.save(CommentUpdate);
+                    if (CommentUpdate != null) {
+                        CommentRepository.save(CommentUpdate);
+                    } else {
+                        throw new ErrorHandler(404, "Comment not found");
+                    }
+
                     return CommentUpdate;
                 } else {
-                    throw new Error("Comment not found"); // TODO:GESTIONE ERRORI
+                    throw new ErrorHandler(404, "Comment not found");
                 }
             } else {
-                throw new Error("id null");
+                throw new ErrorHandler(400, "id null");
             }
         } catch (Exception e) {
             throw new Error(e.getMessage());
@@ -85,7 +92,7 @@ public class CommentService {
         if (id != null) {
             CommentRepository.deleteById(id);
         } else {
-            throw new Error("Comment not found");
+            throw new ErrorHandler(404, "Comment not found");
         }
     }
 
