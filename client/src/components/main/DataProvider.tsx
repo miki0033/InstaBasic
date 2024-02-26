@@ -60,7 +60,7 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
 		},
 		follow: [],
 		posts: [],
-	};//*/
+	}; //*/
 
 	//state init
 	const un_logged = {
@@ -68,7 +68,7 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
 		profile: undefined,
 		follow: [],
 		posts: [],
-	};
+	}; //*/
 
 	// gestiamo lo state del context con l'hook useReducer
 	const [state, dispatch] = useReducer(reducer, un_logged);
