@@ -4,6 +4,7 @@ import com.istabasic.backend.common.util.ErrorHandler;
 import com.istabasic.backend.model.User;
 import com.istabasic.backend.repository.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
@@ -67,24 +68,31 @@ public class UserService {
     }
 
     // U
-    public User update(Long id, User user) {
-        Optional<User> userResult = null;
-        if (id != null) {
-            userResult = UserRepository.findById(id);
-        } else {
+    public User update(Long id, User userUpdate) {
+        if (id == null) {
             throw new ErrorHandler(400, "User id is null");
         }
-        if (userResult.isPresent()) {
-            User UserUpdate = userResult.get();
-            if (UserUpdate != null) {
-                UserRepository.save(UserUpdate);
-                return UserUpdate;
-            } else {
-                throw new ErrorHandler(404, "User not found");
-            }
-
-        } else {
+        Optional<User> userResult = UserRepository.findById(id);
+        if (!userResult.isPresent()) {
             throw new ErrorHandler(404, "User not found");
+        }
+        User existingUser = userResult.get();
+        if (userUpdate != null) {
+            // Aggiorna i dettagli dell'utente solo se sono stati forniti nel payload
+            if (userUpdate.getUsername() != null) {
+                existingUser.setUsername(userUpdate.getUsername());
+            }
+            if (userUpdate.getEmail() != null) {
+                existingUser.setEmail(userUpdate.getEmail());
+            }
+            if (userUpdate.getPassword() != null) {
+                existingUser.setPassword(userUpdate.getPassword());
+            }
+            existingUser.setUpdatedAt(LocalDateTime.now());
+            UserRepository.save(existingUser);
+            return existingUser;
+        } else {
+            throw new ErrorHandler(400, "User update details are null");
         }
 
     }

@@ -86,25 +86,45 @@ public class ProfileService {
     }
 
     // U
-    public Profile update(Long id, Profile Profile) {
-        Optional<Profile> ProfileResult = null;
-        if (id != null) {
-            ProfileResult = ProfileRepository.findById(id);
-        } else {
+    public Profile update(Long id, Profile profileUpdate) {
+        if (id == null) {
             throw new ErrorHandler(400, "Profile id is null");
         }
-        if (ProfileResult.isPresent()) {
-            Profile ProfileUpdate = ProfileResult.get();
-            if (ProfileUpdate != null) {
-                ProfileRepository.save(ProfileUpdate);
-                return ProfileUpdate;
-            } else {
-                throw new ErrorHandler(404, "Profile not found");
-            }
-        } else {
+        Optional<Profile> profileResult = ProfileRepository.findById(id);
+        if (!profileResult.isPresent()) {
             throw new ErrorHandler(404, "Profile not found");
         }
+        Profile existingProfile = profileResult.get();
+        if (profileUpdate != null) {
+            // Aggiorna i dettagli dell'utente solo se sono stati forniti nel payload
+            if (profileUpdate.getProfilename() != null) {
+                existingProfile.setProfilename(profileUpdate.getProfilename());
+            }
+            if (profileUpdate.getFirstName() != null) {
+                existingProfile.setFirstName(profileUpdate.getFirstName());
+            }
+            if (profileUpdate.getLastName() != null) {
+                existingProfile.setLastName(profileUpdate.getLastName());
+            }
+            if (profileUpdate.getBirthday() != null) {
+                existingProfile.setBirthday(profileUpdate.getBirthday());
+            }
+            if (profileUpdate.getBio() != null) {
+                existingProfile.setBio(profileUpdate.getBio());
+            }
+            if (profileUpdate.getAvatarUrl() != null) {
+                existingProfile.setAvatarUrl(profileUpdate.getAvatarUrl());
+            }
 
+            if (existingProfile != null) {
+                ProfileRepository.save(existingProfile);
+            } else {
+                throw new ErrorHandler(400, "Profile to save is null");
+            }
+            return existingProfile;
+        } else {
+            throw new ErrorHandler(400, "Profile update details are null");
+        }
     }
 
     // D

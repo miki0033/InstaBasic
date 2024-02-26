@@ -62,29 +62,29 @@ public class CommentService {
     }
 
     // U
-    public Comment update(Long id, Comment Comment) {
-        try {
-            if (id != null) {
-                Optional<Comment> CommentResult = CommentRepository.findById(id);
-                if (CommentResult.isPresent()) {
-                    Comment CommentUpdate = CommentResult.get();
-                    if (CommentUpdate != null) {
-                        CommentRepository.save(CommentUpdate);
-                    } else {
-                        throw new ErrorHandler(404, "Comment not found");
-                    }
-
-                    return CommentUpdate;
-                } else {
-                    throw new ErrorHandler(404, "Comment not found");
-                }
-            } else {
-                throw new ErrorHandler(400, "id null");
-            }
-        } catch (Exception e) {
-            throw new Error(e.getMessage());
+    public Comment update(Long id, Comment CommentUpdate) {
+        if (id == null) {
+            throw new ErrorHandler(400, "Comment id is null");
         }
-
+        Optional<Comment> CommentResult = CommentRepository.findById(id);
+        if (!CommentResult.isPresent()) {
+            throw new ErrorHandler(404, "Comment not found");
+        }
+        Comment existingComment = CommentResult.get();
+        if (CommentUpdate != null) {
+            // Aggiorna i dettagli dell'utente solo se sono stati forniti nel payload
+            if (CommentUpdate.getText() != null) {
+                existingComment.setText(CommentUpdate.getText());
+            }
+            if (existingComment != null) {
+                CommentRepository.save(existingComment);
+            } else {
+                throw new ErrorHandler(400, "Comment to save is null");
+            }
+            return existingComment;
+        } else {
+            throw new ErrorHandler(400, "Comment update details are null");
+        }
     }
 
     // D

@@ -63,28 +63,36 @@ public class PostService {
     }
 
     // U
-    public Post update(Long id, Post Post) {
-        try {
-            if (id != null) {
-                Optional<Post> PostResult = PostRepository.findById(id);
-                if (PostResult.isPresent()) {
-                    Post PostUpdate = PostResult.get();
-                    if (PostUpdate != null) {
-                        PostRepository.save(PostUpdate);
-                    } else {
-                        throw new ErrorHandler(404, "Post not found");
-                    }
-                    return PostUpdate;
-                } else {
-                    throw new ErrorHandler(404, "Post not found");
-                }
-            } else {
-                throw new ErrorHandler(400, "id null");
-            }
-        } catch (Exception e) {
-            throw new Error(e.getMessage());
+    public Post update(Long id, Post PostUpdate) {
+        if (id == null) {
+            throw new ErrorHandler(400, "Post id is null");
         }
+        Optional<Post> PostResult = PostRepository.findById(id);
+        if (!PostResult.isPresent()) {
+            throw new ErrorHandler(404, "Post not found");
+        }
+        Post existingPost = PostResult.get();
+        if (PostUpdate != null) {
+            // Aggiorna i dettagli dell'utente solo se sono stati forniti nel payload
+            if (PostUpdate.getTitle() != null) {
+                existingPost.setTitle(PostUpdate.getTitle());
+            }
+            if (PostUpdate.getDescription() != null) {
+                existingPost.setDescription(PostUpdate.getDescription());
+            }
+            if (PostUpdate.getImageUrl() != null) {
+                existingPost.setImageUrl(PostUpdate.getImageUrl());
+            }
 
+            if (existingPost != null) {
+                PostRepository.save(existingPost);
+            } else {
+                throw new ErrorHandler(400, "Post to save is null");
+            }
+            return existingPost;
+        } else {
+            throw new ErrorHandler(400, "Post update details are null");
+        }
     }
 
     // D
