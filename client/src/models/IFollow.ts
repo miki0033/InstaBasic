@@ -1,6 +1,6 @@
 interface IFollow {
 	id?: number;
 	followerId: number;
-	followingId: number;
+	followedId: number;
 	createdAt: string;
 }
