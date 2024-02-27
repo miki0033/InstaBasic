@@ -5,7 +5,8 @@ interface IDataContext {
 	state: {
 		user: IUser | undefined;
 		profile: IProfile | undefined;
-		follow: IFollow[];
+		follower: IFollow[];
+		followed: IFollow[];
 		posts: IPost[];
 	};
 	dispatch: Dispatch<ACTIONTYPE>;
@@ -44,34 +45,37 @@ const useData = () => {
 
 // context provider wrapper component - inizializzo il valore del context fornendo accesso al reducer
 const DataProvider = ({ children }: { children: ReactNode }) => {
-	/*/Login Data example
+	//Login Data example
 	const login = {
 		user: {
 			userName: "Seris_Dantalian",
 			email: "seris.dantalian@gmail.com",
 		},
 		profile: {
+			profileId: 1,
 			userName: "Seris_Dantalian",
 			firstName: "Seris",
 			lastName: "Dantalian",
 			birthday: "",
 			bio: "",
-			avatarUrl: "",
+			avatarUrl: "1.jpg",
 		},
-		follow: [],
+		follower: [],
+		followed: [],
 		posts: [],
 	}; //*/
 
-	//state init
+	/*/state init
 	const un_logged = {
 		user: undefined,
 		profile: undefined,
-		follow: [],
+		follower: [],
+		followed: [],
 		posts: [],
 	}; //*/
 
 	// gestiamo lo state del context con l'hook useReducer
-	const [state, dispatch] = useReducer(reducer, un_logged);
+	const [state, dispatch] = useReducer(reducer, login);
 
 	return <DataContext.Provider value={{ state, dispatch }}>{children}</DataContext.Provider>;
 };

@@ -6,6 +6,7 @@ import PageNotFound from "../pages/PageNotFound";
 import { useData } from "./DataProvider";
 import { Login } from "../pages/login/Login";
 import Register from "../pages/login/Register";
+import Feed from "../pages/feed/Feed";
 
 function App() {
 	const {
@@ -19,7 +20,7 @@ function App() {
 					<Route index element={<Navigate to={profile ? "/home" : "/login"} />} />
 
 					<Route path="/home">
-						<Route index element={<>Homepage</>} />
+						<Route index element={<Feed />} />
 					</Route>
 
 					<Route path="/profile">
