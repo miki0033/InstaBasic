@@ -8,7 +8,7 @@ const Carousel = () => {
 				<Button isIconOnly className="w-16 h-16 my-auto rounded-full flex-none" color="success">
 					<PlusCircleIcon />
 				</Button>
-				<Avatar isBordered color="success" src="" className="w-16 h-16 my-auto flex-none" />;
+				<Avatar isBordered color="success" src="" className="w-16 h-16 my-auto flex-none" />
 				<Avatar isBordered color="success" src="" className="w-16 h-16 my-auto flex-none" />
 				<Avatar isBordered color="success" src="" className="w-16 h-16 my-auto flex-none" />
 				<Avatar isBordered color="success" src="" className="w-16 h-16 my-auto flex-none" />
