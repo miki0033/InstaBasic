@@ -1,5 +1,7 @@
 package com.istabasic.backend.service;
 
+import com.istabasic.backend.common.util.ErrorHandler;
+
 import com.istabasic.backend.model.Post;
 import com.istabasic.backend.model.Profile;
 import com.istabasic.backend.repository.FollowRepository;
@@ -27,29 +29,44 @@ public class ProfileService {
     static final Logger logger = LogManager.getLogger(ProfileService.class.getName());
 
     // C
-    public Profile save(Profile Profile) {
-        return ProfileRepository.save(Profile);
+    public Profile save(Profile profile) {
+        if (profile != null) {
+            return ProfileRepository.save(profile);
+        } else {
+            throw new ErrorHandler(400, "null");
+        }
     }
 
     // R
-    public Optional<Profile> findById(Long id) {
-        return ProfileRepository.findById(id);
+    public Profile findById(Long id) {
+        if (id != null) {
+            Optional<Profile> optional = ProfileRepository.findById(id);
+            if (optional.isPresent()) {
+                return optional.get();
+            } else {
+                throw new ErrorHandler(404, "Comment not found");
+            }
+        } else {
+            throw new ErrorHandler(400, "Id null");
+        }
     }
 
     public Profile findByProfilename(String name) {
-        Profile Profile = null;
         Optional<Profile> optional = ProfileRepository.findByProfilename(name);
         if (optional.isPresent()) {
-            Profile = optional.get();
+            return optional.get();
         } else {
-            logger.warn("Profile not found");
+            throw new ErrorHandler(404, "Profile not found");
         }
-        return Profile;
-
     }
 
     public Page<Profile> findByUserId(String userId, Pageable pageable) {
-        return ProfileRepository.findByUserId(userId, pageable);
+        if (userId == null) {
+            return ProfileRepository.findByUserId(userId, pageable);
+        } else {
+            throw new ErrorHandler(400, "userId=null");
+        }
+
     }
 
     public Page<Post> getPostsByFollow(String profileId, Pageable pageable) {
@@ -69,22 +86,53 @@ public class ProfileService {
     }
 
     // U
-    public Profile update(Long id, Profile Profile) {
-        Optional<Profile> ProfileResult = ProfileRepository.findById(id);
-
-        if (ProfileResult.isPresent()) {
-            Profile ProfileUpdate = ProfileResult.get();
-
-            ProfileRepository.save(ProfileUpdate);
-            return ProfileUpdate;
-        } else {
-            throw new Error("Profile not found"); // TODO:GESTIONE ERRORI
+    public Profile update(Long id, Profile profileUpdate) {
+        if (id == null) {
+            throw new ErrorHandler(400, "Profile id is null");
         }
+        Optional<Profile> profileResult = ProfileRepository.findById(id);
+        if (!profileResult.isPresent()) {
+            throw new ErrorHandler(404, "Profile not found");
+        }
+        Profile existingProfile = profileResult.get();
+        if (profileUpdate != null) {
+            // Aggiorna i dettagli dell'utente solo se sono stati forniti nel payload
+            if (profileUpdate.getProfilename() != null) {
+                existingProfile.setProfilename(profileUpdate.getProfilename());
+            }
+            if (profileUpdate.getFirstName() != null) {
+                existingProfile.setFirstName(profileUpdate.getFirstName());
+            }
+            if (profileUpdate.getLastName() != null) {
+                existingProfile.setLastName(profileUpdate.getLastName());
+            }
+            if (profileUpdate.getBirthday() != null) {
+                existingProfile.setBirthday(profileUpdate.getBirthday());
+            }
+            if (profileUpdate.getBio() != null) {
+                existingProfile.setBio(profileUpdate.getBio());
+            }
+            if (profileUpdate.getAvatarUrl() != null) {
+                existingProfile.setAvatarUrl(profileUpdate.getAvatarUrl());
+            }
 
+            if (existingProfile != null) {
+                ProfileRepository.save(existingProfile);
+            } else {
+                throw new ErrorHandler(400, "Profile to save is null");
+            }
+            return existingProfile;
+        } else {
+            throw new ErrorHandler(400, "Profile update details are null");
+        }
     }
 
     // D
     public void delete(Long id) {
-        ProfileRepository.deleteById(id);
+        if (id != null) {
+            ProfileRepository.deleteById(id);
+        } else {
+            throw new ErrorHandler(404, "Comment not found");
+        }
     }
 }

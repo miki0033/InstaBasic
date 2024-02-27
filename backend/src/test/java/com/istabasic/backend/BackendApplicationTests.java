@@ -56,7 +56,7 @@ class BackendApplicationTests {
 		profileService.save(profile2);
 
 		// fare test
-		User foundUser1 = userService.findById(user1.getId()).orElse(null);
+		User foundUser1 = userService.findById(user1.getId());
 		assertNotNull(foundUser1);
 		assertEquals(user1.getUsername(), foundUser1.getUsername());
 

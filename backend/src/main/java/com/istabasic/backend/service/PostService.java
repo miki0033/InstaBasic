@@ -1,5 +1,6 @@
 package com.istabasic.backend.service;
 
+import com.istabasic.backend.common.util.ErrorHandler;
 import com.istabasic.backend.model.Post;
 import com.istabasic.backend.model.Profile;
 import com.istabasic.backend.repository.PostRepository;
@@ -20,8 +21,9 @@ public class PostService {
     public Post save(Post post) {
         if (post != null) {
             return PostRepository.save(post);
+        } else {
+            throw new ErrorHandler(400, "null");
         }
-        return null;
     }
 
     // R
@@ -32,10 +34,10 @@ public class PostService {
             if (optional.isPresent()) {
                 return optional.get();
             } else {
-                throw new Error("Post not found");
+                throw new ErrorHandler(404, "Post not found");
             }
         } else {
-            throw new Error("Id null");
+            throw new ErrorHandler(404, "Id null");
         }
     }
 
@@ -45,35 +47,52 @@ public class PostService {
         if (optional.isPresent()) {
             Post = optional.get();
         } else {
-            throw new Error("Post not found");
+            throw new ErrorHandler(400, "Post not found");
         }
         return Post;
 
     }
 
     public Page<Post> getPostsByProfileName(String profileName, Pageable pageable) {
-        return PostRepository.findAllByProfile_Profilename(profileName, pageable);
+        if (profileName == null) {
+            return PostRepository.findAllByProfile_Profilename(profileName, pageable);
+        } else {
+            throw new ErrorHandler(400, "null");
+        }
+
     }
 
     // U
-    public Post update(Long id, Post Post) {
-        try {
-            if (id != null) {
-                Optional<Post> PostResult = PostRepository.findById(id);
-                if (PostResult.isPresent()) {
-                    Post PostUpdate = PostResult.get();
-                    PostRepository.save(PostUpdate);
-                    return PostUpdate;
-                } else {
-                    throw new Error("Post not found"); // TODO:GESTIONE ERRORI
-                }
-            } else {
-                throw new Error("id null");
-            }
-        } catch (Exception e) {
-            throw new Error(e.getMessage());
+    public Post update(Long id, Post PostUpdate) {
+        if (id == null) {
+            throw new ErrorHandler(400, "Post id is null");
         }
+        Optional<Post> PostResult = PostRepository.findById(id);
+        if (!PostResult.isPresent()) {
+            throw new ErrorHandler(404, "Post not found");
+        }
+        Post existingPost = PostResult.get();
+        if (PostUpdate != null) {
+            // Aggiorna i dettagli dell'utente solo se sono stati forniti nel payload
+            if (PostUpdate.getTitle() != null) {
+                existingPost.setTitle(PostUpdate.getTitle());
+            }
+            if (PostUpdate.getDescription() != null) {
+                existingPost.setDescription(PostUpdate.getDescription());
+            }
+            if (PostUpdate.getImageUrl() != null) {
+                existingPost.setImageUrl(PostUpdate.getImageUrl());
+            }
 
+            if (existingPost != null) {
+                PostRepository.save(existingPost);
+            } else {
+                throw new ErrorHandler(400, "Post to save is null");
+            }
+            return existingPost;
+        } else {
+            throw new ErrorHandler(400, "Post update details are null");
+        }
     }
 
     // D
@@ -81,7 +100,7 @@ public class PostService {
         if (id != null) {
             PostRepository.deleteById(id);
         } else {
-            throw new Error("Post not found");
+            throw new ErrorHandler(404, "Post not found");
         }
     }
 }
