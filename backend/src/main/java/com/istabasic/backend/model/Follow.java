@@ -22,8 +22,8 @@ public class Follow {
 
     @PrimaryKeyJoinColumn
     @ManyToOne
-    @JoinColumn(name = "profile_id")
-    private Profile profile;
+    @JoinColumn(name = "followed_id")
+    private Profile followed;
 
     @PrimaryKeyJoinColumn
     @ManyToOne

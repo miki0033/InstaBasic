@@ -9,7 +9,7 @@ import com.istabasic.backend.model.Profile;
 
 public interface FollowRepository extends JpaRepository<Follow, Long> {
 
-    List<Follow> findAllbyProfile(Profile profile);
+    List<Follow> findAllbyFollowed(Profile followed);
     /* Tutti i profili che seguono quella persona */
 
     List<Follow> findAllbyFollower(Profile follower);
