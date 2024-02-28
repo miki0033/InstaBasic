@@ -14,7 +14,7 @@ const ProfileDropdown = () => {
 					isBordered
 					color={user ? "primary" : "danger"}
 					className="w-9 h-9 my-auto mr-20"
-					src={profile?.avatarUrl ? "http://127.0.0.1:5000/pfp/get/" + profile.avatarUrl : ""}
+					src={profile?.avatarUrl ? profile.avatarUrl : ""}
 				/>
 			</DropdownTrigger>
 

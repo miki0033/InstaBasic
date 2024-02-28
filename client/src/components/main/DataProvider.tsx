@@ -1,14 +1,15 @@
 import { Dispatch, ReactNode, createContext, useContext, useReducer } from "react";
 
 // context type
+interface IState {
+	user: IUser | undefined;
+	profile: IProfile | undefined;
+	follower: IFollow[];
+	followed: IFollow[];
+	posts: IPost[];
+}
 interface IDataContext {
-	state: {
-		user: IUser | undefined;
-		profile: IProfile | undefined;
-		follower: IFollow[];
-		followed: IFollow[];
-		posts: IPost[];
-	};
+	state: IState;
 	dispatch: Dispatch<ACTIONTYPE>;
 }
 
@@ -46,23 +47,44 @@ const useData = () => {
 // context provider wrapper component - inizializzo il valore del context fornendo accesso al reducer
 const DataProvider = ({ children }: { children: ReactNode }) => {
 	//Login Data example
-	const login = {
+	const login: IState = {
 		user: {
+			id: 1,
 			userName: "Seris_Dantalian",
 			email: "seris.dantalian@gmail.com",
 		},
 		profile: {
-			profileId: 1,
+			id: 1,
 			userName: "Seris_Dantalian",
 			firstName: "Seris",
 			lastName: "Dantalian",
 			birthday: "",
 			bio: "",
-			avatarUrl: "1.jpg",
+			avatarUrl: "http://localhost:4000/pfp/get/1.jpg",
+			userId: 1,
 		},
 		follower: [],
 		followed: [],
-		posts: [],
+		posts: [
+			{
+				title: "Purple",
+				description: "description",
+				url: ["http://localhost:4000/posts/get/1_1.jpg", "http://localhost:4000/post/get/1_2.png"],
+				likes: 15,
+				type: "carousel",
+				profileId: 1,
+				createdAt: "2024-02-25",
+			},
+			{
+				title: "Ace",
+				description: "description",
+				url: ["http://localhost:4000/post/get/1_3.png"],
+				likes: 20,
+				type: "single",
+				profileId: 1,
+				createdAt: "2024-02-29",
+			},
+		],
 	}; //*/
 
 	/*/state init
