@@ -28,8 +28,8 @@ import com.instabasic.backend.payload.response.MessageResponse;
 
 import com.instabasic.backend.repository.RoleRepository;
 import com.instabasic.backend.repository.UserRepository;
-import com.instabasic.backend.util.security.jwt.JwtUtils;
-import com.instabasic.backend.util.security.services.UserDetailsImpl;
+import com.instabasic.backend.common.util.security.jwt.JwtUtils;
+import com.instabasic.backend.common.util.security.services.UserDetailsImpl;
 
 import jakarta.validation.Valid;
 

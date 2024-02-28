@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.instabasic.backend.model.ERole;
+import com.instabasic.backend.model.interface_enum.ERole;
 import com.instabasic.backend.model.Role;
 
 @Repository
