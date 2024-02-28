@@ -12,7 +12,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>com.istabasic</groupId>
+	<groupId>com.instabasic</groupId>
 
 	<artifactId>backend</artifactId>
 
