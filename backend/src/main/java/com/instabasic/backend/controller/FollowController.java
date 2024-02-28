@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.instabasic.backend.service.FollowService;
 import com.istabasic.backend.common.util.ErrorHandler;
 import com.istabasic.backend.model.Follow;
 import com.istabasic.backend.service.CommentService;
-import com.istabasic.backend.service.FollowService;
 
 @RestController
 public class FollowController {
