@@ -1,11 +1,9 @@
 package com.instabasic.backend.model;
 
-import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Set;
 
-import org.hibernate.mapping.List;
 import org.springframework.data.annotation.CreatedDate;
 
 import jakarta.persistence.Entity;

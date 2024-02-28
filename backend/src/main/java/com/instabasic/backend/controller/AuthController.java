@@ -1,4 +1,4 @@
-package com.spring_sec.spring_jwt.controllers;
+package com.instabasic.backend.controller;
 
 import java.util.HashSet;
 import java.util.List;
@@ -18,17 +18,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.istabasic.backend.model.ERole;
-import com.istabasic.backend.model.Role;
-import com.istabasic.backend.model.User;
-import com.istabasic.backend.payload.request.LoginRequest;
-import com.istabasic.backend.payload.request.SignupRequest;
-import com.istabasic.backend.payload.response.JwtResponse;
-import com.istabasic.backend.payload.response.MessageResponse;
-import com.istabasic.backend.repository.RoleRepository;
-import com.istabasic.backend.repository.UserRepository;
-import com.istabasic.backend.util.security.jwt.JwtUtils;
-import com.istabasic.backend.util.security.services.UserDetailsImpl;
+import com.instabasic.backend.model.interface_enum.ERole;
+import com.instabasic.backend.model.Role;
+import com.instabasic.backend.model.User;
+import com.instabasic.backend.payload.request.LoginRequest;
+import com.instabasic.backend.payload.request.SignupRequest;
+import com.instabasic.backend.payload.response.JwtResponse;
+import com.instabasic.backend.payload.response.MessageResponse;
+
+import com.instabasic.backend.repository.RoleRepository;
+import com.instabasic.backend.repository.UserRepository;
+import com.instabasic.backend.util.security.jwt.JwtUtils;
+import com.instabasic.backend.util.security.services.UserDetailsImpl;
 
 import jakarta.validation.Valid;
 

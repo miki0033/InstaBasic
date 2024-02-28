@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.instabasic.backend.service.FollowService;
-import com.istabasic.backend.common.util.ErrorHandler;
-import com.istabasic.backend.model.Follow;
-import com.istabasic.backend.service.CommentService;
+import com.instabasic.backend.common.util.ErrorHandler;
+import com.instabasic.backend.model.Follow;
 
 @RestController
 public class FollowController {
@@ -38,12 +37,16 @@ public class FollowController {
     }
 
     // R
+
+    /** Restituisce tutti i profili che quella persona segue */
     @GetMapping("/v1/getFollows/{Profileid}")
     public ResponseEntity<String> getFollows(@PathVariable Long Profileid) {
-        /* Restituisce tutti i profili che quella persona segue */
+
         try {
-            // TODO
-            return ResponseEntity.status(200).body();
+            return ResponseEntity.status(200).body(
+                    ""
+            //TODO
+            );
         } catch (ErrorHandler err) {
             logger.warn(err.getMessage());
             return ResponseEntity.status(err.getStatus()).body(err.getMessage());
@@ -54,14 +57,16 @@ public class FollowController {
 
     }
 
+    /** Restituisce tutti i profili che seguono quella persona */
     @GetMapping("/v1/getFollower/{Followerid}")
     public ResponseEntity<String> getFollower(@PathVariable Long Profileid) {
-        /* Restituisce tutti i profili che seguono quella persona */
         // TODO
         try {
 
         } catch (Exception e) {
             // TODO: handle exception
         }
+
+        return null;
     }
 }

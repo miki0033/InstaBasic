@@ -1,4 +1,4 @@
-package com.spring_sec.spring_jwt.model;
+package com.instabasic.backend.model.interface_enum;
 
 public enum ERole {
   ROLE_USER,

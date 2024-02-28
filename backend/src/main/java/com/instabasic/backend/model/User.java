@@ -2,6 +2,7 @@ package com.instabasic.backend.model;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.data.annotation.CreatedDate;
 
@@ -19,14 +20,12 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
 import lombok.NoArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-
 @Entity
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = "username"),
@@ -73,12 +72,6 @@ public class User {
         this.updatedAt = LocalDateTime.now();
         this.lastLoginAt = LocalDateTime.now();
         this.lastOnlineAt = LocalDateTime.now();
-    }
-
-    public User(String username, String email, String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
     }
 
     public User(String username, String email, String password, Role role) {

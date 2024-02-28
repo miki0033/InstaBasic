@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.istabasic.backend.common.util.ErrorHandler;
-import com.istabasic.backend.model.Follow;
-import com.istabasic.backend.model.Profile;
-import com.istabasic.backend.repository.FollowRepository;
-import com.istabasic.backend.repository.PostRepository;
+import com.instabasic.backend.common.util.ErrorHandler;
+import com.instabasic.backend.model.Follow;
+import com.instabasic.backend.model.Profile;
+import com.instabasic.backend.repository.FollowRepository;
+import com.instabasic.backend.repository.PostRepository;
 
 public class FollowService {
     @Autowired
@@ -25,9 +25,12 @@ public class FollowService {
     }
 
     // R
+    //TODO get() functions
     public List<Profile> getFollows() {
+        return null;
     }
 
     public List<Profile> getFollower() {
+        return null;
     }
 }
