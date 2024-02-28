@@ -13,6 +13,7 @@ import com.instabasic.backend.repository.PostRepository;
 public class FollowService {
     @Autowired
     FollowRepository FollowRepository;
+    @Autowired
     PostRepository PostRepository;
 
     // C
@@ -33,4 +34,5 @@ public class FollowService {
     public List<Profile> getFollower() {
         return null;
     }
+
 }
