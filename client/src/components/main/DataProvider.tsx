@@ -8,6 +8,7 @@ interface IState {
 	followed: IFollow[];
 	posts: IPost[];
 }
+
 interface IDataContext {
 	state: IState;
 	dispatch: Dispatch<ACTIONTYPE>;
@@ -69,7 +70,7 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
 			{
 				title: "Purple",
 				description: "description",
-				url: ["http://localhost:4000/posts/get/1_1.jpg", "http://localhost:4000/post/get/1_2.png"],
+				url: ["http://localhost:4000/post/get/1_1.jpg", "http://localhost:4000/post/get/1_2.png"],
 				likes: 15,
 				type: "carousel",
 				profileId: 1,
