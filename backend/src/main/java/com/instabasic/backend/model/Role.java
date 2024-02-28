@@ -1,6 +1,6 @@
-package com.istabasic.backend.model;
+package com.instabasic.backend.model;
 
-import com.istabasic.backend.model.enum.ERole;
+import com.instabasic.backend.model.enum.ERole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
