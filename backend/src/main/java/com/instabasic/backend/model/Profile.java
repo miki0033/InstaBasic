@@ -48,7 +48,7 @@ public class Profile {
 
     // FOLLOW
 
-    @OneToMany(mappedBy = "profile")
+    @OneToMany(mappedBy = "followed")
     private Set<Follow> followers;
 
     @OneToMany(mappedBy = "follower")
