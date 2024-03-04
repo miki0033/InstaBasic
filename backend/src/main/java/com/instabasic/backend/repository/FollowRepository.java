@@ -1,6 +1,7 @@
 package com.instabasic.backend.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -16,5 +17,7 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
     List<Follow> findByFollower(Profile follower);
     /* Tutti i profili quella persona segue */
+
+    Optional<Follow> findByFollowedAndFollowing(Profile followed, Profile follower);
 
 }

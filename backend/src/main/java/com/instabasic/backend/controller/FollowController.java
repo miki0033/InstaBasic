@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -76,4 +77,22 @@ public class FollowController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred", e);
         }
     }
+
+    // U
+
+    // D
+    @DeleteMapping("/v1/deleteFollow/{profileId}/{followerId}")
+    public ResponseEntity<String> deleteFollow(@PathVariable Long profileId, @PathVariable Long followerId) {
+        try {
+            followService.delete(profileId, followerId);
+            return ResponseEntity.status(200).body("Follow deleted");
+        } catch (ErrorHandler err) {
+            logger.warn(err.getMessage());
+            return ResponseEntity.status(err.getStatus()).body(err.getMessage());
+        } catch (Exception e) {
+            logger.error("An unexpected error occurred", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
+        }
+    }
+
 }
