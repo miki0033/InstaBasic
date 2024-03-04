@@ -20,6 +20,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Page<Post> findAllByProfile_Profilename(String profilename, Pageable pageable);
 
-    @Query("SELECT p FROM Post p JOIN p.profile pr JOIN pr.followers f WHERE f.profile.id = :profileid ORDER BY p.createdAt DESC")
+    @Query("SELECT p FROM Post p WHERE p.profile.id IN (SELECT f.followed.id FROM Follow f WHERE f.follower.id = :profileid) ORDER BY p.createdAt DESC")
     Page<Post> findPostsFromFollowedProfilesOrderByCreatedAtDesc(Long profileid, Pageable pageable);
 }
