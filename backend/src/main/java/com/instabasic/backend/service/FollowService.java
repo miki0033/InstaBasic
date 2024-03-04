@@ -77,7 +77,7 @@ public class FollowService {
             }
             Profile profile = ProfileRepository.findById(profileId).get();
             Profile following = ProfileRepository.findById(followingId).get();
-            Follow followRecord = FollowRepository.findByFollowedAndFollowing(profile, following).get();
+            Follow followRecord = FollowRepository.findByFollowedAndFollower(profile, following).get();
             if (followRecord != null) {
                 Long id = followRecord.getId();
                 if (id != null) {
