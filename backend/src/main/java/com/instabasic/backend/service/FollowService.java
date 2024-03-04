@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.instabasic.backend.common.util.ErrorHandler;
 import com.instabasic.backend.model.Follow;
@@ -12,6 +13,7 @@ import com.instabasic.backend.model.Profile;
 import com.instabasic.backend.repository.FollowRepository;
 import com.instabasic.backend.repository.ProfileRepository;
 
+@Service
 public class FollowService {
 
     @Autowired
@@ -43,7 +45,7 @@ public class FollowService {
         /* Restituisce i profili che quella persona(Profilename) segue */
         Profile profile = ProfileRepository.findByProfilename(Profilename).get();
         if (profile != null) {
-            List<Follow> followingProfiles = FollowRepository.findAllbyFollowed(profile);
+            List<Follow> followingProfiles = FollowRepository.findByFollowed(profile);
             return followingProfiles;
         }
         return new ArrayList<>();
@@ -53,7 +55,7 @@ public class FollowService {
         /* Restituisce i profili che seguono quella persona(Profilename) */
         Profile profile = ProfileRepository.findByProfilename(Profilename).get();
         if (profile != null) {
-            List<Follow> followingProfiles = FollowRepository.findAllbyFollower(profile);
+            List<Follow> followingProfiles = FollowRepository.findByFollower(profile);
             return followingProfiles;
         }
         return new ArrayList<>();
