@@ -18,6 +18,7 @@ import com.instabasic.backend.model.Follow;
 @RestController
 public class FollowController {
     static final Logger logger = LogManager.getLogger(FollowController.class.getName());
+
     @Autowired
     private FollowService FollowService;
 

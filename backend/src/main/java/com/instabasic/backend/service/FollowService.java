@@ -11,8 +11,10 @@ import com.instabasic.backend.repository.FollowRepository;
 import com.instabasic.backend.repository.PostRepository;
 
 public class FollowService {
+
     @Autowired
     FollowRepository FollowRepository;
+
     @Autowired
     PostRepository PostRepository;
 
