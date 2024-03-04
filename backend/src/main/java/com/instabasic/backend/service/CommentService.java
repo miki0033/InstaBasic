@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -18,7 +20,7 @@ import com.instabasic.backend.repository.PostRepository;
 
 @Service
 public class CommentService {
-
+    static final Logger logger = LogManager.getLogger(CommentService.class.getName());
     @Autowired
     CommentRepository CommentRepository;
 
@@ -55,7 +57,7 @@ public class CommentService {
             Post post = optpost.get();
             return CommentRepository.findAllByPost(post, pageable);
         } catch (Exception e) {
-            // TODO: handle exception
+            logger.error("An unexpected error occurred", e);
             List<Comment> emptyList = new ArrayList<>();
             Page<Comment> emptyPage = new PageImpl<>(emptyList);
             return emptyPage;
