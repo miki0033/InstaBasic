@@ -18,6 +18,6 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
     List<Follow> findByFollower(Profile follower);
     /* Tutti i profili quella persona segue */
 
-    Optional<Follow> findByFollowedAndFollowing(Profile followed, Profile follower);
+    Optional<Follow> findByFollowedAndFollower(Profile followed, Profile follower);
 
 }
