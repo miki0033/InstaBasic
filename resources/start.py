@@ -14,7 +14,7 @@ def get_PFP(profileImageName):
     return send_file("pfp/"+profileImageName, mimetype="image")
 
 
-@app.route('/pfp/post/<profileImageName>')
+@app.route('/pfp/post/')
 def post_PFP(profileImageName):
     return "WIP"
 
@@ -24,7 +24,7 @@ def get_Post(postResourceName):
     return send_file("posts/"+postResourceName, mimetype="image")
 
 
-@app.route('/post/post/<postResourceName>')
+@app.route('/post/post/')
 def post_Post(postResourceName):
     return "WIP"
 
