@@ -1,5 +1,6 @@
 package com.instabasic.backend.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,32 +8,53 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.instabasic.backend.common.util.ErrorHandler;
 import com.instabasic.backend.model.Follow;
 import com.instabasic.backend.model.Profile;
+
 import com.instabasic.backend.repository.FollowRepository;
-import com.instabasic.backend.repository.PostRepository;
+import com.instabasic.backend.repository.ProfileRepository;
 
 public class FollowService {
     @Autowired
     FollowRepository FollowRepository;
     @Autowired
-    PostRepository PostRepository;
+    ProfileRepository ProfileRepository;
 
     // C
-    public Follow save(Follow follow) {
-        if (follow != null) {
-            return FollowRepository.save(follow);
+    public Follow follow(String followerProfilename, String followingProfilename) {
+        Profile follower = ProfileRepository.findByProfilename(followerProfilename).get();
+        Profile following = ProfileRepository.findByProfilename(followingProfilename).get();
+
+        if (follower != null && following != null) {
+            Follow follow = new Follow(follower, following);
+            FollowRepository.save(follow);
+            return follow;
         } else {
-            throw new ErrorHandler(400, "null");
+            if (follower != null)
+                throw new ErrorHandler(404, "Profilo non trovato");
+            else
+                throw new ErrorHandler(404, "Following non trovato");
         }
     }
 
     // R
-    //TODO get() functions
-    public List<Profile> getFollows() {
-        return null;
+
+    public List<Follow> getFollowing(String Profilename) {
+        /* Restituisce i profili che quella persona(Profilename) segue */
+        Profile profile = ProfileRepository.findByProfilename(Profilename).get();
+        if (profile != null) {
+            List<Follow> followingProfiles = FollowRepository.findAllbyFollowed(profile);
+            return followingProfiles;
+        }
+        return new ArrayList<>();
     }
 
-    public List<Profile> getFollower() {
-        return null;
+    public List<Follow> getFollowers(String Profilename) {
+        /* Restituisce i profili che seguono quella persona(Profilename) */
+        Profile profile = ProfileRepository.findByProfilename(Profilename).get();
+        if (profile != null) {
+            List<Follow> followingProfiles = FollowRepository.findAllbyFollower(profile);
+            return followingProfiles;
+        }
+        return new ArrayList<>();
     }
 
 }

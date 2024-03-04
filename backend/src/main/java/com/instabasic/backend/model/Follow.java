@@ -32,4 +32,11 @@ public class Follow {
 
     @CreatedDate
     private LocalDateTime createdAt;
+
+    public Follow(Profile followed, Profile follower) {
+        this.followed = followed;
+        this.follower = follower;
+        createdAt = LocalDateTime.now();
+        ;
+    }
 }
