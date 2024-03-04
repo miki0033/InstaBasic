@@ -14,6 +14,7 @@ import com.instabasic.backend.repository.PostRepository;
 
 @Service
 public class PostService {
+
     @Autowired
     PostRepository PostRepository;
 

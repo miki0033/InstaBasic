@@ -18,10 +18,13 @@ import com.instabasic.backend.repository.ProfileRepository;
 
 @Service
 public class ProfileService {
+
     @Autowired
     ProfileRepository ProfileRepository;
+
     @Autowired
     FollowRepository FollowRepository;
+
     @Autowired
     PostRepository PostRepository;
 

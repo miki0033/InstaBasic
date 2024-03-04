@@ -26,8 +26,11 @@ import com.instabasic.backend.service.ProfileService;
 @RestController
 public class PostController {
     static final Logger logger = LogManager.getLogger(PostController.class.getName());
+
     @Autowired
     private PostService PostService;
+
+    @Autowired
     private ProfileService ProfileService;
 
     // C

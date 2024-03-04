@@ -7,6 +7,7 @@ import { useData } from "./DataProvider";
 import { Login } from "../pages/login/Login";
 import Register from "../pages/login/Register";
 import Feed from "../pages/feed/Feed";
+import Profile from "../pages/profile/Profile";
 
 function App() {
 	const {
@@ -24,7 +25,7 @@ function App() {
 					</Route>
 
 					<Route path="/profile">
-						<Route index element={<>Profile</>} />
+						<Route index element={<Profile />} />
 
 						<Route path="settings">
 							<Route index element={<>Profile Settings</>} />

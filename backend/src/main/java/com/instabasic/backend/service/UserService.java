@@ -17,6 +17,7 @@ import com.instabasic.backend.repository.UserRepository;
 
 @Service
 public class UserService {
+
     @Autowired
     UserRepository UserRepository;
 

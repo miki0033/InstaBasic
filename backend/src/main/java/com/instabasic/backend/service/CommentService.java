@@ -18,8 +18,10 @@ import com.instabasic.backend.repository.PostRepository;
 
 @Service
 public class CommentService {
+
     @Autowired
     CommentRepository CommentRepository;
+
     PostRepository PostRepository;
 
     // C
