@@ -46,7 +46,6 @@ public class FollowController {
     }
 
     // R
-
     /** Restituisce tutti i profili che quella persona segue */
     @GetMapping("/v1/getFollows/{Profileid}")
     public ResponseEntity<List<Follow>> getFollows(@PathVariable Long Profileid) {
