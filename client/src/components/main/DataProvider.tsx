@@ -15,18 +15,67 @@ interface IDataContext {
 }
 
 // reducer actions custom type
-type ACTIONTYPE = { type: "LOG_IN" } | { type: "LOG_OUT" };
+type ACTIONTYPE =
+	| {
+			type: "LOG_IN";
+			payload: { userName_email: string; password: string };
+	  }
+	| {
+			type: "LOG_OUT";
+	  };
 
 // context reducer - gestisco le varie actions possibili
+const test_login_Action: IState = {
+	user: {
+		id: 1,
+		userName: "Seris_Dantalian",
+		email: "seris.dantalian@gmail.com",
+	},
+	profile: {
+		id: 1,
+		userName: "Seris_Dantalian",
+		firstName: "Seris",
+		lastName: "Dantalian",
+		birthday: "21-08-2001",
+		bio: "Hi! I'm Seris, here to have fun!",
+		avatarUrl: "http://localhost:4000/pfp/get/1.jpg",
+		userId: 1,
+	},
+	follower: [],
+	followed: [],
+	posts: [
+		{
+			title: "Purple",
+			description: "My purple themed background images",
+			url: ["http://localhost:4000/post/get/1_1.jpg", "http://localhost:4000/post/get/1_2.png"],
+			likes: 15,
+			type: "carousel",
+			profileId: 1,
+			createdAt: "2024-02-25",
+		},
+		{
+			title: "Ace",
+			description: "Asexual flag's hex-codes",
+			url: ["http://localhost:4000/post/get/1_3.png"],
+			likes: 20,
+			type: "single",
+			profileId: 1,
+			createdAt: "2024-02-29",
+		},
+	],
+};
+
 const reducer = (state: IDataContext["state"], action: ACTIONTYPE) => {
 	switch (action.type) {
 		case "LOG_IN":
-			return {
-				...state,
-			};
+			return test_login_Action;
 		case "LOG_OUT":
 			return {
-				...state,
+				user: undefined,
+				profile: undefined,
+				follower: [],
+				followed: [],
+				posts: [],
 			};
 		default:
 			return state;
