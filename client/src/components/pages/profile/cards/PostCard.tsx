@@ -2,7 +2,7 @@ import { Modal, ModalContent, ModalBody, ModalFooter, Button, useDisclosure, Pag
 import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
-import { useData } from "../../main/DataProvider";
+import { useData } from "../../../main/DataProvider";
 
 const PostCard = ({ post }: { post: IPost }) => {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
