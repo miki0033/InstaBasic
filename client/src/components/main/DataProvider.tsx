@@ -59,8 +59,8 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
 			userName: "Seris_Dantalian",
 			firstName: "Seris",
 			lastName: "Dantalian",
-			birthday: "",
-			bio: "",
+			birthday: "21-08-2001",
+			bio: "Hi! I'm Seris, here to have fun!",
 			avatarUrl: "http://localhost:4000/pfp/get/1.jpg",
 			userId: 1,
 		},
@@ -69,7 +69,7 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
 		posts: [
 			{
 				title: "Purple",
-				description: "description",
+				description: "My purple themed background images",
 				url: ["http://localhost:4000/post/get/1_1.jpg", "http://localhost:4000/post/get/1_2.png"],
 				likes: 15,
 				type: "carousel",
@@ -78,7 +78,7 @@ const DataProvider = ({ children }: { children: ReactNode }) => {
 			},
 			{
 				title: "Ace",
-				description: "description",
+				description: "Asexual flag's hex-codes",
 				url: ["http://localhost:4000/post/get/1_3.png"],
 				likes: 20,
 				type: "single",
