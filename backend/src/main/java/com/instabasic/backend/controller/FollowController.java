@@ -16,7 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.instabasic.backend.service.FollowService;
 import com.instabasic.backend.service.ProfileService;
-import com.instabasic.backend.common.util.ErrorHandler;
+import com.instabasic.backend.common.util.exception.ErrorHandler;
 import com.instabasic.backend.model.Follow;
 import com.instabasic.backend.model.Profile;
 

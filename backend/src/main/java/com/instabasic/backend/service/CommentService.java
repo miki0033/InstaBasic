@@ -12,7 +12,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.instabasic.backend.common.util.ErrorHandler;
+import com.instabasic.backend.common.util.exception.ErrorHandler;
 import com.instabasic.backend.model.Comment;
 import com.instabasic.backend.model.Post;
 import com.instabasic.backend.repository.CommentRepository;

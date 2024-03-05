@@ -11,7 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.instabasic.backend.common.util.ErrorHandler;
+import com.instabasic.backend.common.util.exception.ErrorHandler;
 import com.instabasic.backend.model.User;
 import com.instabasic.backend.repository.UserRepository;
 

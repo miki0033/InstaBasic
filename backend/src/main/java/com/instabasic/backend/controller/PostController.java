@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.instabasic.backend.common.util.ErrorHandler;
+import com.instabasic.backend.common.util.exception.ErrorHandler;
 import com.instabasic.backend.model.Post;
 import com.instabasic.backend.service.PostService;
 import com.instabasic.backend.service.ProfileService;

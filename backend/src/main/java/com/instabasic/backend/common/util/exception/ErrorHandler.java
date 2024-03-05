@@ -1,4 +1,4 @@
-package com.instabasic.backend.common.util;
+package com.instabasic.backend.common.util.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

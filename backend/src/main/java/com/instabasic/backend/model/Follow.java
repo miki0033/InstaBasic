@@ -39,6 +39,5 @@ public class Follow {
         this.followed = followed;
         this.follower = follower;
         createdAt = LocalDateTime.now();
-        ;
     }
 }

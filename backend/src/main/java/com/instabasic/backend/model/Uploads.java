@@ -17,7 +17,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Resource {
+public class Uploads {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,7 +29,7 @@ public class Resource {
     private LocalDateTime createdAt;
 
     // Costruttore
-    public Resource(String type, String url) {
+    public Uploads(String type, String url) {
         this.type = type;
         this.url = url;
         this.createdAt = LocalDateTime.now();
