@@ -41,12 +41,12 @@ public class UploadsController {
     public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
         try {
             String fileName = uploadsService.storeFile(file);
-            String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/downloadFile/")
-                    .path(fileName)
-                    .toUriString();
-
             if (fileName != null) {
+                String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                        .path("/downloadFile/")
+                        .path(fileName)
+                        .toUriString();
+
                 return new UploadFileResponse(fileName, fileDownloadUri,
                         file.getContentType(), file.getSize());
             } else {
