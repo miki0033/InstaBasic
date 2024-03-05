@@ -2,7 +2,14 @@ package com.instabasic.backend;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.file.Path;
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
@@ -13,6 +20,8 @@ import com.instabasic.backend.model.Profile;
 import com.instabasic.backend.model.User;
 import com.instabasic.backend.service.ProfileService;
 import com.instabasic.backend.service.UserService;
+
+import com.instabasic.backend.common.util.FileUtils;
 
 @SpringBootTest
 class BackendApplicationTests {
@@ -66,6 +75,11 @@ class BackendApplicationTests {
 
 		userService.delete(user1.getId());
 		userService.delete(user2.getId());
+	}
+
+	@Test
+	void uploadFileTest() {
+
 	}
 
 }
