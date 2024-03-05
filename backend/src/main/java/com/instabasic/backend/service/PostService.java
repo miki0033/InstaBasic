@@ -51,7 +51,6 @@ public class PostService {
             throw new ErrorHandler(400, "Post not found");
         }
         return Post;
-
     }
 
     public Page<Post> getPostsByProfileName(String profileName, Pageable pageable) {

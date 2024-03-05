@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "file")
 public class FileStorageProperties {
-    @Value("${myapp.externalStorage}")
+    // @Value("${myapp.externalStorage}")
     private String uploadDir;
 
     public String getUploadDir() {

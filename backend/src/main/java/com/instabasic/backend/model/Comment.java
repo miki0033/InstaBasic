@@ -43,4 +43,8 @@ public class Comment {
     @JoinColumn(name = "post_id")
     private Post post;
 
+    public int countLikes() {
+        return likes.size();
+    }
+
 }
