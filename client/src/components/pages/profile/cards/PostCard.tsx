@@ -2,7 +2,8 @@ import { Modal, ModalContent, ModalBody, ModalFooter, Button, useDisclosure, Pag
 import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
-import { useData } from "../../main/DataProvider";
+import { useData } from "../../../main/DataProvider";
+import PostComment from "../../../../utils/PostComment";
 
 const PostCard = ({ post }: { post: IPost }) => {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -56,13 +57,11 @@ const PostCard = ({ post }: { post: IPost }) => {
 
 									<div className="w-5/12 my-10 px-5">
 										<h1 className="py-3 text-center text-4xl ">{post.title}</h1>
-										<p className="flex flex-row gap-1">
-											<div className="w-auto flex flex-row gap-1">
-												<Avatar isBordered src={profile?.avatarUrl} className="w-6 h-6" />
-												<p className="text-primary-500">{profile?.userName + ":"}</p>
-											</div>
-											<div className="text-default-800">{post.description}</div>
-										</p>
+										<PostComment
+											avatar={profile?.avatarUrl ? profile.avatarUrl : ""}
+											userName={profile?.userName ? profile.userName : ""}
+											text={post.description}
+										/>
 									</div>
 								</div>
 							</ModalBody>

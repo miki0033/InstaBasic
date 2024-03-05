@@ -1,6 +1,6 @@
 import { useData } from "../../main/DataProvider";
-import AddPostCard from "./AddPostCard";
-import PostCard from "./PostCard";
+import AddPostCard from "./cards/AddPostCard";
+import PostCard from "./cards/PostCard";
 
 export const ProfilePosts = () => {
 	const {

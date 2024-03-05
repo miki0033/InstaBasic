@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 const ProfileDropdown = () => {
 	const {
 		state: { user, profile },
+		dispatch,
 	} = useData();
 
 	return (
@@ -19,30 +20,35 @@ const ProfileDropdown = () => {
 			</DropdownTrigger>
 
 			{user ? (
-				<DropdownMenu aria-label="Profile Actions" variant="flat">
+				<DropdownMenu aria-label="ProfileActions" variant="flat">
 					<DropdownItem key="profile" className="h-14 gap-2">
 						<p className="font-semibold">Signed in as</p>
 						<p className="font-semibold">{user?.email}</p>
 					</DropdownItem>
 
-					<DropdownItem key="profile">
+					<DropdownItem key="toProfile">
 						<Link to={"/profile"}>
 							<p>Profile</p>
 						</Link>
 					</DropdownItem>
 
-					<DropdownItem key="settings">
+					<DropdownItem key="toSettings">
 						<Link to={"/profile/settings"}>
 							<p>Settings</p>
 						</Link>
 					</DropdownItem>
 
-					<DropdownItem key="logout" color="danger">
+					<DropdownItem
+						key="logout"
+						color="danger"
+						onPress={() => {
+							dispatch({ type: "LOG_OUT" });
+						}}>
 						Log Out
 					</DropdownItem>
 				</DropdownMenu>
 			) : (
-				<DropdownMenu aria-label="Profile Actions" variant="flat">
+				<DropdownMenu aria-label="ProfileActions" variant="flat">
 					<DropdownItem key="notLogged" className="h-18 gap-3">
 						<p className="font-semibold">You are NOT Logged IN</p>
 					</DropdownItem>
