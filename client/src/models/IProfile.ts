@@ -3,7 +3,7 @@ interface IProfile {
 	userName: string;
 	firstName: string;
 	lastName: string;
-	birthday?: string;
+	birthday: string;
 	bio?: string;
 	avatarUrl?: string;
 	userId?: number;

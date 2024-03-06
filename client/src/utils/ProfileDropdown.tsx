@@ -1,12 +1,15 @@
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar } from "@nextui-org/react";
 import { useData } from "../components/main/DataProvider";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const ProfileDropdown = () => {
 	const {
 		state: { user, profile },
 		dispatch,
 	} = useData();
+
+	const navigate = useNavigate();
+	const toRoot = () => navigate("/");
 
 	return (
 		<Dropdown placement="bottom-start" className="border border-1 border-secondary-200">
@@ -43,6 +46,7 @@ const ProfileDropdown = () => {
 						color="danger"
 						onPress={() => {
 							dispatch({ type: "LOG_OUT" });
+							toRoot();
 						}}>
 						Log Out
 					</DropdownItem>
