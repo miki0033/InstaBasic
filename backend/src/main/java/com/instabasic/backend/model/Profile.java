@@ -1,7 +1,14 @@
 package com.instabasic.backend.model;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.Column;
@@ -38,19 +45,20 @@ public class Profile {
 
     private String avatarUrl;
 
+    @JsonIgnore
     @ManyToOne
     private User user;
 
     // Comment
-
+    @JsonIgnore
     @OneToMany(mappedBy = "profile")
     private Set<Comment> comments;
 
     // FOLLOW
-
+    @JsonIgnore
     @OneToMany(mappedBy = "followed")
     private Set<Follow> followers;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "follower")
     private Set<Follow> following;
 
@@ -65,5 +73,30 @@ public class Profile {
         this.lastName = lastName;
         this.birthday = birthday;
         this.user = user;
+    }
+
+    public static <T> int count(Collection<? extends T> collection) {
+        try {
+            return collection.size();
+        } catch (NullPointerException e) {
+            return 0;
+        }
+    }
+
+    public String toJson() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            // Converti l'oggetto Post in una stringa JSON
+            String json = objectMapper.writeValueAsString(this);
+            JsonNode node = objectMapper.readTree(json);
+            ((ObjectNode) node).put("comments", count(this.comments));
+            ((ObjectNode) node).put("followers", count(this.followers));
+            ((ObjectNode) node).put("following", count(this.following));
+            // Restituisci il JSON modificato
+            return objectMapper.writeValueAsString(node);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return "{}";
+        }
     }
 }

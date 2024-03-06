@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
 import java.io.IOException;

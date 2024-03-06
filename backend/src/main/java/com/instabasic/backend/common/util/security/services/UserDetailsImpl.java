@@ -1,25 +1,21 @@
 package com.instabasic.backend.common.util.security.services;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.instabasic.backend.model.User;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 public class UserDetailsImpl implements UserDetails {
   private static final long serialVersionUID = 1L;
 
@@ -31,12 +27,7 @@ public class UserDetailsImpl implements UserDetails {
 
   @JsonIgnore
   private String password;
-
-  private String firstName;
-  private String lastName;
-  private LocalDate birthday;
-  private Long ProfileId;
-
+  @JsonIgnore
   private Collection<? extends GrantedAuthority> authorities;
 
   public UserDetailsImpl(Long id,
@@ -52,10 +43,12 @@ public class UserDetailsImpl implements UserDetails {
   }
 
   public static UserDetailsImpl build(User user) {
-    List<GrantedAuthority> authorities = user.getRoles().stream()
-        .map(role -> new SimpleGrantedAuthority(role.getName().name()))
-        .collect(Collectors.toList());
-
+    List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+    /*
+     * List<GrantedAuthority> authorities = user.getRoles().stream()
+     * .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+     * .collect(Collectors.toList());
+     */
     return new UserDetailsImpl(
         user.getId(),
         user.getUsername(),
