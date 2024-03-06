@@ -1,4 +1,5 @@
 import { Dispatch, ReactNode, createContext, useContext, useReducer } from "react";
+import axios from "axios";
 
 //
 const InitContext = {
@@ -11,12 +12,12 @@ const InitContext = {
 const test_login_Action: IState = {
 	user: {
 		id: 1,
-		userName: "Seris_Dantalian",
+		username: "Seris_Dantalian",
 		email: "seris.dantalian@gmail.com",
 	},
 	profile: {
 		id: 1,
-		userName: "Seris_Dantalian",
+		profilename: "Seris_Dantalian",
 		firstName: "Seris",
 		lastName: "Dantalian",
 		birthday: "21-08-2001",
@@ -65,7 +66,7 @@ interface IDataContext {
 type ACTIONTYPE =
 	| {
 			type: "LOG_IN";
-			payload: { userName: string; password: string };
+			payload: { username: string; password: string };
 	  }
 	| {
 			type: "LOG_OUT";
@@ -75,7 +76,7 @@ type ACTIONTYPE =
 			payload: {
 				firstName: string;
 				lastName: string;
-				userName: string;
+				username: string;
 				email: string;
 				confirmEmail: string;
 				password: string;
@@ -84,14 +85,37 @@ type ACTIONTYPE =
 			};
 	  };
 
+function checkPayloadIntegrity(payload: {}): boolean {
+	let result = true;
+	for (const data in payload) {
+		if (!data) {
+			result = false;
+		}
+	}
+	return result;
+}
+
 // context reducer - gestisco le varie actions possibili
+const env = import.meta.env;
+const SIGNIN = env.VITE_LOGIN;
+const SIGNUP = env.REGISTER;
 const reducer = (state: IDataContext["state"], action: ACTIONTYPE) => {
 	switch (action.type) {
 		case "LOG_IN":
+			const loginData = action.payload;
+
+			if (checkPayloadIntegrity(loginData)) {
+				axios.post(SIGNIN, loginData).then((data) => console.log(data.data));
+			}
 			return test_login_Action;
 		case "LOG_OUT":
 			return InitContext;
 		case "REGISTER":
+			const registerData = action.payload;
+
+			if (checkPayloadIntegrity(registerData)) {
+				axios.post(SIGNUP, registerData).then((data) => console.log(data));
+			}
 			return InitContext;
 		default:
 			return state;

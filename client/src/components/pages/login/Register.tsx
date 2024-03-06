@@ -7,7 +7,7 @@ const Register = () => {
 	const credentials_init = {
 		firstName: "",
 		lastName: "",
-		userName: "",
+		username: "",
 		email: "",
 		confirmEmail: "",
 		password: "",
@@ -71,19 +71,19 @@ const Register = () => {
 
 						<div className="flex flex-row gap-5 justify-center">
 							<Input
-								name="userName"
+								name="username"
 								label="Username"
 								isRequired
 								labelPlacement="outside"
 								color="secondary"
 								className="w-5/12"
 								onChange={handleInput}
-								value={credentials.userName}
+								value={credentials.username}
 								isClearable
 								onClear={() => {
 									changeCredentials({
 										...credentials,
-										userName: "",
+										username: "",
 									});
 								}}
 							/>

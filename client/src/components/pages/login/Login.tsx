@@ -5,7 +5,7 @@ import { useState, ChangeEvent } from "react";
 
 export const Login = () => {
 	const { dispatch } = useData();
-	const [credentials, changeCredentials] = useState({ userName: "", password: "" });
+	const [credentials, changeCredentials] = useState({ username: "", password: "" });
 
 	const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.currentTarget;
@@ -26,7 +26,7 @@ export const Login = () => {
 				<div className="h-2/3 flex flex-row justify-around ">
 					<div className="w-6/12 h-4/5 my-auto flex flex-col justify-between ">
 						<Input
-							name="userName"
+							name="username"
 							type="email"
 							label="Username or E-mail"
 							labelPlacement="outside"
@@ -34,12 +34,12 @@ export const Login = () => {
 							isClearable
 							isRequired
 							color="secondary"
-							value={credentials.userName}
+							value={credentials.username}
 							onChange={handleInput}
 							onClear={() => {
 								changeCredentials({
 									...credentials,
-									userName: "",
+									username: "",
 								});
 							}}
 						/>

@@ -18,7 +18,7 @@ function App() {
 		<>
 			<Routes>
 				<Route path="/" element={<Layout />}>
-					<Route index element={<Navigate to={profile ? "/home" : "/login"} />} />
+					<Route index element={<Navigate to={!profile ? "/login" : "/home"} />} />
 
 					<Route path="/home">
 						<Route index element={<Feed />} />
