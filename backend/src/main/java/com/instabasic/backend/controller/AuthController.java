@@ -15,9 +15,12 @@ import com.instabasic.backend.payload.request.SignupRequest;
 import com.instabasic.backend.service.UserService;
 
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
+@RequestMapping("/auth")
 public class AuthController {
 
   @Autowired
