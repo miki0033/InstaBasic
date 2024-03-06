@@ -35,7 +35,6 @@ import jakarta.validation.Valid;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/auth")
 public class AuthController {
   @Autowired
   AuthenticationManager authenticationManager;
@@ -52,7 +51,7 @@ public class AuthController {
   @Autowired
   JwtUtils jwtUtils;
 
-  @PostMapping("/signin")
+  @PostMapping("v1/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
     Authentication authentication = authenticationManager.authenticate(
@@ -73,7 +72,7 @@ public class AuthController {
         roles));
   }
 
-  @PostMapping("/signup")
+  @PostMapping("v1/signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
     if (userRepository.existsByUsername(signUpRequest.getUsername())) {
       return ResponseEntity
