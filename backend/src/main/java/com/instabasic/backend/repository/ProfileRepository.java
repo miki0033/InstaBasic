@@ -12,7 +12,9 @@ import com.instabasic.backend.model.Profile;
 @Repository
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
 
-    Page<Profile> findByUserId(String userId, Pageable pageable);
+    Page<Profile> findByUserId(Long userId, Pageable pageable);
+
+    Optional<Profile> findFirstByUserId(Long userId);
 
     Optional<Profile> findByProfilename(String Profilename);
 

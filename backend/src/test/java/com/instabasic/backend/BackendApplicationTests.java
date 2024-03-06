@@ -38,9 +38,9 @@ class BackendApplicationTests {
 	void Test1() {
 		User user1 = new User("user1", "user1@example.com", "password1");
 		User user2 = new User("user2", "user2@example.com", "password2");
-
-		userService.save(user1);
-		userService.save(user2);
+		// TODO:test
+		// userService.registerUser(user1);
+		// userService.save(user2);
 
 		Profile profile1 = new Profile();
 		profile1.setProfilename("profile1");
@@ -58,8 +58,8 @@ class BackendApplicationTests {
 		profile2.setBio("Sample bio for profile2");
 		profile2.setAvatarUrl("https://example.com/avatar2.jpg");
 
-		profile1.setUserId(user1);
-		profile2.setUserId(user2);
+		profile1.setUser(user1);
+		profile2.setUser(user2);
 
 		profileService.save(profile1);
 		profileService.save(profile2);

@@ -62,13 +62,20 @@ public class ProfileService {
         }
     }
 
-    public Page<Profile> findByUserId(String userId, Pageable pageable) {
-        if (userId == null) {
+    public Page<Profile> findByUserId(Long userId, Pageable pageable) {
+        if (userId != null) {
             return ProfileRepository.findByUserId(userId, pageable);
         } else {
             throw new ErrorHandler(400, "userId=null");
         }
+    }
 
+    public Profile findFirstByUserId(Long userId) {
+        if (userId != null) {
+            return ProfileRepository.findFirstByUserId(userId).get();
+        } else {
+            throw new ErrorHandler(400, "userId=null");
+        }
     }
 
     public Page<Post> getPostsByFollow(String profileId, Pageable pageable) {
