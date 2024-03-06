@@ -1,9 +1,22 @@
 import { Button, Input } from "@nextui-org/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useData } from "../../main/DataProvider";
+import { useState, ChangeEvent } from "react";
 
 export const Login = () => {
 	const { dispatch } = useData();
+	const [credentials, changeCredentials] = useState({ userName: "", password: "" });
+
+	const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = e.currentTarget;
+		changeCredentials({
+			...credentials,
+			[name]: value,
+		});
+	};
+
+	const navigate = useNavigate();
+	const toRoot = () => navigate("/");
 
 	return (
 		<div className="w-full h-full flex flex-col justify-center">
@@ -13,6 +26,7 @@ export const Login = () => {
 				<div className="h-2/3 flex flex-row justify-around ">
 					<div className="w-6/12 h-4/5 my-auto flex flex-col justify-between ">
 						<Input
+							name="userName"
 							type="email"
 							label="Username or E-mail"
 							labelPlacement="outside"
@@ -20,8 +34,18 @@ export const Login = () => {
 							isClearable
 							isRequired
 							color="secondary"
+							value={credentials.userName}
+							onChange={handleInput}
+							onClear={() => {
+								changeCredentials({
+									...credentials,
+									userName: "",
+								});
+							}}
 						/>
+
 						<Input
+							name="password"
 							type="password"
 							label="Password"
 							labelPlacement="outside"
@@ -29,11 +53,25 @@ export const Login = () => {
 							isClearable
 							isRequired
 							color="secondary"
+							value={credentials.password}
+							onChange={handleInput}
+							onClear={() => {
+								changeCredentials({
+									...credentials,
+									password: "",
+								});
+							}}
 						/>
+
 						<Button
+							name="loginBTN"
 							className="w-1/3 mx-auto bg-secondary"
 							onPress={() => {
-								dispatch({ type: "LOG_IN", payload: { userName_email: "", password: "" } });
+								dispatch({
+									type: "LOG_IN",
+									payload: credentials,
+								});
+								toRoot();
 							}}>
 							Log In
 						</Button>

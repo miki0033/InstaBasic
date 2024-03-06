@@ -25,13 +25,10 @@
 {
 "token": "<token>",
 "type": "Bearer",
-"id": 2,
-"username": "username2",
-"email": "username2@gmail.com",
-"firstName": "name2",
-"lastName": "surname2",
-"birthday": "2012-02-27",
-"avatarUrl": null
+"id": <id>,
+"username": "username1",
+"email": "username@gmail.com",
+"roles": []
 }
 
 /v1/newPost

@@ -1,30 +1,13 @@
 import { Dispatch, ReactNode, createContext, useContext, useReducer } from "react";
 
-// context type
-interface IState {
-	user: IUser | undefined;
-	profile: IProfile | undefined;
-	follower: IFollow[];
-	followed: IFollow[];
-	posts: IPost[];
-}
-
-interface IDataContext {
-	state: IState;
-	dispatch: Dispatch<ACTIONTYPE>;
-}
-
-// reducer actions custom type
-type ACTIONTYPE =
-	| {
-			type: "LOG_IN";
-			payload: { userName_email: string; password: string };
-	  }
-	| {
-			type: "LOG_OUT";
-	  };
-
-// context reducer - gestisco le varie actions possibili
+//
+const InitContext = {
+	user: undefined,
+	profile: undefined,
+	follower: [],
+	followed: [],
+	posts: [],
+};
 const test_login_Action: IState = {
 	user: {
 		id: 1,
@@ -65,18 +48,51 @@ const test_login_Action: IState = {
 	],
 };
 
+// context type
+interface IState {
+	user: IUser | undefined;
+	profile: IProfile | undefined;
+	follower: IFollow[];
+	followed: IFollow[];
+	posts: IPost[];
+}
+interface IDataContext {
+	state: IState;
+	dispatch: Dispatch<ACTIONTYPE>;
+}
+
+// reducer actions custom type
+type ACTIONTYPE =
+	| {
+			type: "LOG_IN";
+			payload: { userName: string; password: string };
+	  }
+	| {
+			type: "LOG_OUT";
+	  }
+	| {
+			type: "REGISTER";
+			payload: {
+				firstName: string;
+				lastName: string;
+				userName: string;
+				email: string;
+				confirmEmail: string;
+				password: string;
+				confirmPassword: string;
+				birthday: string;
+			};
+	  };
+
+// context reducer - gestisco le varie actions possibili
 const reducer = (state: IDataContext["state"], action: ACTIONTYPE) => {
 	switch (action.type) {
 		case "LOG_IN":
 			return test_login_Action;
 		case "LOG_OUT":
-			return {
-				user: undefined,
-				profile: undefined,
-				follower: [],
-				followed: [],
-				posts: [],
-			};
+			return InitContext;
+		case "REGISTER":
+			return InitContext;
 		default:
 			return state;
 	}
@@ -96,17 +112,8 @@ const useData = () => {
 
 // context provider wrapper component - inizializzo il valore del context fornendo accesso al reducer
 const DataProvider = ({ children }: { children: ReactNode }) => {
-	//state init
-	const init = {
-		user: undefined,
-		profile: undefined,
-		follower: [],
-		followed: [],
-		posts: [],
-	};
-
 	// gestiamo lo state del context con l'hook useReducer
-	const [state, dispatch] = useReducer(reducer, init);
+	const [state, dispatch] = useReducer(reducer, InitContext);
 
 	return <DataContext.Provider value={{ state, dispatch }}>{children}</DataContext.Provider>;
 };

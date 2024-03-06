@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import Layout from "../layout/Layout";
 import PageNotFound from "../pages/PageNotFound";
@@ -14,13 +13,6 @@ function App() {
 	const {
 		state: { profile },
 	} = useData();
-
-	const navigate = useNavigate();
-	useEffect(() => {
-		console.log("Changing...");
-		const toRoot = () => navigate("/");
-		toRoot();
-	}, [profile]);
 
 	return (
 		<>
