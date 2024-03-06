@@ -6,6 +6,12 @@ import java.util.Set;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -45,11 +51,32 @@ public class Post {
     private Profile profile;
 
     // Comment
+    @JsonIgnore
     @OneToMany(mappedBy = "post")
     private Set<Comment> comments;
 
     public int countLikes() {
-        return likes.size();
+        try {
+            return likes.size();
+        } catch (NullPointerException e) {
+            return 0;
+        }
+    }
+
+    public String toJson() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            // Converti l'oggetto Post in una stringa JSON
+            String json = objectMapper.writeValueAsString(this);
+            JsonNode node = objectMapper.readTree(json);
+            ((ObjectNode) node).put("likes", countLikes());
+            ((ObjectNode) node).put("profile", this.profile.getId());
+            // Restituisci il JSON modificato
+            return objectMapper.writeValueAsString(node);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return "{}";
+        }
     }
 
 }

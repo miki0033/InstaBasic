@@ -38,7 +38,7 @@ public class PostController {
     public ResponseEntity<String> postPost(@RequestBody Post post) {
         try {
             PostService.save(post);
-            return ResponseEntity.status(200).body(post.toString());
+            return ResponseEntity.status(200).body(post.toJson());
         } catch (ErrorHandler err) {
             logger.warn(err.getMessage());
             return ResponseEntity.status(err.getStatus()).body(err.getMessage());

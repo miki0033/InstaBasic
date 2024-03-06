@@ -130,15 +130,8 @@ public class UserService {
          * .collect(Collectors.toList());
          */
         Profile mainProfile = ProfileService.findFirstByUserId(userDetails.getId());
+        return ResponseEntity.ok(new JwtResponse(jwt, userDetails, mainProfile));
 
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                mainProfile.getId(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                mainProfile.getFirstName(),
-                mainProfile.getLastName(),
-                mainProfile.getBirthday(),
-                mainProfile.getAvatarUrl()));
     }
 
     public User findById(Long id) {

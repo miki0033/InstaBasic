@@ -1,7 +1,8 @@
 package com.instabasic.backend.payload.response;
 
-import java.time.LocalDate;
-import java.util.List;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.instabasic.backend.model.Profile;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,34 +13,15 @@ public class JwtResponse {
 
   private String token;
   private String type = "Bearer";
-  private Long id;
-  private String username;
-  private String email;
-  // private List<String> roles;
 
-  private String firstName;
-  private String lastName;
-  private LocalDate birthday;
-  private String avatarUrl;
+  private UserDetails user;
+  private Profile profile;
 
-  public JwtResponse(String token, Long id, String username, String email, List<String> roles) {
+  public JwtResponse(String token, UserDetails user, Profile profile) {
     this.token = token;
-    this.id = id;
-    this.username = username;
-    this.email = email;
-    // this.roles = roles;
-  }
+    this.user = user;
+    this.profile = profile;
 
-  public JwtResponse(String token, Long profileid, String username, String email,
-      String firstName, String lastName, LocalDate birthday, String avatarUrl) {
-    this.token = token;
-    this.id = profileid;
-    this.username = username;
-    this.email = email;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.birthday = birthday;
-    this.avatarUrl = avatarUrl;
   }
 
 }
