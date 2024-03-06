@@ -31,7 +31,7 @@ public class CommentController {
     public ResponseEntity<String> PostComment(@RequestBody Comment Comment) {
         try {
             CommentService.save(Comment);
-            return ResponseEntity.status(200).body(Comment.toString());
+            return ResponseEntity.status(200).body(Comment.toJson());
         } catch (ErrorHandler err) {
             logger.warn(err.getMessage());
             return ResponseEntity.status(err.getStatus()).body(err.getMessage());
