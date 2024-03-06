@@ -9,13 +9,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.instabasic.backend.model.Profile;
 import com.instabasic.backend.service.ProfileService;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
+import org.springframework.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -35,7 +36,14 @@ public class ProfileController {
     // R
     @GetMapping("/v1/getProfiles/{userId}")
     public Page<Profile> getProfiles(@PathVariable String userId) {
-        return ProfileService.findByUserId(userId, Pageable.unpaged());
+        try {
+            Long id = Long.parseLong(userId);
+            return ProfileService.findByUserId(id, Pageable.unpaged());
+        } catch (Exception e) {
+            logger.error("An unexpected error occurred", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred", e);
+        }
+
     }
 
     @GetMapping("/v1/getProfile/{ProfileName}")

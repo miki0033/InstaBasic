@@ -39,7 +39,7 @@ public class Profile {
     private String avatarUrl;
 
     @ManyToOne
-    private User userId;
+    private User user;
 
     // Comment
 
@@ -57,5 +57,13 @@ public class Profile {
     // Constructor
     public Profile(Long id) {
         this.id = id;
+    }
+
+    public Profile(String profilename, String firstName, String lastName, LocalDate birthday, User user) {
+        this.profilename = profilename;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthday = birthday;
+        this.user = user;
     }
 }

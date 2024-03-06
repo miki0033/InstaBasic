@@ -1,6 +1,6 @@
 package com.instabasic.backend.payload.request;
 
-import java.util.Set;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -25,4 +25,9 @@ public class SignupRequest {
   @NotBlank
   @Size(min = 6, max = 40)
   private String password;
+
+  private String firstName;
+  private String lastName;
+  private LocalDate birthday;
+
 }

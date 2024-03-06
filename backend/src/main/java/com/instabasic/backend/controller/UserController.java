@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -27,20 +26,23 @@ public class UserController {
     private UserService UserService;
 
     // C
-    @PostMapping("v1/newUser")
-    public ResponseEntity<String> postUser(@RequestBody User user) {
-        try {
-            UserService.save(user);
-            return ResponseEntity.status(200).body(user.toString());
-
-        } catch (ErrorHandler err) {
-            logger.warn(err.getMessage());
-            return ResponseEntity.status(err.getStatus()).body(err.getMessage());
-        } catch (Exception e) {
-            logger.error("An unexpected error occurred", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
-        }
-    }
+    /*
+     * @PostMapping("v1/newUser")
+     * public ResponseEntity<String> postUser(@RequestBody User user) {
+     * try {
+     * UserService.save(user);
+     * return ResponseEntity.status(200).body(user.toString());
+     * 
+     * } catch (ErrorHandler err) {
+     * logger.warn(err.getMessage());
+     * return ResponseEntity.status(err.getStatus()).body(err.getMessage());
+     * } catch (Exception e) {
+     * logger.error("An unexpected error occurred", e);
+     * return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
+     * body("An unexpected error occurred");
+     * }
+     * }
+     */
 
     // R
     @GetMapping("/v1/getUser/{id}")
