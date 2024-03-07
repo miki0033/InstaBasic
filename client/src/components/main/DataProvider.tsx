@@ -1,14 +1,25 @@
 import { Dispatch, ReactNode, createContext, useContext, useReducer } from "react";
-import axios from "axios";
 
 //
 const InitContext = {
-	user: undefined,
-	profile: undefined,
+	user: {
+		id: 0,
+		username: "",
+		email: "",
+	},
+	profile: {
+		profilename: "",
+		firstName: "",
+		lastName: "",
+		birthday: "",
+	},
 	follower: [],
 	followed: [],
 	posts: [],
+	token: { token: "", type: "" },
 };
+
+/*//
 const test_login_Action: IState = {
 	user: {
 		id: 1,
@@ -47,15 +58,18 @@ const test_login_Action: IState = {
 			createdAt: "2024-02-29",
 		},
 	],
+	token: { token: "", type: "" },
 };
+//*/
 
 // context type
-interface IState {
-	user: IUser | undefined;
-	profile: IProfile | undefined;
+export interface IState {
+	user: IUser;
+	profile: IProfile;
 	follower: IFollow[];
 	followed: IFollow[];
 	posts: IPost[];
+	token: { token: string; type: string };
 }
 interface IDataContext {
 	state: IState;
@@ -66,57 +80,21 @@ interface IDataContext {
 type ACTIONTYPE =
 	| {
 			type: "LOG_IN";
-			payload: { username: string; password: string };
+			payload: { user: IUser; profile: IProfile; token: { token: ""; type: "" } };
 	  }
 	| {
 			type: "LOG_OUT";
-	  }
-	| {
-			type: "REGISTER";
-			payload: {
-				firstName: string;
-				lastName: string;
-				username: string;
-				email: string;
-				confirmEmail: string;
-				password: string;
-				confirmPassword: string;
-				birthday: string;
-			};
 	  };
 
-function checkPayloadIntegrity(payload: {}): boolean {
-	let result = true;
-	for (const data in payload) {
-		if (!data) {
-			result = false;
-		}
-	}
-	return result;
-}
-
 // context reducer - gestisco le varie actions possibili
-const env = import.meta.env;
-const SIGNIN = env.VITE_LOGIN;
-const SIGNUP = env.REGISTER;
 const reducer = (state: IDataContext["state"], action: ACTIONTYPE) => {
 	switch (action.type) {
 		case "LOG_IN":
-			const loginData = action.payload;
+			return { ...state, ...action.payload };
 
-			if (checkPayloadIntegrity(loginData)) {
-				axios.post(SIGNIN, loginData).then((data) => console.log(data.data));
-			}
-			return test_login_Action;
 		case "LOG_OUT":
 			return InitContext;
-		case "REGISTER":
-			const registerData = action.payload;
 
-			if (checkPayloadIntegrity(registerData)) {
-				axios.post(SIGNUP, registerData).then((data) => console.log(data));
-			}
-			return InitContext;
 		default:
 			return state;
 	}

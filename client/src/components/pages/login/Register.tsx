@@ -1,10 +1,24 @@
 import { Button, Input, ScrollShadow } from "@nextui-org/react";
 import { useData } from "../../main/DataProvider";
 import { ChangeEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { checkValidity } from "../../../utils/checkValidity";
+import axios from "axios";
+
+interface register_credentials {
+	firstName: string;
+	lastName: string;
+	username: string;
+	email: string;
+	confirmEmail: string;
+	password: string;
+	confirmPassword: string;
+	birthday: string;
+}
 
 const Register = () => {
 	const { dispatch } = useData();
-	const credentials_init = {
+	const credentials_init: register_credentials = {
 		firstName: "",
 		lastName: "",
 		username: "",
@@ -22,6 +36,33 @@ const Register = () => {
 			...credentials,
 			[name]: value,
 		});
+	};
+
+	const navigate = useNavigate();
+	const toRoot = () => navigate("/");
+
+	const SIGNUP = import.meta.env.VITE_REGISTER;
+	const SIGNIN = import.meta.env.VITE_LOGIN;
+	const register = async (credentials: register_credentials) => {
+		if (checkValidity(credentials)) {
+			axios.post(SIGNUP, credentials).then((data) => {
+				if (data.status === 202) {
+					let userData;
+					axios
+						.post(SIGNIN, { username: credentials.username, password: credentials.password })
+						.then((data) => {
+							userData = {
+								...data.data,
+							};
+							return userData;
+						})
+						.then((user) => {
+							dispatch({ type: "LOG_IN", payload: user });
+							toRoot();
+						});
+				}
+			});
+		}
 	};
 
 	return (
@@ -194,7 +235,7 @@ const Register = () => {
 							className="w-20 mx-auto my-10"
 							color="secondary"
 							onPress={() => {
-								dispatch({ type: "REGISTER", payload: credentials });
+								register(credentials);
 							}}>
 							Register
 						</Button>

@@ -1,9 +1,11 @@
 import { Button, Input } from "@nextui-org/react";
 import { Link, useNavigate } from "react-router-dom";
-import { useData } from "../../main/DataProvider";
 import { useState, ChangeEvent } from "react";
+import axios from "axios";
+import { checkValidity } from "../../../utils/checkValidity";
+import { useData } from "../../main/DataProvider";
 
-export const Login = () => {
+const Login = () => {
 	const { dispatch } = useData();
 	const [credentials, changeCredentials] = useState({ username: "", password: "" });
 
@@ -17,6 +19,26 @@ export const Login = () => {
 
 	const navigate = useNavigate();
 	const toRoot = () => navigate("/");
+
+	const SIGNIN = import.meta.env.VITE_LOGIN;
+	const login = async (credentials: { username: string; password: string }) => {
+		let userData;
+
+		if (checkValidity(credentials)) {
+			axios
+				.post(SIGNIN, credentials)
+				.then((data) => {
+					userData = {
+						...data.data,
+					};
+					return userData;
+				})
+				.then((user) => {
+					dispatch({ type: "LOG_IN", payload: user });
+					toRoot();
+				});
+		}
+	};
 
 	return (
 		<div className="w-full h-full flex flex-col justify-center">
@@ -67,11 +89,7 @@ export const Login = () => {
 							name="loginBTN"
 							className="w-1/3 mx-auto bg-secondary"
 							onPress={() => {
-								dispatch({
-									type: "LOG_IN",
-									payload: credentials,
-								});
-								toRoot();
+								login(credentials);
 							}}>
 							Log In
 						</Button>
@@ -91,3 +109,5 @@ export const Login = () => {
 		</div>
 	);
 };
+
+export default Login;

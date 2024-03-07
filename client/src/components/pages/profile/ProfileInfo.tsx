@@ -13,7 +13,7 @@ const ProfileInfo = () => {
 				</div>
 
 				<div className="py-5 my-auto flex flex-col">
-					<p className="text-left text-2xl text-primary">@{profile?.userName}</p>
+					<p className="text-left text-2xl text-primary">@{profile?.profilename}</p>
 
 					<div className="flex flex-row gap-3">
 						<p className="text-left text-lg text-default-800 my-auto">{profile?.firstName + " " + profile?.lastName}</p>
