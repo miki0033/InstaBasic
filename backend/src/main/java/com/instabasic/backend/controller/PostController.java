@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.instabasic.backend.common.util.exception.ErrorHandler;
 import com.instabasic.backend.model.Post;
 import com.instabasic.backend.service.PostService;
@@ -35,24 +36,25 @@ public class PostController {
 
     // C
     @PostMapping("/v1/newPost")
-    public ResponseEntity<String> postPost(@RequestBody Post post) {
+    public ResponseEntity<JsonNode> postPost(@RequestBody Post post) {
         try {
             PostService.save(post);
             return ResponseEntity.status(200).body(post.toJson());
         } catch (ErrorHandler err) {
             logger.warn(err.getMessage());
-            return ResponseEntity.status(err.getStatus()).body(err.getMessage());
+            throw new ResponseStatusException(err.getStatus(), err.getMessage(), err);
         } catch (Exception e) {
             logger.error("An unexpected error occurred", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred", e);
         }
     }
 
     // R
     @GetMapping("/v1/getPost/{postid}")
-    public Post getPost(@PathVariable Long postid) {
+    public ResponseEntity<JsonNode> getPost(@PathVariable Long postid) {
         try {
-            return PostService.findById(postid);
+            Post post = PostService.findById(postid);
+            return ResponseEntity.status(200).body(post.toJson());
         } catch (ErrorHandler err) {
             logger.warn(err.getMessage());
             throw new ResponseStatusException(err.getStatus(), err.getMessage(), err);
@@ -63,7 +65,7 @@ public class PostController {
     }
 
     @GetMapping("/v1/getPosts/{profilename}")
-    public Page<Post> getPosts(@PathVariable String profilename, Pageable pageable) {
+    public Page<JsonNode> getPosts(@PathVariable String profilename, Pageable pageable) {
         /* Ritorna tutti i post di un determinato profilo */
         try {
             return PostService.getPostsByProfileName(profilename, pageable);
@@ -95,7 +97,7 @@ public class PostController {
     public ResponseEntity<String> updatePost(@PathVariable Long id, @RequestBody Post PostToUpdate) {
         try {
             Post updatedPost = PostService.update(id, PostToUpdate);
-            return ResponseEntity.status(200).body("Post updated with id: " + id + " " + updatedPost.toString());
+            return ResponseEntity.status(200).body(updatedPost.toString());
         } catch (ErrorHandler err) {
             logger.warn(err.getMessage());
             return ResponseEntity.status(err.getStatus()).body(err.getMessage());

@@ -10,6 +10,9 @@ spring.jpa.properties.hibernate.format_sql = true
 
 server.port = 8080
 
+spring.jackson.serialization.write-dates-as-timestamps=false
+spring.jackson.serialization.write-date-timestamps-as-nanoseconds=false
+
 #JWT Key. Nota, questa chiave deve essere lunga almeno 512 bit
 myapp.jwtSecret = 
 #24 ore

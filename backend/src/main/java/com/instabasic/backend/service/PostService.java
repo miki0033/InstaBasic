@@ -1,26 +1,34 @@
 package com.instabasic.backend.service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.instabasic.backend.common.util.exception.ErrorHandler;
 import com.instabasic.backend.model.Post;
 import com.instabasic.backend.model.Profile;
+
 import com.instabasic.backend.repository.PostRepository;
 
 @Service
 public class PostService {
-
     @Autowired
     PostRepository PostRepository;
 
     // C
     public Post save(Post post) {
         if (post != null) {
+
+            post.setCreatedAt(LocalDateTime.now());
+
             return PostRepository.save(post);
         } else {
             throw new ErrorHandler(400, "null");
@@ -53,9 +61,19 @@ public class PostService {
         return Post;
     }
 
-    public Page<Post> getPostsByProfileName(String profileName, Pageable pageable) {
-        if (profileName == null) {
-            return PostRepository.findAllByProfile_Profilename(profileName, pageable);
+    public Page<JsonNode> getPostsByProfileName(String profileName, Pageable pageable) {
+        if (profileName != null) {
+            Page<Post> postPage = PostRepository.findAllByProfile_Profilename(profileName,
+                    pageable);
+            List<Post> postlist = postPage.getContent();
+            List<JsonNode> jsonPostList = new ArrayList<>();
+            for (Post p : postlist) {
+                JsonNode jsonPost = p.toJson(); // Converti il post in JSON
+                jsonPostList.add(jsonPost);
+            }
+            Page<JsonNode> jsonPostPage = new PageImpl<>(jsonPostList, postPage.getPageable(),
+                    postPage.getTotalElements());
+            return jsonPostPage;
         } else {
             throw new ErrorHandler(400, "null");
         }

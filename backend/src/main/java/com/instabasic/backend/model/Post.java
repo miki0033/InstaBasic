@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -55,6 +56,12 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private Set<Comment> comments;
 
+    public Post(String title, String description, ArrayList<String> imageUrl) {
+        this.title = title;
+        this.description = description;
+        this.imageUrl = imageUrl;
+    }
+
     public int countLikes() {
         try {
             return likes.size();
@@ -63,19 +70,46 @@ public class Post {
         }
     }
 
-    public String toJson() {
+    @Override
+    public String toString() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
+            objectMapper.registerModule(new JavaTimeModule());
             // Converti l'oggetto Post in una stringa JSON
             String json = objectMapper.writeValueAsString(this);
             JsonNode node = objectMapper.readTree(json);
             ((ObjectNode) node).put("likes", countLikes());
             ((ObjectNode) node).put("profile", this.profile.getId());
             // Restituisci il JSON modificato
+
             return objectMapper.writeValueAsString(node);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return "{}";
+        }
+    }
+
+    public JsonNode toJson() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            objectMapper.registerModule(new JavaTimeModule());
+            ObjectNode jsonNode = objectMapper.createObjectNode();
+
+            jsonNode.put("id", this.id);
+            jsonNode.put("title", this.title);
+            jsonNode.put("description", this.description);
+            jsonNode.put("imageUrl", objectMapper.valueToTree(this.imageUrl));
+            jsonNode.put("createdAt", objectMapper.valueToTree(this.createdAt));
+            jsonNode.put("type", this.type);
+            jsonNode.put("profile", this.profile.getId());
+
+            // Aggiungi il numero di likes
+            jsonNode.put("likes", this.countLikes());
+
+            return jsonNode;
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            return objectMapper.createObjectNode();
         }
     }
 
