@@ -2,21 +2,33 @@ import { Dispatch, ReactNode, createContext, useContext, useReducer } from "reac
 
 //
 const InitContext = {
-	user: undefined,
-	profile: undefined,
+	user: {
+		id: 0,
+		username: "",
+		email: "",
+	},
+	profile: {
+		profilename: "",
+		firstName: "",
+		lastName: "",
+		birthday: "",
+	},
 	follower: [],
 	followed: [],
 	posts: [],
+	token: { token: "", type: "" },
 };
+
+/*//
 const test_login_Action: IState = {
 	user: {
 		id: 1,
-		userName: "Seris_Dantalian",
+		username: "Seris_Dantalian",
 		email: "seris.dantalian@gmail.com",
 	},
 	profile: {
 		id: 1,
-		userName: "Seris_Dantalian",
+		profilename: "Seris_Dantalian",
 		firstName: "Seris",
 		lastName: "Dantalian",
 		birthday: "21-08-2001",
@@ -46,15 +58,18 @@ const test_login_Action: IState = {
 			createdAt: "2024-02-29",
 		},
 	],
+	token: { token: "", type: "" },
 };
+//*/
 
 // context type
-interface IState {
-	user: IUser | undefined;
-	profile: IProfile | undefined;
+export interface IState {
+	user: IUser;
+	profile: IProfile;
 	follower: IFollow[];
 	followed: IFollow[];
 	posts: IPost[];
+	token: { token: string; type: string };
 }
 interface IDataContext {
 	state: IState;
@@ -65,34 +80,21 @@ interface IDataContext {
 type ACTIONTYPE =
 	| {
 			type: "LOG_IN";
-			payload: { userName: string; password: string };
+			payload: { user: IUser; profile: IProfile; token: { token: ""; type: "" } };
 	  }
 	| {
 			type: "LOG_OUT";
-	  }
-	| {
-			type: "REGISTER";
-			payload: {
-				firstName: string;
-				lastName: string;
-				userName: string;
-				email: string;
-				confirmEmail: string;
-				password: string;
-				confirmPassword: string;
-				birthday: string;
-			};
 	  };
 
 // context reducer - gestisco le varie actions possibili
 const reducer = (state: IDataContext["state"], action: ACTIONTYPE) => {
 	switch (action.type) {
 		case "LOG_IN":
-			return test_login_Action;
+			return { ...state, ...action.payload };
+
 		case "LOG_OUT":
 			return InitContext;
-		case "REGISTER":
-			return InitContext;
+
 		default:
 			return state;
 	}

@@ -18,3 +18,4 @@
 >> npm i react-router-dom
 >> npm i @heroicons/react
 >> npm install next-themes
+>> npm i axios

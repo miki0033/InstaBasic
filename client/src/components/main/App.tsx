@@ -1,34 +1,39 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import Layout from "../layout/Layout";
-import PageNotFound from "../pages/PageNotFound";
 import { useData } from "./DataProvider";
-import { Login } from "../pages/login/Login";
+
+import Layout from "../layout/Layout";
+
+import Login from "../pages/login/Login";
 import Register from "../pages/login/Register";
+
 import Feed from "../pages/feed/Feed";
+
 import Profile from "../pages/profile/Profile";
 import Settings from "../pages/settings/Settings";
 
+import PageNotFound from "../pages/PageNotFound";
+
 function App() {
 	const {
-		state: { profile },
+		state: { user },
 	} = useData();
 
 	return (
 		<>
 			<Routes>
 				<Route path="/" element={<Layout />}>
-					<Route index element={<Navigate to={profile ? "/home" : "/login"} />} />
+					<Route index element={<Navigate to={!user.id ? "/login" : "/home"} />} />
 
 					<Route path="/home">
-						<Route index element={<Feed />} />
+						<Route index element={!user.id ? <Navigate to={"/login"} /> : <Feed />} />
 					</Route>
 
 					<Route path="/profile">
-						<Route index element={<Profile />} />
+						<Route index element={!user.id ? <Navigate to={"/login"} /> : <Profile />} />
 
 						<Route path="settings">
-							<Route index element={<Settings />} />
+							<Route index element={!user.id ? <Navigate to={"/login"} /> : <Settings />} />
 						</Route>
 					</Route>
 

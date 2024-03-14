@@ -22,7 +22,9 @@ const AddPostCard = () => {
 					{(onClose) => (
 						<>
 							<ModalHeader></ModalHeader>
-							<ModalBody className=""></ModalBody>
+							<ModalBody className="text-center">
+								WIP <br /> [FORM FOR ADDING POST]
+							</ModalBody>
 							<ModalFooter>
 								<Button color="danger" variant="light" onPress={onClose}>
 									Close

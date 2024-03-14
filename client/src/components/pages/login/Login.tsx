@@ -1,11 +1,13 @@
 import { Button, Input } from "@nextui-org/react";
 import { Link, useNavigate } from "react-router-dom";
-import { useData } from "../../main/DataProvider";
 import { useState, ChangeEvent } from "react";
+import axios from "axios";
+import { checkValidity } from "../../../utils/checkValidity";
+import { useData } from "../../main/DataProvider";
 
-export const Login = () => {
+const Login = () => {
 	const { dispatch } = useData();
-	const [credentials, changeCredentials] = useState({ userName: "", password: "" });
+	const [credentials, changeCredentials] = useState({ username: "", password: "" });
 
 	const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.currentTarget;
@@ -18,6 +20,26 @@ export const Login = () => {
 	const navigate = useNavigate();
 	const toRoot = () => navigate("/");
 
+	const SIGNIN = import.meta.env.VITE_LOGIN;
+	const login = async (credentials: { username: string; password: string }) => {
+		let userData;
+
+		if (checkValidity(credentials)) {
+			axios
+				.post(SIGNIN, credentials)
+				.then((data) => {
+					userData = {
+						...data.data,
+					};
+					return userData;
+				})
+				.then((user) => {
+					dispatch({ type: "LOG_IN", payload: user });
+					toRoot();
+				});
+		}
+	};
+
 	return (
 		<div className="w-full h-full flex flex-col justify-center">
 			<div className="w-8/12 mx-auto h-5/6 flex flex-col justify-around rounded-md bg-content2 border-2 border-primary-400">
@@ -26,7 +48,7 @@ export const Login = () => {
 				<div className="h-2/3 flex flex-row justify-around ">
 					<div className="w-6/12 h-4/5 my-auto flex flex-col justify-between ">
 						<Input
-							name="userName"
+							name="username"
 							type="email"
 							label="Username or E-mail"
 							labelPlacement="outside"
@@ -34,12 +56,12 @@ export const Login = () => {
 							isClearable
 							isRequired
 							color="secondary"
-							value={credentials.userName}
+							value={credentials.username}
 							onChange={handleInput}
 							onClear={() => {
 								changeCredentials({
 									...credentials,
-									userName: "",
+									username: "",
 								});
 							}}
 						/>
@@ -67,11 +89,7 @@ export const Login = () => {
 							name="loginBTN"
 							className="w-1/3 mx-auto bg-secondary"
 							onPress={() => {
-								dispatch({
-									type: "LOG_IN",
-									payload: credentials,
-								});
-								toRoot();
+								login(credentials);
 							}}>
 							Log In
 						</Button>
@@ -91,3 +109,5 @@ export const Login = () => {
 		</div>
 	);
 };
+
+export default Login;

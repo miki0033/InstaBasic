@@ -18,7 +18,7 @@ import jakarta.validation.Valid;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
 
   @Autowired
@@ -29,12 +29,12 @@ public class AuthController {
    * RoleService roleService;
    */
 
-  @PostMapping("/signin")
+  @PostMapping("v1/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
     return userService.login(loginRequest);
   }
 
-  @PostMapping("/signup")
+  @PostMapping("v1/signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
     return userService.registerUser(signUpRequest);
   }

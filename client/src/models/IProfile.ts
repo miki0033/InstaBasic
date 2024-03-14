@@ -1,6 +1,6 @@
 interface IProfile {
 	id?: number;
-	userName: string;
+	profilename: string;
 	firstName: string;
 	lastName: string;
 	birthday: string;

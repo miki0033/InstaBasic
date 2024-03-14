@@ -3,10 +3,6 @@ import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { motion, useDragControls } from "framer-motion";
 import { useData } from "../../main/DataProvider";
 import { useEffect } from "react";
-import dotenv from "dotenv";
-
-//dotenv.config();
-const PROFILE_BY_ID = /*process.env.DB_GET_PROFILE_BY_ID ||*/ "";
 
 const Carousel = () => {
 	const {
@@ -16,7 +12,7 @@ const Carousel = () => {
 	const followed_users: IProfile[] = [];
 	useEffect(() => {
 		followed.forEach(async (id) => {
-			const user = await fetch(PROFILE_BY_ID + id);
+			const user = await fetch("PROFILE_BY_ID" + id);
 			followed_users.push(await user.json());
 		});
 	}, []);

@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const ProfileDropdown = () => {
 	const {
+		state,
 		state: { user, profile },
 		dispatch,
 	} = useData();
@@ -16,26 +17,26 @@ const ProfileDropdown = () => {
 			<DropdownTrigger>
 				<Avatar
 					isBordered
-					color={user ? "primary" : "danger"}
+					color={user.id ? "primary" : "danger"}
 					className="w-9 h-9 my-auto mr-20"
 					src={profile?.avatarUrl ? profile.avatarUrl : ""}
 				/>
 			</DropdownTrigger>
 
-			{user ? (
+			{user.id ? (
 				<DropdownMenu aria-label="ProfileActions" variant="flat">
-					<DropdownItem key="profile" className="h-14 gap-2">
+					<DropdownItem key="profile" className="h-14 gap-2" onPress={() => console.log(state)} textValue="Signed in as">
 						<p className="font-semibold">Signed in as</p>
 						<p className="font-semibold">{user?.email}</p>
 					</DropdownItem>
 
-					<DropdownItem key="toProfile">
+					<DropdownItem key="toProfile" textValue="profile">
 						<Link to={"/profile"}>
 							<p>Profile</p>
 						</Link>
 					</DropdownItem>
 
-					<DropdownItem key="toSettings">
+					<DropdownItem key="toSettings" textValue="settings">
 						<Link to={"/profile/settings"}>
 							<p>Settings</p>
 						</Link>
@@ -44,16 +45,17 @@ const ProfileDropdown = () => {
 					<DropdownItem
 						key="logout"
 						color="danger"
+						textValue="Log OUT"
 						onPress={() => {
 							dispatch({ type: "LOG_OUT" });
 							toRoot();
 						}}>
-						Log Out
+						<p>Log Out</p>
 					</DropdownItem>
 				</DropdownMenu>
 			) : (
 				<DropdownMenu aria-label="ProfileActions" variant="flat">
-					<DropdownItem key="notLogged" className="h-18 gap-3">
+					<DropdownItem key="notLogged" className="h-18 gap-3" textValue="NOT Logged IN">
 						<p className="font-semibold">You are NOT Logged IN</p>
 					</DropdownItem>
 				</DropdownMenu>
