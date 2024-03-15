@@ -1,5 +1,6 @@
 package com.instabasic.backend.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,23 +16,41 @@ import org.springframework.stereotype.Service;
 import com.instabasic.backend.common.util.exception.ErrorHandler;
 import com.instabasic.backend.model.Comment;
 import com.instabasic.backend.model.Post;
+import com.instabasic.backend.model.project.CommentProject;
 import com.instabasic.backend.repository.CommentRepository;
 import com.instabasic.backend.repository.PostRepository;
+import com.instabasic.backend.repository.ProfileRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class CommentService {
     static final Logger logger = LogManager.getLogger(CommentService.class.getName());
     @Autowired
+    ProfileRepository profileRepository;
+    @Autowired
     CommentRepository CommentRepository;
-
+    @Autowired
     PostRepository PostRepository;
 
     // C
-    public Comment save(Comment Comment) {
-        if (Comment != null) {
-            return CommentRepository.save(Comment);
-        } else {
-            throw new ErrorHandler(400, "null");
+    public Comment save(CommentProject project) {
+        try {
+
+            if (project != null) {
+                Comment comment = new Comment(project);
+                comment.setProfile(profileRepository.findById(project.getProfile())
+                        .orElseThrow(() -> new EntityNotFoundException("Profile not found")));
+                comment.setPost(PostRepository.findById(project.getPost())
+                        .orElseThrow(() -> new EntityNotFoundException("Profile not found")));
+                comment.setCreatedAt(LocalDateTime.now());
+                logger.info(comment);
+                return CommentRepository.save(comment);
+            } else {
+                throw new ErrorHandler(400, "null");
+            }
+        } catch (EntityNotFoundException e) {
+            throw new ErrorHandler(404, e.getMessage());
         }
     }
 

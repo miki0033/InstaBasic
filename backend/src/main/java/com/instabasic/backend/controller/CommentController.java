@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.instabasic.backend.common.util.exception.ErrorHandler;
 import com.instabasic.backend.model.Comment;
+import com.instabasic.backend.model.project.CommentProject;
 import com.instabasic.backend.service.CommentService;
 
 @RestController
@@ -28,18 +30,17 @@ public class CommentController {
 
     // C
     @PostMapping("/v1/newComment")
-    public ResponseEntity<String> PostComment(@RequestBody Comment Comment) {
+    public ResponseEntity<JsonNode> PostComment(@RequestBody CommentProject Comment) {
         try {
-            CommentService.save(Comment);
-            return ResponseEntity.status(200).body(Comment.toJson());
+            Comment responseComment = CommentService.save(Comment);
+            return ResponseEntity.status(200).body(responseComment.toJSON());
         } catch (ErrorHandler err) {
             logger.warn(err.getMessage());
-            return ResponseEntity.status(err.getStatus()).body(err.getMessage());
+            throw new ResponseStatusException(err.getStatus(), err.getMessage(), err);
         } catch (Exception e) {
             logger.error("An unexpected error occurred", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred", e);
         }
-
     }
 
     // R

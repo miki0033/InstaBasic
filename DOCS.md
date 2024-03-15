@@ -1,6 +1,6 @@
 **DOCUMENTAZIONE**
 
-/api/auth/signup
+/auth/v1/signup
 **richiesta:**
 {
 "username": "username1",
@@ -15,7 +15,7 @@
 "message": "User registered successfully!"
 }
 
-/api/auth/signin
+/auth/v1/signin
 **richiesta:**
 {
 "username": "username1",
@@ -149,3 +149,16 @@ _D_
 
 **risposta:**
 Post deleted with id: 11
+
+# Comment CRUD
+
+_C_
+/v1/newComment
+**richiesta:**
+{
+"text": "questo è un commento",
+"post":7,
+"profile":2
+}
+
+**risposta:**

@@ -102,8 +102,6 @@ public class Post {
             jsonNode.put("createdAt", objectMapper.valueToTree(this.createdAt));
             jsonNode.put("type", this.type);
             jsonNode.put("profile", this.profile.getId());
-
-            // Aggiungi il numero di likes
             jsonNode.put("likes", this.countLikes());
 
             return jsonNode;
