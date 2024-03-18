@@ -256,3 +256,56 @@ _token_
 
 **risposta**: <br>
 Comment deleted with id: _id_
+
+# Follow CRUD
+
+_C_
+/v1/{followerProfilename}/follow/{followingProfilename}
+**richiesta:** <br>
+_token_<br>
+
+**risposta**: <br>
+{
+"followed":"username1",
+"follower":"username2",
+"createdAt":[2024,3,18,16,40,50,910917600]
+}
+
+_R_
+/v1/getFollows/{Profileid}
+**richiesta:** <br>
+_token_<br>
+**risposta**: <br>
+[
+{
+"id": 2,
+"profilename": "username2",
+"firstName": "name2",
+"lastName": "surname2",
+"birthday": "2012-02-27",
+"bio": null,
+"avatarUrl": null
+}
+]
+
+/v1/getFollowers/{Profileid}
+**richiesta:** <br>
+_token_<br>
+**risposta**: <br>
+[
+{
+"id": 1,
+"profilename": "username1",
+"firstName": "name1",
+"lastName": "surname1",
+"birthday": "2011-02-17",
+"bio": null,
+"avatarUrl": null
+}
+]
+_D_
+/v1/deleteFollow/{Profilename}/{Followingname}
+**richiesta:** <br>
+_token_<br>
+**risposta**: <br>
+Follow deleted
