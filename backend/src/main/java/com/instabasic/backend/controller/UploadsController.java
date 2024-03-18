@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +31,7 @@ import com.instabasic.backend.service.UploadsService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class UploadsController {
     static final Logger logger = LogManager.getLogger(FollowController.class.getName());
