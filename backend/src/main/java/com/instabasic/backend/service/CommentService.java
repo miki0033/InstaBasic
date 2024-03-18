@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.instabasic.backend.common.util.exception.ErrorHandler;
 import com.instabasic.backend.model.Comment;
 import com.instabasic.backend.model.Post;
@@ -44,7 +45,7 @@ public class CommentService {
                 comment.setPost(PostRepository.findById(project.getPost())
                         .orElseThrow(() -> new EntityNotFoundException("Profile not found")));
                 comment.setCreatedAt(LocalDateTime.now());
-                logger.info(comment);
+                // logger.info(comment);
                 return CommentRepository.save(comment);
             } else {
                 throw new ErrorHandler(400, "null");
@@ -69,16 +70,25 @@ public class CommentService {
         }
     }
 
-    public Page<Comment> getCommentsByPost(String postid, Pageable pageable) {
+    public Page<JsonNode> getCommentsByPost(String postid, Pageable pageable) {
         try {
             Long postId = Long.parseLong(postid);
             Optional<Post> optpost = PostRepository.findById(postId);
             Post post = optpost.get();
-            return CommentRepository.findAllByPost(post, pageable);
+            Page<Comment> commPage = CommentRepository.findAllByPost(post, pageable);
+            List<Comment> commlist = commPage.getContent();
+            List<JsonNode> jsonCommList = new ArrayList<>();
+            for (Comment c : commlist) {
+                JsonNode jsonComm = c.toJSON(); // Converti il post in JSON
+                jsonCommList.add(jsonComm);
+            }
+            Page<JsonNode> jsonPostPage = new PageImpl<>(jsonCommList, commPage.getPageable(),
+                    commPage.getTotalElements());
+            return jsonPostPage;
         } catch (Exception e) {
             logger.error("An unexpected error occurred", e);
-            List<Comment> emptyList = new ArrayList<>();
-            Page<Comment> emptyPage = new PageImpl<>(emptyList);
+            List<JsonNode> emptyList = new ArrayList<>();
+            Page<JsonNode> emptyPage = new PageImpl<>(emptyList);
             return emptyPage;
         }
 

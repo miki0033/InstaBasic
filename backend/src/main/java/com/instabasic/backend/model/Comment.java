@@ -3,7 +3,6 @@ package com.instabasic.backend.model;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.CreatedDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,8 +13,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.instabasic.backend.model.project.CommentProject;
-import com.instabasic.backend.repository.PostRepository;
-import com.instabasic.backend.repository.ProfileRepository;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
