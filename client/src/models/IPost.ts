@@ -3,8 +3,8 @@ interface IPost {
 	title: string;
 	description: string;
 	url: string[];
-	likes: number;
+	likes?: number;
 	type: "single" | "carousel" | "story";
-	profileId: number;
-	createdAt: string;
+	profileId?: number;
+	createdAt?: string;
 }

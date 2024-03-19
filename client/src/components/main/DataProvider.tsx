@@ -16,10 +16,11 @@ const InitContext = {
 	follower: [],
 	followed: [],
 	posts: [],
-	token: { token: "", type: "" },
+	token: "",
+	type: "",
 };
 
-/*//
+/*// Login Data test
 const test_login_Action: IState = {
 	user: {
 		id: 1,
@@ -68,8 +69,8 @@ export interface IState {
 	profile: IProfile;
 	follower: IFollow[];
 	followed: IFollow[];
-	posts: IPost[];
-	token: { token: string; type: string };
+	token: string;
+	type: string;
 }
 interface IDataContext {
 	state: IState;
@@ -80,10 +81,14 @@ interface IDataContext {
 type ACTIONTYPE =
 	| {
 			type: "LOG_IN";
-			payload: { user: IUser; profile: IProfile; token: { token: ""; type: "" } };
+			payload: { user: IUser; profile: IProfile; token: string; type: string };
 	  }
 	| {
 			type: "LOG_OUT";
+	  }
+	| {
+			type: "UPDATE_FOLLOWS";
+			payload: { follower: IFollow[]; followed: IFollow[] };
 	  };
 
 // context reducer - gestisco le varie actions possibili

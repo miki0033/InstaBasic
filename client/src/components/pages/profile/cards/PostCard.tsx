@@ -1,4 +1,4 @@
-import { Modal, ModalContent, ModalBody, ModalFooter, Button, useDisclosure, Pagination, ModalHeader, Avatar } from "@nextui-org/react";
+import { Modal, ModalContent, ModalBody, ModalFooter, Button, useDisclosure, Pagination, ModalHeader } from "@nextui-org/react";
 import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
@@ -42,7 +42,12 @@ const PostCard = ({ post }: { post: IPost }) => {
 								<div className="w-full h-full flex flex-row flex-wrap">
 									<div className="w-7/12 my-2 px-3 py-5 flex flex-col gap-10">
 										<div className="mx-auto px-3">
-											<Image alt={post.title} isBlurred className="max-h-[50vh] object-cover" src={post.url[modalImagePage]} />
+											<Image
+												alt={post.title}
+												isBlurred
+												className="max-h-[50vh] object-cover"
+												src={post.url[modalImagePage]}
+											/>
 										</div>
 
 										<Pagination
@@ -59,13 +64,16 @@ const PostCard = ({ post }: { post: IPost }) => {
 										<h1 className="py-3 text-center text-4xl ">{post.title}</h1>
 										<PostComment
 											avatar={profile?.avatarUrl ? profile.avatarUrl : ""}
-											userName={profile?.userName ? profile.userName : ""}
+											userName={profile?.profilename ? profile.profilename : ""}
 											text={post.description}
 										/>
 									</div>
 								</div>
 							</ModalBody>
-							<ModalFooter>
+							<ModalFooter className="flex flex-row gap-15">
+								<Button color="danger" onPress={onClose}>
+									Delete Post
+								</Button>
 								<Button color="danger" variant="light" onPress={onClose}>
 									Close
 								</Button>

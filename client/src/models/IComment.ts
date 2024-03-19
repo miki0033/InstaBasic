@@ -1,6 +1,8 @@
 interface IComment {
 	id?: number;
-	type: "";
-	url: string;
+	text: string;
+	likes: number;
 	createdAt: string;
+	commenter: number;
+	post: number;
 }
