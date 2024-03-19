@@ -2,6 +2,7 @@ import axios from "axios";
 import { useData } from "../../main/DataProvider";
 import AddPostCard from "./cards/AddPostCard";
 import PostCard from "./cards/PostCard";
+import { useEffect, useState } from "react";
 
 export const ProfilePosts = () => {
 	const {
@@ -14,18 +15,20 @@ export const ProfilePosts = () => {
 
 	const GET_POSTS = import.meta.env.VITE_GET_POSTS_BY_PROFILE_NAME;
 	let profilePosts: IPost[] = [];
-
-	const config = {
-		headers: { Authorization: type + " " + token },
+	const reloadImgs = () => {
+		const config = {
+			headers: { Authorization: type + " " + token },
+		};
+		axios.get(GET_POSTS + profilename, config).then((res) => {
+			profilePosts = res.data.content;
+			console.log(profilePosts);
+		});
 	};
-
-	axios.get(GET_POSTS + profilename, config).then((data) => {
-		console.log(data);
-	});
+	reloadImgs();
 
 	return (
 		<div className="w-full h-full px-14 pt-10 pb-5 flex flex-row flex-wrap justify-between gap-10">
-			<AddPostCard />
+			<AddPostCard signal={reloadImgs} />
 			{profilePosts.map((el) => {
 				return (
 					<>

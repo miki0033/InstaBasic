@@ -17,7 +17,7 @@ import { ChangeEvent, useState } from "react";
 import axios from "axios";
 import FormData from "form-data";
 
-const AddPostCard = () => {
+const AddPostCard = ({ signal }: { signal: () => void }) => {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
 	const [newPost, updateNewPost] = useState<IPost>({ title: "", description: "", url: [], type: "single" });
@@ -36,13 +36,14 @@ const AddPostCard = () => {
 	};
 	const [postFiles, changeFiles] = useState<File[]>();
 
-	const uploadPosts = () => {
-		//first Upload img(s) to resource server
+	const uploadPosts = async () => {
 		const PYPOST_POST = import.meta.env.VITE_PYPOST_POST;
-		postFiles?.forEach((file) => {
+
+		//upload imgs to resources
+		await postFiles?.forEach((file) => {
 			let data = new FormData();
 			data.append("file", file, file.name);
-
+			//first Upload each img to resource server
 			axios
 				.post(PYPOST_POST, data, {
 					headers: {
@@ -55,6 +56,16 @@ const AddPostCard = () => {
 					addUrlToPost(newUrl);
 				});
 		});
+
+		const JNEW_POST = import.meta.env.VITE_NEW_POST;
+		await axios
+			.post(JNEW_POST, newPost)
+			.then((post) => {
+				console.log(post);
+			})
+			.then(() => {
+				signal();
+			});
 	};
 
 	/*
