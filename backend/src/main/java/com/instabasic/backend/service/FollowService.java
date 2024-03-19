@@ -2,6 +2,7 @@ package com.instabasic.backend.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +33,16 @@ public class FollowService {
 
         if (follower != null && following != null) {
             Follow follow = new Follow(follower, following);
-            FollowRepository.save(follow);
+            // controllare che il follow non ci sia già
+            Optional<Follow> followRecord = FollowRepository.findByFollowedAndFollower(follower, following);
+            Boolean isPresent = followRecord.isPresent();
+            if (isPresent) {
+                Follow fRecord = followRecord.get();
+                logger.info(fRecord.toString());
+                // delete(follower.getId(), following.getId());
+            } else {
+                FollowRepository.save(follow);
+            }
             return follow;
         } else {
             if (follower != null)
@@ -44,21 +54,29 @@ public class FollowService {
 
     // R
 
-    public List<Follow> getFollowing(String Profilename) {
+    public List<Profile> getFollowing(String Profilename) {
         /* Restituisce i profili che quella persona(Profilename) segue */
         Profile profile = ProfileRepository.findByProfilename(Profilename).get();
         if (profile != null) {
-            List<Follow> followingProfiles = FollowRepository.findByFollowed(profile);
+            List<Follow> followingList = FollowRepository.findByFollowed(profile);
+            List<Profile> followingProfiles = new ArrayList<>();
+            for (Follow follow : followingList) {
+                followingProfiles.add(follow.getFollower());
+            }
             return followingProfiles;
         }
         return new ArrayList<>();
     }
 
-    public List<Follow> getFollowers(String Profilename) {
+    public List<Profile> getFollowers(String Profilename) {
         /* Restituisce i profili che seguono quella persona(Profilename) */
         Profile profile = ProfileRepository.findByProfilename(Profilename).get();
         if (profile != null) {
-            List<Follow> followingProfiles = FollowRepository.findByFollower(profile);
+            List<Follow> followingList = FollowRepository.findByFollower(profile);
+            List<Profile> followingProfiles = new ArrayList<>();
+            for (Follow follow : followingList) {
+                followingProfiles.add(follow.getFollowed());
+            }
             return followingProfiles;
         }
         return new ArrayList<>();
@@ -67,27 +85,28 @@ public class FollowService {
     // U
 
     // D
-    public void delete(Long profileId, Long followingId) {
+    public void delete(String profilename, String followingname) {
         try {
-            if (profileId == null) {
+            if (profilename == null) {
                 throw new ErrorHandler(400, "profileId is null");
             }
-            if (followingId == null) {
+            if (followingname == null) {
                 throw new ErrorHandler(400, "followingId is null");
             }
-            Profile profile = ProfileRepository.findById(profileId).get();
-            Profile following = ProfileRepository.findById(followingId).get();
-            Follow followRecord = FollowRepository.findByFollowedAndFollower(profile, following).get();
-            if (followRecord != null) {
-                Long id = followRecord.getId();
+            Profile profile = ProfileRepository.findByProfilename(profilename).get();
+            Profile following = ProfileRepository.findByProfilename(followingname).get();
+            Optional<Follow> followRecord = FollowRepository.findByFollowedAndFollower(profile, following);
+            Boolean isPresent = followRecord.isPresent();
+            if (isPresent) {
+                Follow followR = followRecord.get();
+                Long id = followR.getId();
                 if (id != null) {
                     FollowRepository.deleteById(id);
                 } else {
                     throw new ErrorHandler(400, "Record Id is null");
                 }
-
             } else {
-                throw new ErrorHandler(404, "Post not found");
+                throw new ErrorHandler(404, "Follow not found");
             }
         } catch (Exception e) {
             logger.error("Unexpected error: " + e.getMessage(), e);

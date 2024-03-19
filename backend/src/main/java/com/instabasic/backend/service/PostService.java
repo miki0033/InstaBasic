@@ -62,22 +62,25 @@ public class PostService {
     }
 
     public Page<JsonNode> getPostsByProfileName(String profileName, Pageable pageable) {
-        if (profileName != null) {
-            Page<Post> postPage = PostRepository.findAllByProfile_Profilename(profileName,
-                    pageable);
-            List<Post> postlist = postPage.getContent();
-            List<JsonNode> jsonPostList = new ArrayList<>();
-            for (Post p : postlist) {
-                JsonNode jsonPost = p.toJson(); // Converti il post in JSON
-                jsonPostList.add(jsonPost);
+        try {
+            if (profileName != null) {
+                Page<Post> postPage = PostRepository.findAllByProfile_Profilename(profileName,
+                        pageable);
+                List<Post> postlist = postPage.getContent();
+                List<JsonNode> jsonPostList = new ArrayList<>();
+                for (Post p : postlist) {
+                    JsonNode jsonPost = p.toJson(); // Converti il post in JSON
+                    jsonPostList.add(jsonPost);
+                }
+                Page<JsonNode> jsonPostPage = new PageImpl<>(jsonPostList, postPage.getPageable(),
+                        postPage.getTotalElements());
+                return jsonPostPage;
+            } else {
+                throw new ErrorHandler(400, "null");
             }
-            Page<JsonNode> jsonPostPage = new PageImpl<>(jsonPostList, postPage.getPageable(),
-                    postPage.getTotalElements());
-            return jsonPostPage;
-        } else {
-            throw new ErrorHandler(400, "null");
+        } catch (Exception e) {
+            throw new ErrorHandler(400, e.getMessage());
         }
-
     }
 
     // U

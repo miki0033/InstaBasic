@@ -69,7 +69,7 @@ public class CommentController {
      */
 
     @GetMapping("/v1/getComments/{postid}")
-    public Page<Comment> getCommentsByPost(@PathVariable String postid, Pageable pageable) {
+    public Page<JsonNode> getCommentsByPost(@PathVariable String postid, Pageable pageable) {
         try {
             return CommentService.getCommentsByPost(postid, pageable);
         } catch (ErrorHandler err) {

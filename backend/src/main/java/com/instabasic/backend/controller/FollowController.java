@@ -37,7 +37,7 @@ public class FollowController {
             @PathVariable String followingUsername) {
         try {
             Follow follow = followService.follow(followerUsername, followingUsername);
-            return ResponseEntity.status(200).body(follow.toString());
+            return ResponseEntity.status(200).body(follow.toJSON());
         } catch (ErrorHandler err) {
             logger.warn(err.getMessage());
             return ResponseEntity.status(err.getStatus()).body(err.getMessage());
@@ -50,7 +50,7 @@ public class FollowController {
     // R
     /** Restituisce tutti i profili che quella persona segue */
     @GetMapping("/v1/getFollows/{Profileid}")
-    public ResponseEntity<List<Follow>> getFollows(@PathVariable Long Profileid) {
+    public ResponseEntity<List<Profile>> getFollows(@PathVariable Long Profileid) {
         try {
             Profile profile = profileService.findById(Profileid);
             return ResponseEntity.status(200).body(followService.getFollowing(profile.getProfilename()));
@@ -65,11 +65,12 @@ public class FollowController {
     }
 
     /** Restituisce tutti i profili che seguono quella persona */
-    @GetMapping("/v1/getFollower/{Followerid}")
-    public ResponseEntity<List<Follow>> getFollower(@PathVariable Long Profileid) {
+    @GetMapping("/v1/getFollowers/{Followerid}")
+    public ResponseEntity<List<Profile>> getFollower(@PathVariable Long Followerid) {
         try {
-            Profile profile = profileService.findById(Profileid);
-            return ResponseEntity.status(200).body(followService.getFollowers(profile.getProfilename()));
+            Profile profile = profileService.findById(Followerid);
+            List<Profile> response = followService.getFollowers(profile.getProfilename());
+            return ResponseEntity.status(200).body(response);
         } catch (ErrorHandler err) {
             logger.warn(err.getMessage());
             throw new ResponseStatusException(err.getStatus(), err.getMessage(), err);
@@ -82,10 +83,10 @@ public class FollowController {
     // U
 
     // D
-    @DeleteMapping("/v1/deleteFollow/{profileId}/{followerId}")
-    public ResponseEntity<String> deleteFollow(@PathVariable Long profileId, @PathVariable Long followerId) {
+    @DeleteMapping("/v1/deleteFollow/{Profilename}/{Followingname}")
+    public ResponseEntity<String> deleteFollow(@PathVariable String Profilename, @PathVariable String Followingname) {
         try {
-            followService.delete(profileId, followerId);
+            followService.delete(Profilename, Followingname);
             return ResponseEntity.status(200).body("Follow deleted");
         } catch (ErrorHandler err) {
             logger.warn(err.getMessage());
