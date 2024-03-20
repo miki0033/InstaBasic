@@ -31,7 +31,7 @@ export const ProfilePosts = () => {
 	reloadImgs();
 
 	return (
-		<div className="w-full h-full px-14 pt-10 pb-5 flex flex-row flex-wrap justify-between gap-10">
+		<div key="cardsDiv" className="w-full h-full px-14 pt-10 pb-5 flex flex-row flex-wrap justify-between gap-10">
 			<AddPostCard signal={reloadImgs} key={0} />
 			{profilePosts.map((el, index) => {
 				return (
