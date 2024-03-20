@@ -12,9 +12,12 @@ import org.springframework.stereotype.Service;
 import com.instabasic.backend.common.util.exception.ErrorHandler;
 import com.instabasic.backend.model.Post;
 import com.instabasic.backend.model.Profile;
+import com.instabasic.backend.model.User;
+import com.instabasic.backend.model.project.ProfileProject;
 import com.instabasic.backend.repository.FollowRepository;
 import com.instabasic.backend.repository.PostRepository;
 import com.instabasic.backend.repository.ProfileRepository;
+import com.instabasic.backend.repository.UserRepository;
 
 @Service
 public class ProfileService {
@@ -28,14 +31,40 @@ public class ProfileService {
     @Autowired
     PostRepository PostRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     static final Logger logger = LogManager.getLogger(ProfileService.class.getName());
 
     // C
     public Profile save(Profile profile) {
         if (profile != null) {
-            return ProfileRepository.save(profile);
+            // return ProfileRepository.save(profile);
+            return profile;
         } else {
             throw new ErrorHandler(400, "null");
+        }
+    }
+
+    public Profile save(ProfileProject project) {
+        try {
+            if (project != null) {
+                Long userId = project.getUser();
+                if (userId != null) {
+                    User user = userRepository.findById(userId).get();
+                    Profile profile = new Profile(project.getProfilename(), project.getFirstName(),
+                            project.getLastName(),
+                            project.getBirthday(), project.getBio(), user);
+                    profile = ProfileRepository.save(profile);
+                    return profile;
+                } else {
+                    throw new ErrorHandler(400, "userId null");
+                }
+            } else {
+                throw new ErrorHandler(400, "null");
+            }
+        } catch (Exception e) {
+            throw new ErrorHandler(500, e.getMessage());
         }
     }
 
@@ -103,7 +132,7 @@ public class ProfileService {
         if (!profileResult.isPresent()) {
             throw new ErrorHandler(404, "Profile not found");
         }
-        Profile existingProfile = profileResult.get();
+        Profile existingProfile = profileResult.orElseThrow(() -> new ErrorHandler(400, "Profile not found"));
         if (profileUpdate != null) {
             // Aggiorna i dettagli dell'utente solo se sono stati forniti nel payload
             if (profileUpdate.getProfilename() != null) {

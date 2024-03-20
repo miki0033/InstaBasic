@@ -320,3 +320,138 @@ _token_<br>
 }
 **risposta**: <br>
 Success
+
+/v1/likeComent/{commentId}
+**richiesta:** <br>
+_token_<br>
+{
+"profilename": "username3"
+}
+**risposta**: <br>
+Success
+
+# Profile CRUD
+
+_C_
+/v1/{followerProfilename}/follow/{followingProfilename}
+**richiesta:** <br>
+_token_<br>
+{
+"user":"3",
+"profilename":"user3profile7",
+"firstName":"user3",
+"lastName":"profile7",
+"birthday":"2024-03-15",
+"bio":"bio profilo secondario",
+"avatarUrl":null
+}
+
+**risposta**: <br>
+{
+"id": 12,
+"profilename": "user3profile7",
+"firstName": "user3",
+"lastName": "profile7",
+"birthday": "2024-03-15",
+"bio": "bio profilo secondario",
+"avatarUrl": null,
+"comments": 0,
+"followers": 0,
+"following": 0
+}
+
+_R_
+/v1/getProfiles/{userId}
+
+**richiesta:**<br>
+_token_
+**risposta:** <br>
+{
+"content": [
+{
+"id": 5,
+"profilename": "user3profile2",
+"firstName": "user3",
+"lastName": "profile1",
+"birthday": "2024-03-20",
+"bio": "bio profilo secondario",
+"avatarUrl": null
+},
+{
+"id": 7,
+"profilename": "user3profile3",
+"firstName": "user3",
+"lastName": "profile1",
+"birthday": "2024-03-20",
+"bio": "bio profilo secondario",
+"avatarUrl": null
+},
+{
+"id": 8,
+"profilename": "user3profile4",
+"firstName": "user3",
+"lastName": "profile1",
+"birthday": "2024-03-20",
+"bio": "bio profilo secondario",
+"avatarUrl": null
+},
+{
+"id": 10,
+"profilename": "user3profile5",
+"firstName": "user3",
+"lastName": "profile5",
+"birthday": "2024-03-15",
+"bio": "bio profilo secondario",
+"avatarUrl": null
+},
+{
+"id": 11,
+"profilename": "user3profile6",
+"firstName": "user3",
+"lastName": "profile6",
+"birthday": "2024-03-15",
+"bio": "bio profilo secondario",
+"avatarUrl": null
+},
+{
+"id": 12,
+"profilename": "user3profile7",
+"firstName": "user3",
+"lastName": "profile7",
+"birthday": "2024-03-15",
+"bio": "bio profilo secondario",
+"avatarUrl": null
+}
+],
+"pageable": "INSTANCE",
+"totalElements": 6,
+"totalPages": 1,
+"last": true,
+"size": 6,
+"number": 0,
+"sort": {
+"sorted": false,
+"unsorted": true,
+"empty": true
+},
+"numberOfElements": 6,
+"first": true,
+"empty": false
+}
+
+/v1/getProfile/{ProfileName}
+
+**richiesta:**<br>
+_token_
+**risposta:** <br>
+{
+"id": 10,
+"profilename": "user3profile5",
+"firstName": "user3",
+"lastName": "profile5",
+"birthday": "2024-03-15",
+"bio": "bio profilo secondario",
+"avatarUrl": null
+}
+
+_U_
