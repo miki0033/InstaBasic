@@ -89,3 +89,5 @@ resources/*.properties
 *.properties
 *.gz
 
+#Resources
+resources/uploads/**/*
