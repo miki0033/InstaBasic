@@ -40,24 +40,22 @@ const AddPostCard = ({ signal }: { signal: () => void }) => {
 			[name]: value,
 		});
 	};
-	const handleNewUrl = (newUrl: string) => {
-		updateNewPost({
-			...newPost,
-			url: [...newPost.url, newUrl],
-		});
-	};
 
 	//POST FILES DATA
 	const [postFiles, changeFiles] = useState<File[]>();
 
 	//CALL TO BACKEND FOR POST UPLOAD
-	const upload = () => {
+	const upload = (urls: string[]) => {
+		let toUpload = { ...newPost };
+		toUpload.url = urls;
+
 		const JNEW_POST = import.meta.env.VITE_NEW_POST;
 		const config = {
 			headers: { Authorization: type + " " + token },
 		};
+
 		axios
-			.post(JNEW_POST, newPost, config)
+			.post(JNEW_POST, toUpload, config)
 			.then((post) => {
 				console.log(post);
 			})
@@ -89,14 +87,13 @@ const AddPostCard = ({ signal }: { signal: () => void }) => {
 	};
 
 	//MAIN UPLOAD FUNCTION
-	const uploadPosts = async () => {
+	const uploadPost = async () => {
 		const urls = [];
 		for await (const file of postFiles!) {
 			const newUrl = await pyPost(file);
 			urls.push(newUrl);
-			handleNewUrl(newUrl);
 		}
-		console.log(newPost);
+		upload(urls);
 	};
 
 	return (
@@ -213,16 +210,9 @@ const AddPostCard = ({ signal }: { signal: () => void }) => {
 								<Button
 									color="primary"
 									onPress={async () => {
-										await uploadPosts();
-
+										await uploadPost();
 										changeFiles([]);
-										console.log("postFiles: ");
-										console.log(postFiles);
-
-										updateNewPost({ title: "", description: "", url: [], type: "single" });
-										console.log("post: ");
-										console.log(newPost);
-
+										updateNewPost({ title: "", description: "", url: [], type: "single", profileId: id });
 										onClose();
 									}}>
 									POST
