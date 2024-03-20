@@ -6,8 +6,8 @@ import uuid
 from werkzeug.utils import secure_filename
 
 baseDir = "C:/Users/cosim/Desktop/Code/GitHub/InstaBasic/resources"
-pfpDir = baseDir + "/uploads/pfp"
-postDir = baseDir + "/uploads/posts"
+pfpDir = baseDir + "/uploads/pfp/"
+postDir = baseDir + "/uploads/posts/"
 
 app = Flask(__name__)
 CORS(app)
@@ -45,12 +45,12 @@ def index():
 
 @app.route('/get/pfp/<profileImageName>', methods=['GET', 'POST'])
 def get_PFP(profileImageName):
-    return send_file(pfpDir+profileImageName, mimetype="image")
+    return send_file(app.config['PFP_UPLOAD_DIR']+profileImageName, mimetype="image")
 
 
 @app.route('/get/posts/<postImageName>', methods=['GET', 'POST'])
 def get_Post(postImageName):
-    return send_file("./uploads/posts/"+postImageName, mimetype="image")
+    return send_file(app.config['POST_UPLOAD_DIR']+postImageName, mimetype="image")
 
 
 @app.route('/post/pfp/', methods=['GET', 'POST'])
