@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.instabasic.backend.common.util.exception.ErrorHandler;
 import com.instabasic.backend.model.Comment;
 import com.instabasic.backend.model.Post;
+import com.instabasic.backend.model.Profile;
 import com.instabasic.backend.model.project.CommentProject;
 import com.instabasic.backend.repository.CommentRepository;
 import com.instabasic.backend.repository.PostRepository;
@@ -126,6 +127,24 @@ public class CommentService {
             CommentRepository.deleteById(id);
         } else {
             throw new ErrorHandler(404, "Comment not found");
+        }
+    }
+
+    // like
+    public boolean like(Long commid, String profileName) {
+        try {
+            if (commid != null && profileName != null) {
+                Optional<Comment> optcomm = CommentRepository.findById(commid);
+                Comment comm = optcomm.get();
+                Profile clike = profileRepository.findByProfilename(profileName).get();
+                comm.addLike(clike);
+                CommentRepository.save(comm);
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            throw new ErrorHandler(500, e.getMessage());
         }
     }
 

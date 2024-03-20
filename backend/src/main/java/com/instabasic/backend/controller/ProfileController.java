@@ -12,12 +12,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.instabasic.backend.common.util.exception.ErrorHandler;
 import com.instabasic.backend.model.Profile;
+import com.instabasic.backend.model.project.ProfileProject;
 import com.instabasic.backend.service.ProfileService;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,9 +34,17 @@ public class ProfileController {
 
     // C
     @PostMapping("/v1/newProfile")
-    public String postProfile(@RequestBody Profile Profile) {
-        ProfileService.save(Profile);
-        return Profile.toString();
+    public ResponseEntity<String> postProfile(@RequestBody ProfileProject project) {
+        try {
+            Profile profile = ProfileService.save(project);
+            return ResponseEntity.status(200).body(profile.toString());
+        } catch (ErrorHandler err) {
+            logger.warn(err.getMessage());
+            throw new ResponseStatusException(err.getStatus(), err.getMessage(), err);
+        } catch (Exception e) {
+            logger.error("An unexpected error occurred", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred", e);
+        }
     }
 
     // R
