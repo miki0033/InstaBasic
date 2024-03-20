@@ -54,14 +54,9 @@ const AddPostCard = ({ signal }: { signal: () => void }) => {
 			headers: { Authorization: type + " " + token },
 		};
 
-		axios
-			.post(JNEW_POST, toUpload, config)
-			.then((post) => {
-				console.log(post);
-			})
-			.then(() => {
-				signal();
-			});
+		axios.post(JNEW_POST, toUpload, config).then(() => {
+			signal();
+		});
 	};
 
 	//CALL TO RESOURCE SERVER FOR IMG UPLOAD
@@ -97,7 +92,7 @@ const AddPostCard = ({ signal }: { signal: () => void }) => {
 	};
 
 	return (
-		<>
+		<div>
 			<Card shadow="sm" isPressable onPress={onOpen} className="w-60 h-60 border border-secondary-400">
 				<CardHeader>
 					<p className="mx-auto my-auto">Add New Post</p>
@@ -226,7 +221,7 @@ const AddPostCard = ({ signal }: { signal: () => void }) => {
 					)}
 				</ModalContent>
 			</Modal>
-		</>
+		</div>
 	);
 };
 

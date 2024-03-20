@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useData } from "../../main/DataProvider";
 import ProfileInfo from "./ProfileInfo";
 import { ProfilePosts } from "./ProfilePosts";
@@ -28,15 +28,17 @@ const Profile = () => {
 	const reloadImgs = async () => {
 		uploadPosts(await getPosts());
 	};
-	reloadImgs();
+	useEffect(() => {
+		reloadImgs();
+	}, []);
 
 	return (
 		<div className=" w-full h-full flex flex-row">
 			<div className="w-4/12 bg-content2 border-2 border-secondary-400 border-r-divider rounded-l-md">
-				<ProfileInfo nPosts={profilePosts.length} />
+				<ProfileInfo nPosts={profilePosts.length} key={0} />
 			</div>
 			<div className="w-8/12 bg-content2 border-2 border-primary-400 border-l-divider rounded-r-md">
-				<ProfilePosts reloadImgs={reloadImgs} profilePosts={profilePosts} />
+				<ProfilePosts reloadImgs={reloadImgs} profilePosts={profilePosts} key={1} />
 			</div>
 		</div>
 	);
