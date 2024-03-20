@@ -75,6 +75,14 @@ public class Comment {
         }
     }
 
+    public void addLike(Profile profile) {
+        likes.add(profile);
+    }
+
+    public void removeLike(Profile profile) {
+        likes.remove(profile);
+    }
+
     public String toString() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {

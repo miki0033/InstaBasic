@@ -111,4 +111,25 @@ public class CommentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
         }
     }
+
+    // LIKE
+    @PostMapping("/v1/likeComment/{commentId}")
+    public ResponseEntity<String> addLike(@PathVariable Long commentId, @RequestBody JsonNode json) {
+        try {
+            String profilename = json.get("profilename").textValue();
+            boolean result = CommentService.like(commentId, profilename);
+            if (result) {
+                return ResponseEntity.status(200).body("Success");
+            } else {
+                return ResponseEntity.status(500).body("Failed");
+            }
+        } catch (ErrorHandler err) {
+            logger.warn(err.getMessage());
+            throw new ResponseStatusException(err.getStatus(), err.getMessage(), err);
+        } catch (Exception e) {
+            logger.error("An unexpected error occurred", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred", e);
+        }
+    }
+
 }
