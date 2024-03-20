@@ -2,7 +2,6 @@ import axios from "axios";
 import { useData } from "../../main/DataProvider";
 import AddPostCard from "./cards/AddPostCard";
 import PostCard from "./cards/PostCard";
-import { useEffect, useState } from "react";
 
 export const ProfilePosts = () => {
 	const {

@@ -16,17 +16,23 @@ import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { ChangeEvent, useState } from "react";
 import axios from "axios";
 import FormData from "form-data";
+import { useData } from "../../../main/DataProvider";
 
 const AddPostCard = ({ signal }: { signal: () => void }) => {
+	//DATA
+	const {
+		state: {
+			token,
+			type,
+			profile: { id },
+		},
+	} = useData();
+
+	//MODAL
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-	const [newPost, updateNewPost] = useState<IPost>({ title: "", description: "", url: [], type: "single" });
-	const addUrlToPost = (newUrl: string) => {
-		updateNewPost({
-			...newPost,
-			url: [...newPost.url, newUrl],
-		});
-	};
+	//POST DATA
+	const [newPost, updateNewPost] = useState<IPost>({ title: "", description: "", url: [], type: "single", profileId: id });
 	const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.currentTarget;
 		updateNewPost({
@@ -34,32 +40,24 @@ const AddPostCard = ({ signal }: { signal: () => void }) => {
 			[name]: value,
 		});
 	};
+	const handleNewUrl = (newUrl: string) => {
+		updateNewPost({
+			...newPost,
+			url: [...newPost.url, newUrl],
+		});
+	};
+
+	//POST FILES DATA
 	const [postFiles, changeFiles] = useState<File[]>();
 
-	const uploadPosts = async () => {
-		const PYPOST_POST = import.meta.env.VITE_PYPOST_POST;
-
-		//upload imgs to resources
-		await postFiles?.forEach((file) => {
-			let data = new FormData();
-			data.append("file", file, file.name);
-			//first Upload each img to resource server
-			axios
-				.post(PYPOST_POST, data, {
-					headers: {
-						accept: "application/json",
-						"Content-Type": `multipart/form-data; boundary=${data.getBoundary}`,
-					},
-				})
-				.then((response): void => {
-					const newUrl = response.data.imageURL;
-					addUrlToPost(newUrl);
-				});
-		});
-
+	//CALL TO BACKEND FOR POST UPLOAD
+	const upload = () => {
 		const JNEW_POST = import.meta.env.VITE_NEW_POST;
-		await axios
-			.post(JNEW_POST, newPost)
+		const config = {
+			headers: { Authorization: type + " " + token },
+		};
+		axios
+			.post(JNEW_POST, newPost, config)
 			.then((post) => {
 				console.log(post);
 			})
@@ -68,14 +66,38 @@ const AddPostCard = ({ signal }: { signal: () => void }) => {
 			});
 	};
 
-	/*
-	{
-"title": "post title",
-"description":"description",
-"imageUrl":null,
-"type":"post",
-"profile":2
-}*/
+	//CALL TO RESOURCE SERVER FOR IMG UPLOAD
+	const pyPost = async (file: any) => {
+		const PYPOST_POST = import.meta.env.VITE_PYPOST_POST;
+
+		let data = new FormData();
+		data.append("file", file, file.name);
+
+		//first Upload each img to resource server
+		const url = await axios
+			.post(PYPOST_POST, data, {
+				headers: {
+					accept: "application/json",
+					"Content-Type": `multipart/form-data; boundary=${data.getBoundary}`,
+				},
+			})
+			.then((response) => {
+				return String(response.data.imageURL);
+			});
+
+		return url;
+	};
+
+	//MAIN UPLOAD FUNCTION
+	const uploadPosts = async () => {
+		const urls = [];
+		for await (const file of postFiles!) {
+			const newUrl = await pyPost(file);
+			urls.push(newUrl);
+			handleNewUrl(newUrl);
+		}
+		console.log(newPost);
+	};
 
 	return (
 		<>
@@ -188,7 +210,21 @@ const AddPostCard = ({ signal }: { signal: () => void }) => {
 							</ModalBody>
 
 							<ModalFooter className="flex flex-row gap-5">
-								<Button color="primary" onPress={uploadPosts}>
+								<Button
+									color="primary"
+									onPress={async () => {
+										await uploadPosts();
+
+										changeFiles([]);
+										console.log("postFiles: ");
+										console.log(postFiles);
+
+										updateNewPost({ title: "", description: "", url: [], type: "single" });
+										console.log("post: ");
+										console.log(newPost);
+
+										onClose();
+									}}>
 									POST
 								</Button>
 
