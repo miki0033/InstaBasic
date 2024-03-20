@@ -1,41 +1,27 @@
-import axios from "axios";
 import { useData } from "../../main/DataProvider";
 import AddPostCard from "./cards/AddPostCard";
 import PostCard from "./cards/PostCard";
-import { useEffect, useState } from "react";
 
-export const ProfilePosts = () => {
+export const ProfilePosts = ({ reloadImgs, profilePosts }: { reloadImgs: () => void; profilePosts: IPost[] }) => {
 	const {
 		state: {
-			profile: { profilename },
-			token,
-			type,
+			profile: { profilename, id },
 		},
 	} = useData();
 
-	const GET_POSTS = import.meta.env.VITE_GET_POSTS_BY_PROFILE_NAME;
-	let profilePosts: IPost[] = [];
-	const reloadImgs = () => {
-		const config = {
-			headers: { Authorization: type + " " + token },
-		};
-		axios.get(GET_POSTS + profilename, config).then((res) => {
-			profilePosts = res.data.content;
-			console.log(profilePosts);
-		});
-	};
-	reloadImgs();
-
 	return (
-		<div className="w-full h-full px-14 pt-10 pb-5 flex flex-row flex-wrap justify-between gap-10">
-			<AddPostCard signal={reloadImgs} />
-			{profilePosts.map((el) => {
-				return (
-					<>
-						<PostCard post={el} />
-					</>
-				);
-			})}
+		<div key={profilename + id} className="w-full h-full px-14 pt-10 pb-5 flex flex-row flex-wrap justify-between gap-10">
+			<AddPostCard signal={reloadImgs} key={0} />
+			{profilePosts
+				.slice(0)
+				.reverse()
+				.map((el, index) => {
+					return (
+						<>
+							<PostCard post={el} key={el?.profile + index} />
+						</>
+					);
+				})}
 		</div>
 	);
 };

@@ -2,9 +2,9 @@ interface IPost {
 	id?: number;
 	title: string;
 	description: string;
-	url: string[];
+	imageUrl: string[];
 	likes?: number;
 	type: "single" | "carousel" | "story";
-	profileId?: number;
+	profile: number;
 	createdAt?: string;
 }

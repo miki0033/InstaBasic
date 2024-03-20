@@ -81,7 +81,7 @@ interface IDataContext {
 type ACTIONTYPE =
 	| {
 			type: "LOG_IN";
-			payload: { user: IUser; profile: IProfile; token: string; type: string };
+			payload: { user: IUser; profile: IProfile; token: string; type: string; profileId: number };
 	  }
 	| {
 			type: "LOG_OUT";

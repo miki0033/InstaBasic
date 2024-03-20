@@ -12,6 +12,8 @@ const ProfileDropdown = () => {
 	const navigate = useNavigate();
 	const toRoot = () => navigate("/");
 
+	const GETIMAGE = import.meta.env.VITE_PYGET;
+
 	return (
 		<Dropdown placement="bottom-start" className="border border-1 border-secondary-200">
 			<DropdownTrigger>
@@ -19,7 +21,7 @@ const ProfileDropdown = () => {
 					isBordered
 					color={user.id ? "primary" : "danger"}
 					className="w-9 h-9 my-auto mr-20"
-					src={profile?.avatarUrl ? profile.avatarUrl : ""}
+					src={profile?.avatarUrl ? GETIMAGE + profile.avatarUrl : ""}
 				/>
 			</DropdownTrigger>
 

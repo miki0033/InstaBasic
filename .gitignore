@@ -89,3 +89,6 @@ resources/*.properties
 *.properties
 *.gz
 
+#Resources
+resources/uploads/pfp/*
+resources/uploads/posts/*

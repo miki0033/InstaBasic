@@ -12,6 +12,8 @@ const PostCard = ({ post }: { post: IPost }) => {
 		state: { profile },
 	} = useData();
 
+	const GETIMAGE = import.meta.env.VITE_PYGET;
+
 	return (
 		<>
 			<Card
@@ -23,7 +25,14 @@ const PostCard = ({ post }: { post: IPost }) => {
 				}}
 				className="w-60 h-60 border border-secondary-400">
 				<CardBody>
-					<Image shadow="sm" radius="lg" width="100%" alt={post.title} className="w-full object-cover h-[140px]" src={post.url[0]} />
+					<Image
+						shadow="sm"
+						radius="lg"
+						width="100%"
+						alt={post.title}
+						className="w-full object-cover h-[140px]"
+						src={GETIMAGE + post.imageUrl[0]}
+					/>
 				</CardBody>
 				<CardFooter className="text-small">
 					<p className="w-8/12">{post.title}</p>
@@ -46,13 +55,13 @@ const PostCard = ({ post }: { post: IPost }) => {
 												alt={post.title}
 												isBlurred
 												className="max-h-[50vh] object-cover"
-												src={post.url[modalImagePage]}
+												src={GETIMAGE + post.imageUrl[modalImagePage]}
 											/>
 										</div>
 
 										<Pagination
 											className=" mx-auto"
-											total={post.url.length}
+											total={post.imageUrl.length}
 											initialPage={1}
 											onChange={(pages) => {
 												nextImage(pages - 1);
@@ -63,15 +72,19 @@ const PostCard = ({ post }: { post: IPost }) => {
 									<div className="w-5/12 my-10 px-5">
 										<h1 className="py-3 text-center text-4xl ">{post.title}</h1>
 										<PostComment
-											avatar={profile?.avatarUrl ? profile.avatarUrl : ""}
+											avatar={profile?.avatarUrl ? GETIMAGE + profile.avatarUrl : ""}
 											userName={profile?.profilename ? profile.profilename : ""}
 											text={post.description}
 										/>
 									</div>
 								</div>
 							</ModalBody>
-							<ModalFooter className="flex flex-row gap-15">
-								<Button color="danger" onPress={onClose}>
+							<ModalFooter className="flex flex-row gap-5">
+								<Button
+									color="danger"
+									onPress={() => {
+										alert("WIP");
+									}}>
 									Delete Post
 								</Button>
 								<Button color="danger" variant="light" onPress={onClose}>
