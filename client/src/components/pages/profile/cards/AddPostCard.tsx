@@ -32,7 +32,7 @@ const AddPostCard = ({ signal }: { signal: () => void }) => {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
 	//POST DATA
-	const [newPost, updateNewPost] = useState<IPost>({ title: "", description: "", url: [], type: "single", profileId: id });
+	const [newPost, updateNewPost] = useState<IPost>({ title: "", description: "", imageUrl: [], type: "single", profile: id });
 	const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.currentTarget;
 		updateNewPost({
@@ -47,7 +47,7 @@ const AddPostCard = ({ signal }: { signal: () => void }) => {
 	//CALL TO BACKEND FOR POST UPLOAD
 	const upload = (urls: string[]) => {
 		let toUpload = { ...newPost };
-		toUpload.url = urls;
+		toUpload.imageUrl = urls;
 
 		const JNEW_POST = import.meta.env.VITE_NEW_POST;
 		const config = {
@@ -212,7 +212,7 @@ const AddPostCard = ({ signal }: { signal: () => void }) => {
 									onPress={async () => {
 										await uploadPost();
 										changeFiles([]);
-										updateNewPost({ title: "", description: "", url: [], type: "single", profileId: id });
+										updateNewPost({ title: "", description: "", imageUrl: [], type: "single", profile: id });
 										onClose();
 									}}>
 									POST

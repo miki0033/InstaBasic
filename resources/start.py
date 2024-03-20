@@ -114,7 +114,7 @@ def post_Post():
             )
             response = jsonify(
                 message="Image sent succesfully",
-                imageURL="/post/" + filename
+                imageURL="post/" + filename
             )
             return response, 200
 

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useData } from "../../main/DataProvider";
 import AddPostCard from "./cards/AddPostCard";
 import PostCard from "./cards/PostCard";
+import { useState } from "react";
 
 export const ProfilePosts = () => {
 	const {
@@ -13,25 +14,29 @@ export const ProfilePosts = () => {
 	} = useData();
 
 	const GET_POSTS = import.meta.env.VITE_GET_POSTS_BY_PROFILE_NAME;
-	let profilePosts: IPost[] = [];
-	const reloadImgs = () => {
+	const [profilePosts, uploadPosts] = useState<IPost[]>([]);
+
+	const getPosts = async () => {
 		const config = {
 			headers: { Authorization: type + " " + token },
 		};
-		axios.get(GET_POSTS + profilename, config).then((res) => {
-			profilePosts = res.data.content;
-			console.log(profilePosts);
+		const posts = await axios.get(GET_POSTS + profilename, config).then((res) => {
+			return res.data.content;
 		});
+		return posts;
+	};
+	const reloadImgs = async () => {
+		uploadPosts(await getPosts());
 	};
 	reloadImgs();
 
 	return (
 		<div className="w-full h-full px-14 pt-10 pb-5 flex flex-row flex-wrap justify-between gap-10">
-			<AddPostCard signal={reloadImgs} />
-			{profilePosts.map((el) => {
+			<AddPostCard signal={reloadImgs} key={0} />
+			{profilePosts.map((el, index) => {
 				return (
 					<>
-						<PostCard post={el} />
+						<PostCard post={el} key={el?.profile + index} />
 					</>
 				);
 			})}

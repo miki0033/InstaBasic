@@ -4,6 +4,7 @@ import { HeartIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { useData } from "../../../main/DataProvider";
 import PostComment from "../../../../utils/PostComment";
+import axios from "axios";
 
 const PostCard = ({ post }: { post: IPost }) => {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -11,6 +12,13 @@ const PostCard = ({ post }: { post: IPost }) => {
 	const {
 		state: { profile },
 	} = useData();
+	const GETPOST = import.meta.env.VITE_PYGET;
+	const getPostImg = async (url: string) => {
+		const fImg = await axios.get(GETPOST + url).then((post) => {
+			console.log(post);
+		});
+		return fImg;
+	};
 
 	return (
 		<>
@@ -23,7 +31,14 @@ const PostCard = ({ post }: { post: IPost }) => {
 				}}
 				className="w-60 h-60 border border-secondary-400">
 				<CardBody>
-					<Image shadow="sm" radius="lg" width="100%" alt={post.title} className="w-full object-cover h-[140px]" src={post.url[0]} />
+					<Image
+						shadow="sm"
+						radius="lg"
+						width="100%"
+						alt={post.title}
+						className="w-full object-cover h-[140px]"
+						src={GETPOST + post.imageUrl[0]}
+					/>
 				</CardBody>
 				<CardFooter className="text-small">
 					<p className="w-8/12">{post.title}</p>
@@ -46,13 +61,13 @@ const PostCard = ({ post }: { post: IPost }) => {
 												alt={post.title}
 												isBlurred
 												className="max-h-[50vh] object-cover"
-												src={post.url[modalImagePage]}
+												src={post.imageUrl[modalImagePage]}
 											/>
 										</div>
 
 										<Pagination
 											className=" mx-auto"
-											total={post.url.length}
+											total={post.imageUrl.length}
 											initialPage={1}
 											onChange={(pages) => {
 												nextImage(pages - 1);
