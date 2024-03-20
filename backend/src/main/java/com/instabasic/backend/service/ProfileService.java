@@ -39,8 +39,7 @@ public class ProfileService {
     // C
     public Profile save(Profile profile) {
         if (profile != null) {
-            // return ProfileRepository.save(profile);
-            return profile;
+            return ProfileRepository.save(profile);
         } else {
             throw new ErrorHandler(400, "null");
         }
