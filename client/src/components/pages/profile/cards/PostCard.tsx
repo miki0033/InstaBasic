@@ -15,7 +15,7 @@ const PostCard = ({ post }: { post: IPost }) => {
 	const GETIMAGE = import.meta.env.VITE_PYGET;
 
 	return (
-		<>
+		<div>
 			<Card
 				shadow="sm"
 				isPressable
@@ -95,7 +95,7 @@ const PostCard = ({ post }: { post: IPost }) => {
 					)}
 				</ModalContent>
 			</Modal>
-		</>
+		</div>
 	);
 };
 
