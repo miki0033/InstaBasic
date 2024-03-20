@@ -1,10 +1,11 @@
 import { Avatar, Button } from "@nextui-org/react";
 import { useData } from "../../main/DataProvider";
 
-const ProfileInfo = () => {
+const ProfileInfo = ({ nPosts }: { nPosts: number }) => {
 	const {
-		state: { profile, posts, followed, follower },
+		state: { profile, followed, follower },
 	} = useData();
+
 	return (
 		<div className="py-5">
 			<div className="h-36 flex flex-row gap-10">
@@ -26,7 +27,7 @@ const ProfileInfo = () => {
 
 			<div className="w-2/3 h-16 mx-auto flex flex-row justify-around gap-5">
 				<Button disabled className="rounded-sm my-auto" color="secondary">
-					Posts: {posts.length}
+					Posts: {nPosts}
 				</Button>
 				<Button className="rounded-sm my-auto" color="secondary">
 					Follower: {follower.length}

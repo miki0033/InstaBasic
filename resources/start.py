@@ -48,9 +48,9 @@ def get_PFP(profileImageName):
     return send_file(pfpDir+profileImageName, mimetype="image")
 
 
-@app.route('/get/post/<postImageName>', methods=['GET', 'POST'])
+@app.route('/get/posts/<postImageName>', methods=['GET', 'POST'])
 def get_Post(postImageName):
-    return send_file(postDir+postImageName, mimetype="image")
+    return send_file("./uploads/posts/"+postImageName, mimetype="image")
 
 
 @app.route('/post/pfp/', methods=['GET', 'POST'])

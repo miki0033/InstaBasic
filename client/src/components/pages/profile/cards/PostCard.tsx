@@ -4,7 +4,6 @@ import { HeartIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { useData } from "../../../main/DataProvider";
 import PostComment from "../../../../utils/PostComment";
-import axios from "axios";
 
 const PostCard = ({ post }: { post: IPost }) => {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -12,13 +11,8 @@ const PostCard = ({ post }: { post: IPost }) => {
 	const {
 		state: { profile },
 	} = useData();
-	const GETPOST = import.meta.env.VITE_PYGET;
-	const getPostImg = async (url: string) => {
-		const fImg = await axios.get(GETPOST + url).then((post) => {
-			console.log(post);
-		});
-		return fImg;
-	};
+
+	const GETIMAGE = import.meta.env.VITE_PYGET;
 
 	return (
 		<>
@@ -37,7 +31,7 @@ const PostCard = ({ post }: { post: IPost }) => {
 						width="100%"
 						alt={post.title}
 						className="w-full object-cover h-[140px]"
-						src={GETPOST + post.imageUrl[0]}
+						src={GETIMAGE + post.imageUrl[0]}
 					/>
 				</CardBody>
 				<CardFooter className="text-small">
@@ -61,7 +55,7 @@ const PostCard = ({ post }: { post: IPost }) => {
 												alt={post.title}
 												isBlurred
 												className="max-h-[50vh] object-cover"
-												src={post.imageUrl[modalImagePage]}
+												src={GETIMAGE + post.imageUrl[modalImagePage]}
 											/>
 										</div>
 
@@ -78,15 +72,19 @@ const PostCard = ({ post }: { post: IPost }) => {
 									<div className="w-5/12 my-10 px-5">
 										<h1 className="py-3 text-center text-4xl ">{post.title}</h1>
 										<PostComment
-											avatar={profile?.avatarUrl ? profile.avatarUrl : ""}
+											avatar={profile?.avatarUrl ? GETIMAGE + profile.avatarUrl : ""}
 											userName={profile?.profilename ? profile.profilename : ""}
 											text={post.description}
 										/>
 									</div>
 								</div>
 							</ModalBody>
-							<ModalFooter className="flex flex-row gap-15">
-								<Button color="danger" onPress={onClose}>
+							<ModalFooter className="flex flex-row gap-5">
+								<Button
+									color="danger"
+									onPress={() => {
+										alert("WIP");
+									}}>
 									Delete Post
 								</Button>
 								<Button color="danger" variant="light" onPress={onClose}>
