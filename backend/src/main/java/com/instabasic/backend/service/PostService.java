@@ -17,11 +17,14 @@ import com.instabasic.backend.model.Post;
 import com.instabasic.backend.model.Profile;
 
 import com.instabasic.backend.repository.PostRepository;
+import com.instabasic.backend.repository.ProfileRepository;
 
 @Service
 public class PostService {
     @Autowired
-    PostRepository PostRepository;
+    PostRepository postRepository;
+    @Autowired
+    ProfileRepository profileRepository;
 
     // C
     public Post save(Post post) {
@@ -29,7 +32,7 @@ public class PostService {
 
             post.setCreatedAt(LocalDateTime.now());
 
-            return PostRepository.save(post);
+            return postRepository.save(post);
         } else {
             throw new ErrorHandler(400, "null");
         }
@@ -38,7 +41,7 @@ public class PostService {
     // R
     public Post findById(Long id) {
         if (id != null) {
-            Optional<Post> optional = PostRepository.findById(id);
+            Optional<Post> optional = postRepository.findById(id);
 
             if (optional.isPresent()) {
                 return optional.get();
@@ -52,7 +55,7 @@ public class PostService {
 
     public Post findByTitle(String title, Profile profile) {
         Post Post = null;
-        Optional<Post> optional = PostRepository.findByTitleAndProfile(title, profile);
+        Optional<Post> optional = postRepository.findByTitleAndProfile(title, profile);
         if (optional.isPresent()) {
             Post = optional.get();
         } else {
@@ -64,7 +67,7 @@ public class PostService {
     public Page<JsonNode> getPostsByProfileName(String profileName, Pageable pageable) {
         try {
             if (profileName != null) {
-                Page<Post> postPage = PostRepository.findAllByProfile_Profilename(profileName,
+                Page<Post> postPage = postRepository.findAllByProfile_Profilename(profileName,
                         pageable);
                 List<Post> postlist = postPage.getContent();
                 List<JsonNode> jsonPostList = new ArrayList<>();
@@ -88,7 +91,7 @@ public class PostService {
         if (id == null) {
             throw new ErrorHandler(400, "Post id is null");
         }
-        Optional<Post> PostResult = PostRepository.findById(id);
+        Optional<Post> PostResult = postRepository.findById(id);
         if (!PostResult.isPresent()) {
             throw new ErrorHandler(404, "Post not found");
         }
@@ -106,7 +109,7 @@ public class PostService {
             }
 
             if (existingPost != null) {
-                PostRepository.save(existingPost);
+                postRepository.save(existingPost);
             } else {
                 throw new ErrorHandler(400, "Post to save is null");
             }
@@ -119,9 +122,27 @@ public class PostService {
     // D
     public void delete(Long id) {
         if (id != null) {
-            PostRepository.deleteById(id);
+            postRepository.deleteById(id);
         } else {
             throw new ErrorHandler(404, "Post not found");
+        }
+    }
+
+    // Like
+    public boolean like(Long postid, String profileName) {
+        try {
+            if (postid != null && profileName != null) {
+                Optional<Post> optpost = postRepository.findById(postid);
+                Post post = optpost.get();
+                Profile plike = profileRepository.findByProfilename(profileName).get();
+                post.addLike(plike);
+                postRepository.save(post);
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            throw new ErrorHandler(500, e.getMessage());
         }
     }
 }

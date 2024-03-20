@@ -53,7 +53,7 @@ POST
 "title": "post title",
 "description": "description",
 "imageUrl": null,
-"createdAt": [2024,3,14,16,50,8,743859100], //[yyyy,mm,dd,HH,mm,ss ,cc]
+"createdAt": [2024,3,14,16,50,8,743859100], //[yyyy,mm,dd,HH,mm,ss,cc]
 "likes": 0,
 "type": "post",
 "profile": 2
@@ -309,3 +309,14 @@ _D_
 _token_<br>
 **risposta**: <br>
 Follow deleted
+
+# Like
+
+/v1/likePost/{postId}
+**richiesta:** <br>
+_token_<br>
+{
+"profilename": "username3"
+}
+**risposta**: <br>
+Success

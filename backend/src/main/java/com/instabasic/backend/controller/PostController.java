@@ -124,4 +124,24 @@ public class PostController {
         }
     }
 
+    // LIKE
+    @PostMapping("/v1/likePost/{postId}")
+    public ResponseEntity<String> addLike(@PathVariable Long postId, @RequestBody JsonNode json) {
+        try {
+            String profilename = json.get("profilename").textValue();
+            boolean result = PostService.like(postId, profilename);
+            if (result) {
+                return ResponseEntity.status(200).body("Success");
+            } else {
+                return ResponseEntity.status(500).body("Failed");
+            }
+        } catch (ErrorHandler err) {
+            logger.warn(err.getMessage());
+            throw new ResponseStatusException(err.getStatus(), err.getMessage(), err);
+        } catch (Exception e) {
+            logger.error("An unexpected error occurred", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred", e);
+        }
+    }
+
 }

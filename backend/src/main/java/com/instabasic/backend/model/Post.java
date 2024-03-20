@@ -70,6 +70,14 @@ public class Post {
         }
     }
 
+    public void addLike(Profile profile) {
+        likes.add(profile);
+    }
+
+    public void removeLike(Profile profile) {
+        likes.remove(profile);
+    }
+
     @Override
     public String toString() {
         ObjectMapper objectMapper = new ObjectMapper();
