@@ -333,7 +333,7 @@ Success
 # Profile CRUD
 
 _C_
-/v1/{followerProfilename}/follow/{followingProfilename}
+/v1/newProfile
 **richiesta:** <br>
 _token_<br>
 {
@@ -348,11 +348,11 @@ _token_<br>
 
 **risposta**: <br>
 {
-"id": 12,
-"profilename": "user3profile7",
-"firstName": "user3",
-"lastName": "profile7",
-"birthday": "2024-03-15",
+"id": 3,
+"profilename": "user1profile3",
+"firstName": "user1",
+"lastName": "profile3",
+"birthday": [2023,3,23],
 "bio": "bio profilo secondario",
 "avatarUrl": null,
 "comments": 0,
@@ -455,3 +455,37 @@ _token_
 }
 
 _U_
+v1/updateProfile/{profileId}
+
+**richiesta:**<br>
+_token_
+{
+"user":"1",
+"profilename":"Profilo1",
+"firstName":"modifica",
+"lastName":"modifica",
+"birthday":"2024-03-15",
+"bio":"bio profilo modificata",
+"avatarUrl":null
+}
+**risposta:** <br>
+{
+"id": 1,
+"profilename": "Profilo11",
+"firstName": "modifica",
+"lastName": "modifica",
+"birthday": [2024,3,15],
+"bio": "bio profilo modificata",
+"avatarUrl": null,
+"comments": 0,
+"followers": 0,
+"following": 0
+}
+
+_D_
+/v1/deleteProfile/{profileId}
+
+**richiesta:** <br>
+_token_
+**risposta:** <br>
+Profile deleted with id: 3

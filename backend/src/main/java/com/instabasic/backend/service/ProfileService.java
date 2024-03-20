@@ -134,7 +134,8 @@ public class ProfileService {
         Profile existingProfile = profileResult.orElseThrow(() -> new ErrorHandler(400, "Profile not found"));
         if (profileUpdate != null) {
             // Aggiorna i dettagli dell'utente solo se sono stati forniti nel payload
-            if (profileUpdate.getProfilename() != null) {
+            if (profileUpdate.getProfilename() != null
+                    && profileUpdate.getProfilename() != existingProfile.getProfilename()) {
                 existingProfile.setProfilename(profileUpdate.getProfilename());
             }
             if (profileUpdate.getFirstName() != null) {

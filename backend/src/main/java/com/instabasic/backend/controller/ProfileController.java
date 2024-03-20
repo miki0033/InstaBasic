@@ -34,10 +34,10 @@ public class ProfileController {
 
     // C
     @PostMapping("/v1/newProfile")
-    public ResponseEntity<String> postProfile(@RequestBody ProfileProject project) {
+    public ResponseEntity<JsonNode> postProfile(@RequestBody ProfileProject project) {
         try {
             Profile profile = ProfileService.save(project);
-            return ResponseEntity.status(200).body(profile.toString());
+            return ResponseEntity.status(200).body(profile.toJSON());
         } catch (ErrorHandler err) {
             logger.warn(err.getMessage());
             throw new ResponseStatusException(err.getStatus(), err.getMessage(), err);
@@ -67,9 +67,17 @@ public class ProfileController {
 
     // U
     @PutMapping("/v1/updateProfile/{id}")
-    public String updateProfile(@PathVariable Long id, @RequestBody Profile ProfileToUpdate) {
-        Profile updatedProfile = ProfileService.update(id, ProfileToUpdate);
-        return "Profile updated with id: " + id + " " + updatedProfile.toString();
+    public ResponseEntity<JsonNode> updateProfile(@PathVariable Long id, @RequestBody Profile ProfileToUpdate) {
+        try {
+            Profile updatedProfile = ProfileService.update(id, ProfileToUpdate);
+            return ResponseEntity.status(200).body(updatedProfile.toJSON());
+        } catch (ErrorHandler err) {
+            logger.warn(err.getMessage());
+            throw new ResponseStatusException(err.getStatus(), err.getMessage(), err);
+        } catch (Exception e) {
+            logger.error("An unexpected error occurred", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred", e);
+        }
     }
 
     // D
