@@ -489,3 +489,54 @@ _D_
 _token_
 **risposta:** <br>
 Profile deleted with id: 3
+
+# User CRUD
+
+_R_ <br>
+/v1/getUser/{id}
+
+**richiesta:** <br>
+_token_
+**risposta:** <br>
+{
+"id": 1,
+"username": "username1",
+"email": "username1@gmail.com",
+"createdAt": [2024,3,20,17,17,1,720473000],
+"updatedAt": [2024,3,20,17,17,1,720473000],
+"lastLoginAt": [2024,3,21,16,49,37,527576000],
+"lastOnlineAt": [2024,3,21,16,49,37,528541000]
+}
+
+_U_ <br>
+/v1/updateUser/{id}
+
+**richiesta:** <br>
+_token_
+{
+"username": "username1",
+"email":"username1@gmail.com"
+}
+
+**risposta:** <br>
+{
+"id": 1,
+"username": "username123",
+"email": "username1@gmail.com",
+"createdAt": [2024,3,20,17,17,1,720473000],
+"updatedAt": [2024,3,21,17,32,56,291580400],
+"lastLoginAt": [2024,3,21,17,25,8,572203000],
+"lastOnlineAt": [2024,3,21,17,25,8,572203000]
+}
+
+_D_
+v1/deleteUser/1
+**richiesta:** <br>
+_token_
+{
+"username": "username1",
+"email":"username1@gmail.com"
+}
+
+**risposta:** <br>
+User deleted with id: 1

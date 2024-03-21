@@ -4,8 +4,12 @@ import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.Column;
@@ -48,6 +52,7 @@ public class User {
     @Nonnull
     private String email;
 
+    @JsonIgnore
     @NotBlank
     @Size(max = 120)
     private String password;
@@ -84,13 +89,23 @@ public class User {
         // this.roles.add(role);
     }
 
-    public String toJson() {
+    public JsonNode toJSON() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return objectMapper.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
+            objectMapper.registerModule(new JavaTimeModule());
+            ObjectNode jsonNode = objectMapper.createObjectNode();
+            jsonNode.put("id", this.id);
+            jsonNode.put("username", this.username);
+            jsonNode.put("email", this.email);
+            jsonNode.put("createdAt", objectMapper.valueToTree(this.createdAt));
+            jsonNode.put("updatedAt", objectMapper.valueToTree(this.updatedAt));
+            jsonNode.put("lastLoginAt", objectMapper.valueToTree(this.lastLoginAt));
+            jsonNode.put("lastOnlineAt", objectMapper.valueToTree(this.lastOnlineAt));
+            return jsonNode;
+        } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            return "{}";
+            return objectMapper.createObjectNode();
         }
     }
+
 }

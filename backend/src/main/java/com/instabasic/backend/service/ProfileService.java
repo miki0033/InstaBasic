@@ -1,5 +1,6 @@
 package com.instabasic.backend.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
@@ -113,13 +114,10 @@ public class ProfileService {
             Page<Post> followers = PostRepository.findPostsFromFollowedProfilesOrderByCreatedAtDesc(id,
                     pageable);
             return followers;
-
         } catch (Exception e) {
-
             logger.error("Error ProfileService:getPostsByFollow" + e.getMessage(), e);
             return null;
         }
-
     }
 
     // U
@@ -170,7 +168,19 @@ public class ProfileService {
         if (id != null) {
             ProfileRepository.deleteById(id);
         } else {
-            throw new ErrorHandler(404, "Comment not found");
+            throw new ErrorHandler(404, "Profile not found");
+        }
+    }
+
+    public void deleteForeignUser(Long id) {
+        if (id != null) {
+            List<Profile> listProfile = ProfileRepository.findByUserId(id);
+            for (Profile prf : listProfile) {
+                prf.setUser(null);
+                ProfileRepository.save(prf);
+            }
+        } else {
+            throw new ErrorHandler(404, "Profile not found");
         }
     }
 }
