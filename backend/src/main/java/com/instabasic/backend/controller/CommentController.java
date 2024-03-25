@@ -132,4 +132,19 @@ public class CommentController {
         }
     }
 
+    @GetMapping("/v1/isLiked/{commentId}")
+    public ResponseEntity<Boolean> isLiked(@PathVariable Long commentId, @RequestBody JsonNode json) {
+        try {
+            String profilename = json.get("profilename").textValue();
+            Boolean result = CommentService.isLiked(commentId, profilename);
+            return ResponseEntity.ok(result);
+        } catch (ErrorHandler err) {
+            logger.warn(err.getMessage());
+            throw new ResponseStatusException(err.getStatus(), err.getMessage(), err);
+        } catch (Exception e) {
+            logger.error("An unexpected error occurred", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred", e);
+        }
+    }
+
 }

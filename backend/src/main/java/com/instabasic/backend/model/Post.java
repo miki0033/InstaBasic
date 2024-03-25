@@ -80,6 +80,10 @@ public class Post {
         likes.remove(profile);
     }
 
+    public boolean isLiked(Profile profile) {
+        return likes.contains(profile);
+    }
+
     public void addDisplayed(Profile profile) {
         displayed.add(profile);
     }

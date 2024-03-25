@@ -148,4 +148,17 @@ public class CommentService {
         }
     }
 
+    public boolean isLiked(Long commId, String profileName) {
+        try {
+            if (commId != null && profileName != null) {
+                Optional<Comment> opt = CommentRepository.findById(commId);
+                Comment comment = opt.get();
+                Profile clike = profileRepository.findByProfilename(profileName).get();
+                return comment.isLiked(clike);
+            } else
+                throw new ErrorHandler(500, "postId or profilename at null");
+        } catch (Exception e) {
+            throw new ErrorHandler(500, e.getMessage());
+        }
+    }
 }

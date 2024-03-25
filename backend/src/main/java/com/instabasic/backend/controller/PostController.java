@@ -47,6 +47,21 @@ public class PostController {
         }
     }
 
+    // C
+    @PostMapping("/v1/displayed/{profilename}/{postId}")
+    public ResponseEntity<Boolean> displayed(@PathVariable String profilename, @PathVariable Long postId) {
+        try {
+            Boolean result = PostService.displayed(postId, profilename);
+            return ResponseEntity.ok(result);// todo
+        } catch (ErrorHandler err) {
+            logger.warn(err.getMessage());
+            throw new ResponseStatusException(err.getStatus(), err.getMessage(), err);
+        } catch (Exception e) {
+            logger.error("An unexpected error occurred", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred", e);
+        }
+    }
+
     // R
     @GetMapping("/v1/getPost/{postid}")
     public ResponseEntity<JsonNode> getPost(@PathVariable Long postid) {
@@ -145,6 +160,20 @@ public class PostController {
             } else {
                 return ResponseEntity.status(500).body("Failed");
             }
+        } catch (ErrorHandler err) {
+            logger.warn(err.getMessage());
+            throw new ResponseStatusException(err.getStatus(), err.getMessage(), err);
+        } catch (Exception e) {
+            logger.error("An unexpected error occurred", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred", e);
+        }
+    }
+
+    @GetMapping("/v1/isLiked/{postId}/{profilename}")
+    public ResponseEntity<Boolean> isLiked(@PathVariable Long postId, @PathVariable String profilename) {
+        try {
+            Boolean result = PostService.isLiked(postId, profilename);
+            return ResponseEntity.ok(result);
         } catch (ErrorHandler err) {
             logger.warn(err.getMessage());
             throw new ResponseStatusException(err.getStatus(), err.getMessage(), err);

@@ -43,6 +43,22 @@ public class PostService {
         }
     }
 
+    public boolean displayed(Long postId, String profilename) {
+        try {
+            if (postId != null && profilename != null) {
+                Post post = postRepository.findById(postId).get();
+                Profile profile = profileRepository.findByProfilename(profilename).get();
+                post.addDisplayed(profile);
+                postRepository.save(post);
+                return post.isDisplayed(profile);
+            } else
+                throw new ErrorHandler(404, "postId or profileId at null");
+        } catch (Exception e) {
+            throw new ErrorHandler(500, e.getMessage());
+        }
+
+    }
+
     // R
     public Post findById(Long id) {
         if (id != null) {
@@ -173,6 +189,20 @@ public class PostService {
             } else {
                 return false;
             }
+        } catch (Exception e) {
+            throw new ErrorHandler(500, e.getMessage());
+        }
+    }
+
+    public boolean isLiked(Long postid, String profileName) {
+        try {
+            if (postid != null && profileName != null) {
+                Optional<Post> optpost = postRepository.findById(postid);
+                Post post = optpost.get();
+                Profile plike = profileRepository.findByProfilename(profileName).get();
+                return post.isLiked(plike);
+            } else
+                throw new ErrorHandler(500, "postId or profilename at null");
         } catch (Exception e) {
             throw new ErrorHandler(500, e.getMessage());
         }
