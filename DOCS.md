@@ -166,10 +166,10 @@ _token_
 **risposta:** <br>
 {
 "id": 9,
-"text": "questo è un comm ",
+"text": "questo è un commento",
 "createdAt": [2024,3,18,15,17,46,451177700],
 "likes": 0,
-"profile": 1,
+"profile": 2,
 "post": 7
 }
 

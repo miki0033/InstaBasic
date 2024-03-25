@@ -4,15 +4,44 @@ import { HeartIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { useData } from "../../../main/DataProvider";
 import PostComment from "../../../../utils/PostComment";
+import axios from "axios";
 
 const PostCard = ({ post }: { post: IPost }) => {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
+	const deleteModal = useDisclosure();
+
 	const [modalImagePage, nextImage] = useState(0);
+
 	const {
-		state: { profile },
+		state: { profile, token, type },
 	} = useData();
 
+	const JWTconfig = {
+		headers: { Authorization: type + " " + token },
+	};
+
 	const GETIMAGE = import.meta.env.VITE_PYGET;
+
+	const DELETEPOST = import.meta.env.VITE_DELETE_POST_BY_ID;
+	const deletePost = (id: number) => {
+		axios.delete(DELETEPOST + id, JWTconfig);
+	};
+
+	const LIKEPOST = import.meta.env.VITE_POST_POST_LIKE;
+	const likePost = (id: number) => {
+		axios.post(LIKEPOST + id, { profilename: profile.profilename }, JWTconfig);
+	};
+
+	const ISLIKED = import.meta.env.VITE_GET_POST_IS_LIKED;
+	const isLiked = async (id: number) => {
+		console.log(id);
+
+		const isLiked = await axios.get(ISLIKED + id + "/" + profile.profilename, JWTconfig);
+		console.log(isLiked);
+
+		return isLiked.data;
+	};
+	post?.id && isLiked(post.id);
 
 	return (
 		<div>
@@ -36,7 +65,16 @@ const PostCard = ({ post }: { post: IPost }) => {
 				</CardBody>
 				<CardFooter className="text-small">
 					<p className="w-8/12">{post.title}</p>
-					<Button className="w-4/12 text-default-500">
+					<Button
+						className="w-4/12 text-default-500"
+						onPress={() => {
+							console.log(post.id);
+
+							post?.id && likePost(post.id);
+						}}
+						color="default"
+						//
+					>
 						{post.likes} <HeartIcon />
 					</Button>
 				</CardFooter>
@@ -80,15 +118,38 @@ const PostCard = ({ post }: { post: IPost }) => {
 								</div>
 							</ModalBody>
 							<ModalFooter className="flex flex-row gap-5">
-								<Button
-									color="danger"
-									onPress={() => {
-										alert("WIP");
-									}}>
+								<Button color="danger" onPress={deleteModal.onOpen}>
 									Delete Post
 								</Button>
 								<Button color="danger" variant="light" onPress={onClose}>
 									Close
+								</Button>
+							</ModalFooter>
+						</>
+					)}
+				</ModalContent>
+			</Modal>
+
+			<Modal isOpen={deleteModal.isOpen} onOpenChange={deleteModal.onOpenChange} size="5xl" backdrop="blur" className="my-10">
+				<ModalContent className=" border-2 border-secondary-400">
+					{(onDeleteClose) => (
+						<>
+							<ModalHeader />
+							<ModalBody className="flex flex-row">
+								<p>Are you sure you want to delete this post:</p>
+								<p>Title: {post.title}</p>
+								<p>Description: {post.description}</p>
+							</ModalBody>
+							<ModalFooter className="flex flex-row justify-center">
+								<Button
+									color="danger"
+									onPress={() => {
+										post?.id && deletePost(post.id);
+									}}>
+									DELETE
+								</Button>
+								<Button onPress={onDeleteClose} color="secondary">
+									CANCEL
 								</Button>
 							</ModalFooter>
 						</>

@@ -178,6 +178,7 @@ const AddPostCard = ({ signal }: { signal: () => void }) => {
 								<div className="flex flex-col">
 									<label
 										htmlFor="fileInput"
+										tabIndex={0}
 										className="w-auto h-1/6 mx-auto bg-secondary py-1 px-2 text-md text-secondary-200 rounded-md">
 										{"Chose File(s)"}
 									</label>
