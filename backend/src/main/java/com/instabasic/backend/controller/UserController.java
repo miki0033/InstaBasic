@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.instabasic.backend.common.util.exception.ErrorHandler;
 import com.instabasic.backend.model.User;
 import com.instabasic.backend.service.UserService;
@@ -27,64 +28,49 @@ public class UserController {
     @Autowired
     private UserService UserService;
 
-    // C
+    // R
+    @GetMapping("/v1/getUser/{id}")
+    public ResponseEntity<JsonNode> getUser(@PathVariable Long id) {
+        try {
+            User user = UserService.findById(id);
+            return ResponseEntity.status(200).body(user.toJSON());
+        } catch (ErrorHandler err) {
+            logger.warn(err.getMessage());
+            throw new ResponseStatusException(err.getStatus(), err.getMessage(), err);
+        } catch (Exception e) {
+            logger.error("An unexpected error occurred", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred", e);
+        }
+    }
+
     /*
-     * @PostMapping("v1/newUser")
-     * public ResponseEntity<String> postUser(@RequestBody User user) {
+     * @GetMapping("/v1/getUserbyUsername/{userName}")
+     * public User getUserByUsername(@PathVariable String userName) {
      * try {
-     * UserService.save(user);
-     * return ResponseEntity.status(200).body(user.toString());
-     * 
+     * return UserService.findByUsername(userName);
      * } catch (ErrorHandler err) {
      * logger.warn(err.getMessage());
-     * return ResponseEntity.status(err.getStatus()).body(err.getMessage());
+     * throw new ResponseStatusException(err.getStatus(), err.getMessage(), err);
      * } catch (Exception e) {
      * logger.error("An unexpected error occurred", e);
-     * return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
-     * body("An unexpected error occurred");
+     * throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+     * "An unexpected error occurred", e);
      * }
      * }
      */
 
-    // R
-    @GetMapping("/v1/getUser/{id}")
-    public User getUser(@PathVariable Long id) {
-        try {
-            return UserService.findById(id);
-        } catch (ErrorHandler err) {
-            logger.warn(err.getMessage());
-            throw new ResponseStatusException(err.getStatus(), err.getMessage(), err);
-        } catch (Exception e) {
-            logger.error("An unexpected error occurred", e);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred", e);
-        }
-    }
-
-    @GetMapping("/v1/getUser/{userName}")
-    public User getUserByUsername(@PathVariable String userName) {
-        try {
-            return UserService.findByUsername(userName);
-        } catch (ErrorHandler err) {
-            logger.warn(err.getMessage());
-            throw new ResponseStatusException(err.getStatus(), err.getMessage(), err);
-        } catch (Exception e) {
-            logger.error("An unexpected error occurred", e);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred", e);
-        }
-    }
-
     // U
     @PutMapping("/v1/updateUser/{id}")
-    public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody User UserToUpdate) {
+    public ResponseEntity<JsonNode> updateUser(@PathVariable Long id, @RequestBody User UserToUpdate) {
         try {
             User updatedUser = UserService.update(id, UserToUpdate);
-            return ResponseEntity.status(200).body("User updated with id: " + id + " " + updatedUser.toString());
+            return ResponseEntity.status(200).body(updatedUser.toJSON());
         } catch (ErrorHandler err) {
             logger.warn(err.getMessage());
-            return ResponseEntity.status(err.getStatus()).body(err.getMessage());
+            throw new ResponseStatusException(err.getStatus(), err.getMessage(), err);
         } catch (Exception e) {
             logger.error("An unexpected error occurred", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred", e);
         }
     }
 

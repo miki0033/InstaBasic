@@ -34,7 +34,7 @@ import com.instabasic.backend.payload.response.MessageResponse;
 public class UserService {
 
     @Autowired
-    UserRepository UserRepository;
+    UserRepository userRepository;
 
     @Autowired
     ProfileService ProfileService;
@@ -53,13 +53,13 @@ public class UserService {
     // C
 
     public ResponseEntity<?> registerUser(SignupRequest signUpRequest) {
-        if (UserRepository.existsByUsername(signUpRequest.getUsername())) {
+        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Username is already taken!"));
         }
 
-        if (UserRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
@@ -70,42 +70,9 @@ public class UserService {
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
 
-        // Set<String> strRoles = signUpRequest.getRole();
-        // Set<Role> roles = new HashSet<>();
-        /*
-         * if (strRoles == null) {
-         * Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-         * .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-         * roles.add(userRole);
-         * } else {
-         * strRoles.forEach(role -> {
-         * switch (role.toLowerCase()) {
-         * case "admin":
-         * Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-         * .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-         * roles.add(adminRole);
-         * 
-         * break;
-         * case "mod":
-         * Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
-         * .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-         * roles.add(modRole);
-         * 
-         * break;
-         * default:
-         * Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-         * .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-         * roles.add(userRole);
-         * }
-         * });
-         * }
-         */
-
-        // user.setRoles(roles);
-
-        UserRepository.save(user);
+        userRepository.save(user);
         // assegnare un profilo in automatico alla creazione dell'user
-        User dbuser = UserRepository.findByUsername(user.getUsername()).get();
+        User dbuser = userRepository.findByUsername(user.getUsername()).get();
         Profile newProfile = new Profile(dbuser.getUsername(), signUpRequest.getFirstName(),
                 signUpRequest.getLastName(), signUpRequest.getBirthday(), dbuser);
 
@@ -124,19 +91,15 @@ public class UserService {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        /*
-         * List<String> roles = userDetails.getAuthorities().stream()
-         * .map(item -> item.getAuthority())
-         * .collect(Collectors.toList());
-         */
         Profile mainProfile = ProfileService.findFirstByUserId(userDetails.getId());
+        updateLastLogin(userDetails.getId());
         return ResponseEntity.ok(new JwtResponse(jwt, userDetails, mainProfile));
 
     }
 
     public User findById(Long id) {
         if (id != null) {
-            Optional<User> optional = UserRepository.findById(id);
+            Optional<User> optional = userRepository.findById(id);
             if (optional.isPresent()) {
                 return optional.get();
             } else {
@@ -148,7 +111,7 @@ public class UserService {
     }
 
     public User findByUsername(String name) {
-        Optional<User> optional = UserRepository.findByUsername(name);
+        Optional<User> optional = userRepository.findByUsername(name);
         if (optional.isPresent()) {
             return optional.get();
         } else {
@@ -159,7 +122,7 @@ public class UserService {
     public Page<User> findAll(Pageable pageable) {
         try {
             if (pageable != null) {
-                return UserRepository.findAll(pageable);
+                return userRepository.findAll(pageable);
             } else {
                 throw new ErrorHandler(400, "pageable null");
             }
@@ -174,24 +137,22 @@ public class UserService {
         if (id == null) {
             throw new ErrorHandler(400, "User id is null");
         }
-        Optional<User> userResult = UserRepository.findById(id);
+        Optional<User> userResult = userRepository.findById(id);
         if (!userResult.isPresent()) {
             throw new ErrorHandler(404, "User not found");
         }
         User existingUser = userResult.get();
         if (userUpdate != null) {
             // Aggiorna i dettagli dell'utente solo se sono stati forniti nel payload
-            if (userUpdate.getUsername() != null) {
+            if (userUpdate.getUsername() != null &&
+                    existingUser.getUsername().equals(userUpdate.getUsername())) {
                 existingUser.setUsername(userUpdate.getUsername());
             }
             if (userUpdate.getEmail() != null) {
                 existingUser.setEmail(userUpdate.getEmail());
             }
-            if (userUpdate.getPassword() != null) {
-                existingUser.setPassword(userUpdate.getPassword());
-            }
             existingUser.setUpdatedAt(LocalDateTime.now());
-            UserRepository.save(existingUser);
+            userRepository.save(existingUser);
             return existingUser;
         } else {
             throw new ErrorHandler(400, "User update details are null");
@@ -199,12 +160,36 @@ public class UserService {
 
     }
 
+    public User updateLastLogin(Long id) {
+        try {
+            if (id != null) {
+                Optional<User> optUser = userRepository.findById(id);
+                User existingUser = optUser.get();
+                existingUser.setLastLoginAt(LocalDateTime.now());
+                existingUser.setLastOnlineAt(LocalDateTime.now());
+                userRepository.save(existingUser);
+                return existingUser;
+            } else {
+                throw new ErrorHandler(500, "updateLastLogin: id is null");
+            }
+        } catch (Exception e) {
+            logger.error("updateLastLogin: " + e.getMessage());
+            throw new ErrorHandler(500, "updateLastLogin: " + e.getMessage());
+        }
+
+    }
+
     // D
     public void delete(Long id) {
-        if (id != null) {
-            UserRepository.deleteById(id);
-        } else {
-            throw new ErrorHandler(404, "User not found");
+        try {
+            if (id != null) {
+                ProfileService.deleteForeignUser(id);
+                userRepository.deleteById(id);
+            } else {
+                throw new ErrorHandler(404, "User not found");
+            }
+        } catch (Exception e) {
+            throw new ErrorHandler(500, e.getMessage());
         }
     }
 }

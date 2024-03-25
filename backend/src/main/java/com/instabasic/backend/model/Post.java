@@ -44,6 +44,8 @@ public class Post {
 
     @OneToMany
     private Set<Profile> likes;
+    @OneToMany
+    private Set<Profile> displayed;
 
     private String type; // vedere se farlo con l'enum
 
@@ -76,6 +78,18 @@ public class Post {
 
     public void removeLike(Profile profile) {
         likes.remove(profile);
+    }
+
+    public boolean isLiked(Profile profile) {
+        return likes.contains(profile);
+    }
+
+    public void addDisplayed(Profile profile) {
+        displayed.add(profile);
+    }
+
+    public boolean isDisplayed(Profile profile) {
+        return displayed.contains(profile);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.instabasic.backend.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
@@ -10,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.instabasic.backend.common.util.exception.ErrorHandler;
-import com.instabasic.backend.model.Post;
 import com.instabasic.backend.model.Profile;
 import com.instabasic.backend.model.User;
 import com.instabasic.backend.model.project.ProfileProject;
@@ -106,22 +106,6 @@ public class ProfileService {
         }
     }
 
-    public Page<Post> getPostsByFollow(String profileId, Pageable pageable) {
-        /* Ritorna i post dei profili seguiti */
-        try {
-            Long id = Long.parseLong(profileId);
-            Page<Post> followers = PostRepository.findPostsFromFollowedProfilesOrderByCreatedAtDesc(id,
-                    pageable);
-            return followers;
-
-        } catch (Exception e) {
-
-            logger.error("Error ProfileService:getPostsByFollow" + e.getMessage(), e);
-            return null;
-        }
-
-    }
-
     // U
     public Profile update(Long id, Profile profileUpdate) {
         if (id == null) {
@@ -134,7 +118,8 @@ public class ProfileService {
         Profile existingProfile = profileResult.orElseThrow(() -> new ErrorHandler(400, "Profile not found"));
         if (profileUpdate != null) {
             // Aggiorna i dettagli dell'utente solo se sono stati forniti nel payload
-            if (profileUpdate.getProfilename() != null) {
+            if (profileUpdate.getProfilename() != null
+                    && profileUpdate.getProfilename() != existingProfile.getProfilename()) {
                 existingProfile.setProfilename(profileUpdate.getProfilename());
             }
             if (profileUpdate.getFirstName() != null) {
@@ -169,7 +154,19 @@ public class ProfileService {
         if (id != null) {
             ProfileRepository.deleteById(id);
         } else {
-            throw new ErrorHandler(404, "Comment not found");
+            throw new ErrorHandler(404, "Profile not found");
+        }
+    }
+
+    public void deleteForeignUser(Long id) {
+        if (id != null) {
+            List<Profile> listProfile = ProfileRepository.findByUserId(id);
+            for (Profile prf : listProfile) {
+                prf.setUser(null);
+                ProfileRepository.save(prf);
+            }
+        } else {
+            throw new ErrorHandler(404, "Profile not found");
         }
     }
 }

@@ -83,6 +83,10 @@ public class Comment {
         likes.remove(profile);
     }
 
+    public boolean isLiked(Profile profile) {
+        return likes.contains(profile);
+    }
+
     public String toString() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
