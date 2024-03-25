@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.instabasic.backend.common.util.exception.ErrorHandler;
-import com.instabasic.backend.model.Post;
 import com.instabasic.backend.model.Profile;
 import com.instabasic.backend.model.User;
 import com.instabasic.backend.model.project.ProfileProject;
@@ -104,19 +103,6 @@ public class ProfileService {
             return ProfileRepository.findFirstByUserId(userId).get();
         } else {
             throw new ErrorHandler(400, "userId=null");
-        }
-    }
-
-    public Page<Post> getPostsByFollow(String profileId, Pageable pageable) {
-        /* Ritorna i post dei profili seguiti */
-        try {
-            Long id = Long.parseLong(profileId);
-            Page<Post> followers = PostRepository.findPostsFromFollowedProfilesOrderByCreatedAtDesc(id,
-                    pageable);
-            return followers;
-        } catch (Exception e) {
-            logger.error("Error ProfileService:getPostsByFollow" + e.getMessage(), e);
-            return null;
         }
     }
 

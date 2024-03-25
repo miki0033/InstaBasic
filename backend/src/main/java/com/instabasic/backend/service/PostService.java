@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -21,6 +23,9 @@ import com.instabasic.backend.repository.ProfileRepository;
 
 @Service
 public class PostService {
+
+    static final Logger logger = LogManager.getLogger(PostService.class.getName());
+
     @Autowired
     PostRepository postRepository;
     @Autowired
@@ -83,6 +88,33 @@ public class PostService {
             }
         } catch (Exception e) {
             throw new ErrorHandler(400, e.getMessage());
+        }
+    }
+
+    public Page<Post> getPostsByFollow(String profileId, Pageable pageable) {
+        /* Ritorna i post dei profili seguiti */
+        try {
+            Long id = Long.parseLong(profileId);
+            Page<Post> followers = postRepository.findPostsFromFollowedProfilesOrderByCreatedAtDesc(id,
+                    pageable);
+            return followers;
+        } catch (Exception e) {
+            logger.error("Error PostService:getPostsByFollow" + e.getMessage(), e);
+            return null;
+        }
+    }
+
+    public Page<Post> getStories(String profileId, Pageable pageable) {
+        /* Ritorna le stories dei profili seguiti */
+        try {
+            LocalDateTime startDate = LocalDateTime.now().minusDays(1);
+            Long id = Long.parseLong(profileId);
+            Page<Post> followers = postRepository.findStoriesFromFollowedProfilesOrderByCreatedAtDesc(id, startDate,
+                    pageable);
+            return followers;
+        } catch (Exception e) {
+            logger.error("Error PostService:getStories" + e.getMessage(), e);
+            return null;
         }
     }
 

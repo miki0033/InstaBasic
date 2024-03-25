@@ -23,7 +23,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.instabasic.backend.common.util.exception.ErrorHandler;
 import com.instabasic.backend.model.Post;
 import com.instabasic.backend.service.PostService;
-import com.instabasic.backend.service.ProfileService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -32,9 +31,6 @@ public class PostController {
 
     @Autowired
     private PostService PostService;
-
-    @Autowired
-    private ProfileService ProfileService;
 
     // C
     @PostMapping("/v1/newPost")
@@ -84,7 +80,21 @@ public class PostController {
     public Page<Post> getPostsByFollow(@PathVariable String profileId, Pageable pageable) {
         /* Ritorna i post dei profili seguiti */
         try {
-            return ProfileService.getPostsByFollow(profileId, pageable);
+            return PostService.getPostsByFollow(profileId, pageable);
+        } catch (ErrorHandler err) {
+            logger.warn(err.getMessage());
+            throw new ResponseStatusException(err.getStatus(), err.getMessage(), err);
+        } catch (Exception e) {
+            logger.error("An unexpected error occurred", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred", e);
+        }
+    }
+
+    @GetMapping("/getStories/{profileId}")
+    public Page<Post> getStory(@PathVariable String profileId, Pageable pageable) {
+        // route per richiamare le story dei profili seguiti
+        try {
+            return PostService.getStories(profileId, pageable);
         } catch (ErrorHandler err) {
             logger.warn(err.getMessage());
             throw new ResponseStatusException(err.getStatus(), err.getMessage(), err);
