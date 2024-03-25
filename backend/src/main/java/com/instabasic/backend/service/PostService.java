@@ -183,7 +183,11 @@ public class PostService {
                 Optional<Post> optpost = postRepository.findById(postid);
                 Post post = optpost.get();
                 Profile plike = profileRepository.findByProfilename(profileName).get();
-                post.addLike(plike);
+                if (post.isLiked(plike)) {
+                    post.removeLike(plike);
+                } else {
+                    post.addLike(plike);
+                }
                 postRepository.save(post);
                 return true;
             } else {

@@ -57,16 +57,7 @@ public class CommentController {
             logger.error("An unexpected error occurred", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
         }
-
     }
-
-    /*
-     * @GetMapping("/v1/getComments/{profilename}")
-     * public Page<Comment> getComments(@PathVariable String profilename, Pageable
-     * pageable) {
-     * return CommentService.getCommentsByProfileName(profilename, pageable);
-     * }
-     */
 
     @GetMapping("/v1/getComments/{postid}")
     public Page<JsonNode> getCommentsByPost(@PathVariable String postid, Pageable pageable) {

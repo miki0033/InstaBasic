@@ -136,8 +136,12 @@ public class CommentService {
             if (commid != null && profileName != null) {
                 Optional<Comment> optcomm = CommentRepository.findById(commid);
                 Comment comm = optcomm.get();
-                Profile clike = profileRepository.findByProfilename(profileName).get();
-                comm.addLike(clike);
+                Profile plike = profileRepository.findByProfilename(profileName).get();
+                if (comm.isLiked(plike)) {
+                    comm.removeLike(plike);
+                } else {
+                    comm.addLike(plike);
+                }
                 CommentRepository.save(comm);
                 return true;
             } else {
