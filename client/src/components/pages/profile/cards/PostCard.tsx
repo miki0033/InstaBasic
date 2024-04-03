@@ -1,7 +1,8 @@
 import { Modal, ModalContent, ModalBody, ModalFooter, Button, useDisclosure, Pagination, ModalHeader } from "@nextui-org/react";
 import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
-import { HeartIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { HeartIcon as HeartOutline } from "@heroicons/react/24/outline";
+import { HeartIcon as HeartSolid } from "@heroicons/react/24/solid";
+import { useEffect, useState } from "react";
 import { useData } from "../../../main/DataProvider";
 import PostComment from "../../../../utils/PostComment";
 import axios from "axios";
@@ -22,6 +23,13 @@ const PostCard = ({ post }: { post: IPost }) => {
 
 	const GETIMAGE = import.meta.env.VITE_PYGET;
 
+	const UPDATEPOST = import.meta.env.VITE_GET_POST_BY_ID;
+	const updatePost = (id: number) => {
+		axios.get(UPDATEPOST + id, JWTconfig).then((res) => {
+			post.likes = res.data.likes;
+		});
+	};
+
 	const DELETEPOST = import.meta.env.VITE_DELETE_POST_BY_ID;
 	const deletePost = (id: number) => {
 		axios.delete(DELETEPOST + id, JWTconfig);
@@ -29,23 +37,28 @@ const PostCard = ({ post }: { post: IPost }) => {
 
 	const LIKEPOST = import.meta.env.VITE_POST_POST_LIKE;
 	const likePost = (id: number) => {
-		axios.post(LIKEPOST + id, { profilename: profile.profilename }, JWTconfig);
+		axios.post(LIKEPOST + id, { profilename: profile.profilename }, JWTconfig).then(() => {
+			updatePost(id);
+			isLiked(id);
+		});
 	};
 
 	const ISLIKED = import.meta.env.VITE_GET_POST_IS_LIKED;
-	const isLiked = async (id: number) => {
-		console.log(id);
-
-		const isLiked = await axios.get(ISLIKED + id + "/" + profile.profilename, JWTconfig);
-		console.log(isLiked);
-
-		return isLiked.data;
+	const [likedStatus, setLikedStatus] = useState<boolean>();
+	const isLiked = (id: number) => {
+		axios.get(ISLIKED + id + "/" + profile.profilename, JWTconfig).then((res) => {
+			setLikedStatus(res.data);
+		});
 	};
-	post?.id && isLiked(post.id);
+
+	useEffect(() => {
+		post?.id && isLiked(post.id);
+	}, []);
 
 	return (
 		<div>
 			<Card
+				as={"div"}
 				shadow="sm"
 				isPressable
 				onPress={() => {
@@ -68,14 +81,13 @@ const PostCard = ({ post }: { post: IPost }) => {
 					<Button
 						className="w-4/12 text-default-500"
 						onPress={() => {
-							console.log(post.id);
-
 							post?.id && likePost(post.id);
 						}}
-						color="default"
+						color={likedStatus ? "danger" : "default"}
 						//
 					>
-						{post.likes} <HeartIcon />
+						<p className={likedStatus ? "text-white" : ""}>{post.likes}</p>{" "}
+						{likedStatus ? <HeartSolid color="white" /> : <HeartOutline />}
 					</Button>
 				</CardFooter>
 			</Card>
@@ -130,15 +142,14 @@ const PostCard = ({ post }: { post: IPost }) => {
 				</ModalContent>
 			</Modal>
 
-			<Modal isOpen={deleteModal.isOpen} onOpenChange={deleteModal.onOpenChange} size="5xl" backdrop="blur" className="my-10">
+			<Modal isOpen={deleteModal.isOpen} onOpenChange={deleteModal.onOpenChange} size="xl" backdrop="blur" className="my-10">
 				<ModalContent className=" border-2 border-secondary-400">
 					{(onDeleteClose) => (
 						<>
 							<ModalHeader />
-							<ModalBody className="flex flex-row">
+							<ModalBody className="flex flex-col justify-center text-center">
 								<p>Are you sure you want to delete this post:</p>
 								<p>Title: {post.title}</p>
-								<p>Description: {post.description}</p>
 							</ModalBody>
 							<ModalFooter className="flex flex-row justify-center">
 								<Button

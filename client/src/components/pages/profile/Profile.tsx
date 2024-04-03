@@ -35,10 +35,10 @@ const Profile = () => {
 	return (
 		<div className=" w-full h-full flex flex-row">
 			<div className="w-4/12 bg-content2 border-2 border-secondary-400 border-r-divider rounded-l-md">
-				<ProfileInfo nPosts={profilePosts.length} key={0} />
+				<ProfileInfo nPosts={profilePosts.length} />
 			</div>
 			<div className="w-8/12 bg-content2 border-2 border-primary-400 border-l-divider rounded-r-md">
-				<ProfilePosts reloadImgs={reloadImgs} profilePosts={profilePosts} key={1} />
+				<ProfilePosts reloadImgs={reloadImgs} profilePosts={profilePosts} />
 			</div>
 		</div>
 	);
