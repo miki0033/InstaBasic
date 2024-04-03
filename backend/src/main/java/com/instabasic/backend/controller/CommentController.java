@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.instabasic.backend.common.util.exception.ErrorHandler;
+import com.instabasic.backend.common.util.security.jwt.JwtUtils;
 import com.instabasic.backend.model.Comment;
 import com.instabasic.backend.model.project.CommentProject;
 import com.instabasic.backend.service.CommentService;
@@ -29,6 +31,14 @@ public class CommentController {
     static final Logger logger = LogManager.getLogger(CommentController.class.getName());
     @Autowired
     private CommentService CommentService;
+
+    @Autowired
+    private JwtUtils JwtUtils;
+
+    // TODO: aggiungere ai controller che devono fare controlli sul profilename
+    // @RequestHeader("Authorization") String authorizationHeader
+    // String token=JwtUtils.getToken(authorizationHeader)
+    // getProfilenameFromJwtToken(token)
 
     // C
     @PostMapping("/v1/newComment")
@@ -105,9 +115,11 @@ public class CommentController {
 
     // LIKE
     @PostMapping("/v1/likeComment/{commentId}")
-    public ResponseEntity<String> addLike(@PathVariable Long commentId, @RequestBody JsonNode json) {
+    public ResponseEntity<String> addLike(@PathVariable Long commentId,
+            @RequestHeader("Authorization") String authorizationHeader) {
         try {
-            String profilename = json.get("profilename").textValue();
+            String token = JwtUtils.getToken(authorizationHeader);
+            String profilename = JwtUtils.getProfilenameFromJwtToken(token);
             boolean result = CommentService.like(commentId, profilename);
             if (result) {
                 return ResponseEntity.status(200).body("Success");
@@ -124,9 +136,11 @@ public class CommentController {
     }
 
     @GetMapping("/v1/isLiked/{commentId}")
-    public ResponseEntity<Boolean> isLiked(@PathVariable Long commentId, @RequestBody JsonNode json) {
+    public ResponseEntity<Boolean> isLiked(@PathVariable Long commentId,
+            @RequestHeader("Authorization") String authorizationHeader) {
         try {
-            String profilename = json.get("profilename").textValue();
+            String token = JwtUtils.getToken(authorizationHeader);
+            String profilename = JwtUtils.getProfilenameFromJwtToken(token);
             Boolean result = CommentService.isLiked(commentId, profilename);
             return ResponseEntity.ok(result);
         } catch (ErrorHandler err) {

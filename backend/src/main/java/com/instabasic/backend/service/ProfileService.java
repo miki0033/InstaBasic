@@ -169,4 +169,10 @@ public class ProfileService {
             throw new ErrorHandler(404, "Profile not found");
         }
     }
+
+    public Profile getDefaultProfile(Long userId) {
+        Optional<Profile> opt = ProfileRepository.findFirstByUserId(userId);
+        Profile profile = opt.get();
+        return profile;
+    }
 }

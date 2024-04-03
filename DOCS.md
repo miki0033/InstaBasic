@@ -315,18 +315,12 @@ Follow deleted
 /v1/likePost/{postId}
 **richiesta:** <br>
 _token_<br>
-{
-"profilename": "username3"
-}
 **risposta**: <br>
 Success
 
 /v1/likeComent/{commentId}
 **richiesta:** <br>
 _token_<br>
-{
-"profilename": "username3"
-}
 **risposta**: <br>
 Success
 

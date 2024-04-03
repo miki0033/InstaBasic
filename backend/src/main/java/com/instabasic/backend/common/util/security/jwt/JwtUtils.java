@@ -4,11 +4,14 @@ import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.instabasic.backend.common.util.security.services.UserDetailsImpl;
+import com.instabasic.backend.service.ProfileService;
 
 import io.jsonwebtoken.*;
 
@@ -22,20 +25,34 @@ public class JwtUtils {
   @Value("${myapp.jwtExpirationMs}")
   private int jwtExpirationMs;
 
+  @Autowired
+  ProfileService profileService;
+
   public String generateJwtToken(Authentication authentication) {
 
     UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
-
+    userPrincipal.setProfilename(profileService.getDefaultProfile(userPrincipal.getId()).getProfilename());
+    String profilename = userPrincipal.getProfilename();
     return Jwts.builder()
-        .setSubject((userPrincipal.getUsername()))
+        .setSubject((userPrincipal.getUsername())).claim("profilename", profilename)
         .setIssuedAt(new Date())
         .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
         .signWith(SignatureAlgorithm.HS512, jwtSecret)
         .compact();
   }
 
+  public String getToken(@RequestHeader("Authorization") String authorizationHeader) {
+    String jwtToken = authorizationHeader.substring("Bearer ".length());
+    return jwtToken;
+  }
+
   public String getUserNameFromJwtToken(String token) {
     return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+  }
+
+  public String getProfilenameFromJwtToken(String token) {
+    Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
+    return (String) claims.get("profilename");
   }
 
   public boolean validateJwtToken(String authToken) {

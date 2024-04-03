@@ -15,12 +15,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.instabasic.backend.common.util.exception.ErrorHandler;
+import com.instabasic.backend.common.util.security.jwt.JwtUtils;
 import com.instabasic.backend.model.Post;
 import com.instabasic.backend.service.PostService;
 
@@ -31,6 +32,8 @@ public class PostController {
 
     @Autowired
     private PostService PostService;
+    @Autowired
+    private JwtUtils JwtUtils;
 
     // C
     @PostMapping("/v1/newPost")
@@ -151,9 +154,11 @@ public class PostController {
 
     // LIKE
     @PostMapping("/v1/likePost/{postId}")
-    public ResponseEntity<String> addLike(@PathVariable Long postId, @RequestBody JsonNode json) {
+    public ResponseEntity<String> addLike(@PathVariable Long postId,
+            @RequestHeader("Authorization") String authorizationHeader) {
         try {
-            String profilename = json.get("profilename").textValue();
+            String token = JwtUtils.getToken(authorizationHeader);
+            String profilename = JwtUtils.getProfilenameFromJwtToken(token);
             boolean result = PostService.like(postId, profilename);
             if (result) {
                 return ResponseEntity.status(200).body("Success");
@@ -170,8 +175,11 @@ public class PostController {
     }
 
     @GetMapping("/v1/isLiked/{postId}/{profilename}")
-    public ResponseEntity<Boolean> isLiked(@PathVariable Long postId, @PathVariable String profilename) {
+    public ResponseEntity<Boolean> isLiked(@PathVariable Long postId,
+            @RequestHeader("Authorization") String authorizationHeader) {
         try {
+            String token = JwtUtils.getToken(authorizationHeader);
+            String profilename = JwtUtils.getProfilenameFromJwtToken(token);
             Boolean result = PostService.isLiked(postId, profilename);
             return ResponseEntity.ok(result);
         } catch (ErrorHandler err) {

@@ -22,6 +22,7 @@ public class UserDetailsImpl implements UserDetails {
   private Long id;
 
   private String username;
+  private String profilename;
 
   private String email;
 
@@ -55,6 +56,14 @@ public class UserDetailsImpl implements UserDetails {
         user.getEmail(),
         user.getPassword(),
         authorities);
+  }
+
+  public String getProfilename() {
+    return profilename;
+  }
+
+  public void setProfilename(String profilename) {
+    this.profilename = profilename;
   }
 
   @Override

@@ -24,11 +24,6 @@ public class AuthController {
   @Autowired
   UserService userService;
 
-  /*
-   * @Autowired
-   * RoleService roleService;
-   */
-
   @PostMapping("v1/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
     return userService.login(loginRequest);
